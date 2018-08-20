@@ -4,6 +4,7 @@
   "description": "evtscan - an explorer for everiToken.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/everitoken/evtscan#readme",
   "dependencies": {
-    "koa": "^2.5.2"
+    "argparse": "^1.0.10",
+    "koa": "^2.5.2",
+    "koa-router": "^7.4.0"
   }
 }
