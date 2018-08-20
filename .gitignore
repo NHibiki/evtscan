@@ -1,0 +1,5 @@
+# Mac OS Useless
+.DS_Store
+
+# Nodejs Dependencies
+node_modules
