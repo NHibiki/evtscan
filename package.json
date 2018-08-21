@@ -21,6 +21,8 @@
     "argparse": "^1.0.10",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
+    "koa-send": "^5.0.0",
+    "koa-static": "^5.0.0",
     "mongodb": "^3.1.3"
   }
 }

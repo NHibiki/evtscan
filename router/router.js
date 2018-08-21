@@ -1,7 +1,10 @@
-const fs = require('fs');
-const Router = require('koa-router');
+const fs = require('fs'),
+      path = require('path'),
+      KoaStatic     = require('koa-static'),
+      KoaSend       = require('koa-send'),
+      KoaRouter     = require('koa-router');
 
-const router = new Router();
+const router = new KoaRouter();
 const inject = function (app) {
 
     // make sure {Koa Instance} was passed in
@@ -25,7 +28,19 @@ const inject = function (app) {
     });
 
     app.use(router.routes())
-       .use(router.allowedMethods());
+       .use(router.allowedMethods())
+       .use(KoaStatic(path.join(__dirname, '../web')))
+       .use(async (ctx, next) => {
+            await next();
+            if (ctx.status === 404 && ctx.path.startsWith("/api/")) {
+                ctx.type = 'application/json';
+                ctx.set('Access-Control-Allow-Origin', '*');
+                ctx.set('Access-Control-Allow-Methods', 'GET');
+                ctx.body = { state: 0, error: 'no such api' };
+            } else if (ctx.status === 404 && ctx.method === 'GET') try {
+                await KoaSend(ctx, '/web/index.html')
+            } catch (err) {console.error(err)}
+       });
 
 }
 
