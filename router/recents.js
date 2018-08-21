@@ -23,7 +23,7 @@ const getRecent = fn => async (ctx, next) => {
         data: await fn(since, page, size)
     };
 
-    if (!result.data) state = 0;
+    if (!result.data) result = { state: 0, error: "resource not found" }
     ctx.body = result;
     
 }
