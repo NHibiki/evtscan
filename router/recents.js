@@ -31,7 +31,7 @@ const getRecent = fn => async (ctx, next) => {
 const getBlocks = async (since, page, size) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Blocks`);
-        return await col.find({timestamp: {'$lte': new Date(since)}}).sort({timestamp: -1}).skip(size * page).limit(size).toArray();
+        return await col.find({timestamp: {'$lte': new Date(since)}}).sort({block_num:-1, timestamp: -1}).skip(size * page).limit(size).toArray();
     });
     return res[1] || [];
     

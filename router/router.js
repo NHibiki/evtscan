@@ -29,7 +29,7 @@ const inject = function (app) {
 
     app.use(router.routes())
        .use(router.allowedMethods())
-       .use(KoaStatic(path.join(__dirname, '../web')))
+       .use(KoaStatic(path.join(__dirname, '../web/dist')))
        .use(async (ctx, next) => {
             await next();
             if (ctx.status === 404 && ctx.path.startsWith("/api/")) {
@@ -38,7 +38,7 @@ const inject = function (app) {
                 ctx.set('Access-Control-Allow-Methods', 'GET');
                 ctx.body = { state: 0, error: 'no such api' };
             } else if (ctx.status === 404 && ctx.method === 'GET') try {
-                await KoaSend(ctx, '/web/index.html')
+                await KoaSend(ctx, '/web/dist/index.html')
             } catch (err) {console.error(err)}
        });
 
