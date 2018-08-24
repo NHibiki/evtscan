@@ -6,10 +6,13 @@ import router from './router'
 
 import VueJsonPretty from 'vue-json-pretty';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faTimes);
+library.add(faAngleLeft);
+library.add(faAngleRight);
+
 Vue.component('fa', FontAwesomeIcon);
 Vue.component('vue-json-pretty', VueJsonPretty);
 

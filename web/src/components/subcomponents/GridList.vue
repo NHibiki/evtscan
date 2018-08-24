@@ -1,10 +1,12 @@
 <template>
     <div class='grid'>
-        <div class="trans"></div>
-        <div class='grid-inner'>
+        <div class='grid-wrapper'>
             <h2>{{ title }}</h2>
-            <LineScalePulseOutRapidLoader v-if="!items" color="#e6a938" size="40px" class="loader"/> 
-            <component :key="item._id" :item="item" :is="SubView" v-if="items" v-for="item in items || []"/>
+            <div class="trans"></div>
+            <div class='grid-inner'>
+                <LineScalePulseOutRapidLoader v-if="!items" color="#e6a938" size="40px" class="loader"/> 
+                <component :key="item._id" :item="item" :is="SubView" v-if="items" v-for="item in items || []"/>
+            </div>
         </div>
     </div>
 </template>
@@ -49,7 +51,7 @@
         max-width: 490px;
         /* min-height: 400px; */
         height: min-content;
-        max-height: 800px;
+        max-height: 640px;
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 5px 25px rgba(0, 0, 0, .05);
@@ -60,7 +62,7 @@
             pointer-events: none;
             height: 38px;
             width: 100%;
-            left: 0; top: 0;
+            left: 0;
             background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
             z-index: 1;
         }
@@ -72,13 +74,18 @@
             text-align: center;
         }
 
+        .grid-wrapper {
+            overflow-x: hidden;
+        }
+
         .grid-inner {
             overflow-x: hidden;
             overflow-y: scroll;
             height: 100%;
-            max-height: 800px;
+            max-height: 560px;
             margin: 0 auto;
             max-width: 430px;
+            position: relative;
         }
 
         h1, h2, h3, h4, h5, p, span {
@@ -91,7 +98,9 @@
         h2 {
             font-weight: 400;
             margin: 24px 18px;
+            margin-bottom: 12px;
             padding-left: 6px;
+            font-family: "Quicksand";
         }
 
 

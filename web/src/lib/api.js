@@ -24,3 +24,13 @@ export const getTrxOnBlock = async (id, page=0, size=30, since=null) => {
 export const getActionOnTrx = async (id, page=0, size=30, since=null) => {
     return get(`/action`, {trx_id: id, page, size, since});
 }
+
+export default {
+    LOCALDEV,
+    endPoint,
+    get,
+    getRecent,
+    getDetail,
+    getTrxOnBlock,
+    getActionOnTrx
+}

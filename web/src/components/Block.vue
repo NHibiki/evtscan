@@ -22,9 +22,9 @@
         data () {
             return {
                 id: this.$route.params.id,
-                data: [],
+                data: null,
                 trxHead: ["Trx ID", "Pending", "Timestamp"],
-                trxData: [],
+                trxData: null,
             }
         },
         components: { Table },
@@ -105,6 +105,10 @@
             font-weight: 400;
             margin: 24px 18px;
             padding-left: 6px;
+            overflow-x: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-family: 'Quicksand';
         }
 
     }

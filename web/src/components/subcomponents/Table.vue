@@ -5,13 +5,15 @@
         </thead>
         <tbody>
             <TableRow :clickable="clickable" :items="col" :key="i" v-for="(col, i) in data" v-if="data && data.length" @click="click(i)"/>
-            <tr v-if="!data || !data.length && head && head.length"><th class="mid" :colspan="head.length">No Data</th></tr>
+            <tr v-if="!data"><th class="mid" :colspan="head && head.length || 1"><LineScalePulseOutRapidLoader color="#e6a938" size="40px" class="loader"/></th></tr>
+            <tr v-if="data && !data.length && head && head.length"><th class="mid" :colspan="head.length">No Data</th></tr>
         </tbody>
     </table>
 </template>
 
 <script>
     import TableRow from '@/components/subcomponents/TableRow';
+    import { LineScalePulseOutRapidLoader } from 'vue-loaders';
     export default {
         name: 'Table',
         props: ['head', 'data', 'clickable'],
@@ -20,7 +22,7 @@
                 that: this
             }
         },
-        components: { TableRow },
+        components: { TableRow, LineScalePulseOutRapidLoader },
         methods: {
             click: function(i) {
                 this.clickable ? this.$emit('click', i) : null;
@@ -66,6 +68,13 @@
             th {
                 font-weight: 600;
             }
+        }
+
+        .loader {
+            margin: 120px auto;
+            display: block;
+            position: relative;
+            text-align: center;
         }
 
     }

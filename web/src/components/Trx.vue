@@ -44,13 +44,13 @@
         data () {
             return {
                 id: this.$route.params.id,
-                data: [],
+                data: null,
                 keyHeaders: ['Public Key'],
-                keys: [],
+                keys: null,
                 sigHeaders: ['Signature'],
-                sigs: [],
+                sigs: null,
                 actionHeaders: ['Name', 'Domain', 'Key'],
-                actions: [],
+                actions: null,
                 actionsData: [],
                 showData: {},
                 showModal: false
@@ -142,6 +142,7 @@
             overflow-x: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+            font-family: 'Quicksand';
         }
 
     }

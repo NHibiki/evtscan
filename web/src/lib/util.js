@@ -68,3 +68,42 @@ export const tablizeTrxAction = function (data) {
     return [res, resData];
 
 }
+
+export const tablizeBlocks = function (data) {
+
+    let res = [];
+    let resData = [];
+    delete data._id;
+
+    data.forEach(d => {
+        res.push([d.block_num, d.block_id, d.producer, d.timestamp]);
+        resData.push('/block/' + d.block_num);
+    });
+
+    return [res, resData];
+
+}
+
+export const tablizeTransactions = function (data) {
+
+    let res = [];
+    let resData = [];
+    delete data._id;
+
+    data.forEach(d => {
+        res.push([d.trx_id, d.block_num, d.pending, d.updated_at]);
+        resData.push('/trx/' + d.trx_id);
+    });
+
+    return [res, resData];
+
+}
+
+export default {
+    tablizeBlock,
+    tablizeBlockTrx,
+    tablizeTrx,
+    tablizeTrxAction,
+    tablizeBlocks,
+    tablizeTransactions
+}

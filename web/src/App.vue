@@ -6,11 +6,37 @@
                 <ul class="menu">
                     <li><router-link to="/">Home</router-link></li>
                     <li><router-link to="/block">Block</router-link></li>
-                    <li><router-link to="/transaction">Transaction</router-link></li>
+                    <li><router-link to="/trx">Transaction</router-link></li>
                 </ul>
             </div>
         </header>
         <router-view/>
+        <footer class="footer">
+            <div class="footer-wrapper">
+                <div class="column">
+                    <li><span>
+                        EvtScan Copyright ©️2018 <br /><br />
+                        By EveriToken Development Team. <br />
+                        Distributed By Vue.js <br />
+                        All Rights Reserved.
+                    </span></li>
+                </div>
+                <div class="column">
+                    <li><b>Friendly Link</b></li>
+                    <li><a href="https://everitoken.io">EveriToken</a></li>
+                    <li><a href="#">EveriPay</a></li>
+                    <!--<li class="divider"></li>-->
+                    <li><a href="#">White Papper</a></li>
+                </div>
+                <div class="column">
+                    <li><b>Open Source</b></li>
+                    <li><a href="https://github.com/everitoken">Github</a></li>
+                    <!--<li class="divider"></li>-->
+                    <li><a href="https://github.com/everitoken/evtscan">EvtScan</a></li>
+                    <li><a href="https://github.com/everitoken/evt">EvtNet</a></li>
+                </div>
+            </div>
+        </footer>
     </div>
 </template>
 
@@ -26,7 +52,6 @@
 
     #evtscan {
         background: #EAEAEA;
-        padding-bottom: 80px;
     }
 
     .header {
@@ -111,6 +136,112 @@
 
             }
 
+
+        }
+
+    }
+
+    .footer {
+
+        position: relative;
+        z-index: 0;
+
+        :before{
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: url('/static/images/footer.jpg');
+            opacity: 0.03;
+            z-index: -1;
+        }
+
+        .footer-wrapper {
+            width: calc(100% - 160px);
+            padding: 40px 80px;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            margin-top: 40px;
+            height: 100%;
+
+            @media only screen and (max-width: 720px) {
+            
+                flex-direction: column;
+                .column {
+                    text-align: left;
+                }
+
+            }
+
+            @media only screen and (max-width: 450px) {
+            
+                width: calc(100% - 20px);
+                padding: 40px 10px;
+                .column {
+                    padding: 8px 20px;
+                }
+
+            }
+
+        }
+
+        .column {
+
+            &.left, &:first-child {
+                text-align: left;
+            }
+
+            text-align: right;
+            flex: 1;
+            padding: 20px;
+            font-family: 'Quicksand';
+            font-weight: 300;
+            line-height: 24px;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            color: #333;
+
+            li {
+                display: block;
+                margin: 4px 0;
+                
+                &.divider {
+                    width: 30%;
+                    max-width: 200px;
+                    height: 1px;
+                    background-color: #AAA;
+                    display: inline-block;
+                }
+
+                b {
+                    line-height: 42px;
+                }
+
+            }
+
+            b {
+                font-weight: 400;
+            }
+
+            a {
+                text-decoration: none;
+                font-weight: 400;
+                color: #59E;
+                transition: .3s linear;
+
+                &:hover {
+                    color: #a76a00;
+                }
+
+            }
 
         }
 
