@@ -20,3 +20,7 @@ export const getDetail = async (thing, id) => {
 export const getTrxOnBlock = async (id, page=0, size=30, since=null) => {
     return get(`/transaction`, {block_num: id, page, size, since});
 }
+
+export const getActionOnTrx = async (id, page=0, size=30, since=null) => {
+    return get(`/action`, {trx_id: id, page, size, since});
+}

@@ -23,7 +23,7 @@
                 return Math.round((new Date().getTime() - new Date(time).getTime()) / 10) / 100;
             }
         },
-        created() {console.log(this.item)}
+        created() {}
     }
 </script>
 

@@ -3,20 +3,22 @@
         <div class="trans"></div>
         <div class='grid-inner'>
             <h2>{{ title }}</h2>
-            <component :key="item._id" :item="item" :is="SubView" v-for="item in items"/>
+            <LineScalePulseOutRapidLoader v-if="!items" color="#e6a938" size="40px" class="loader"/> 
+            <component :key="item._id" :item="item" :is="SubView" v-if="items" v-for="item in items || []"/>
         </div>
     </div>
 </template>
 
 <script>
     import { getRecent } from '@/lib/api';
+    import { LineScalePulseOutRapidLoader } from 'vue-loaders';
 
     export default {
         name: 'GridList',
         props: ['title', 'endpoint', 'for'],
         data () {
             return {
-                items: [],
+                items: null,
                 SubView: this.for
             }
         },
@@ -24,16 +26,18 @@
             getRecent(this.endpoint)
                 .then(data => {
                     let rev = data.data.data;
-                    let i = 0;
-                    let inv = setInterval(() => {
-                        if (i >= rev.length) clearInterval(inv);
-                        else {
-                            this.items.unshift(rev.pop())
-                        }
-                    }, 100);
+                    this.items = (this.items || []).concat(rev)
+                    // let i = 0;
+                    // let inv = setInterval(() => {
+                    //     if (i >= rev.length) clearInterval(inv);
+                    //     else {
+                    //         this.items.unshift(rev.pop())
+                    //     }
+                    // }, 100);
                 })
                 .catch(err => { console.error(err); })
-        }
+        },
+        components: { LineScalePulseOutRapidLoader }
     }
 </script>
 
@@ -43,7 +47,8 @@
         width: calc(100% - 40px);
         margin: 20px;
         max-width: 490px;
-        min-height: 400px;
+        /* min-height: 400px; */
+        height: min-content;
         max-height: 800px;
         border-radius: 8px;
         overflow: hidden;
@@ -60,10 +65,18 @@
             z-index: 1;
         }
 
+        .loader {
+            margin: 120px auto;
+            display: block;
+            position: relative;
+            text-align: center;
+        }
+
         .grid-inner {
             overflow-x: hidden;
             overflow-y: scroll;
             height: 100%;
+            max-height: 800px;
             margin: 0 auto;
             max-width: 430px;
         }

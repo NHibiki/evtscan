@@ -4,7 +4,7 @@
             <TableRow :items="head" v-if="head"/>
         </thead>
         <tbody>
-            <TableRow :items="col" :key="col[0]" v-for="col in data" v-if="data && data.length"/>
+            <TableRow :clickable="clickable" :items="col" :key="i" v-for="(col, i) in data" v-if="data && data.length" @click="click(i)"/>
             <tr v-if="!data || !data.length && head && head.length"><th class="mid" :colspan="head.length">No Data</th></tr>
         </tbody>
     </table>
@@ -14,11 +14,18 @@
     import TableRow from '@/components/subcomponents/TableRow';
     export default {
         name: 'Table',
-        props: ['head', 'data'],
+        props: ['head', 'data', 'clickable'],
         data () {
-            return {}
+            return {
+                that: this
+            }
         },
-        components: { TableRow }
+        components: { TableRow },
+        methods: {
+            click: function(i) {
+                this.clickable ? this.$emit('click', i) : null;
+            }
+        }
     }
 </script>
 
@@ -26,14 +33,14 @@
 
     .table {
 
-        width: calc(100% - 10px);
+        width: 100%;
         margin: 24px 0;
-        padding: 0 5px;
+        padding: 0 15px;
         overflow-x: hidden;
 
         th {
             font-weight: 300;
-            padding: 10px 20px;
+            padding: 10px 10px;
             text-align: left;
             font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
             text-rendering: optimizeLegibility;
@@ -45,6 +52,13 @@
 
             &.mid {
                 text-align: center;
+            }
+
+            span {
+                display: inline-block;
+                white-space: normal;
+                min-width: 100px;
+
             }
         }
 

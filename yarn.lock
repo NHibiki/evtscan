@@ -352,6 +352,10 @@ vary@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
+vue-loaders@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vue-loaders/-/vue-loaders-2.0.0.tgz#f52a2b480f815d1cb874703a2b7dac0b121f142e"
+
 ylru@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/ylru/-/ylru-1.2.1.tgz#f576b63341547989c1de7ba288760923b27fe84f"

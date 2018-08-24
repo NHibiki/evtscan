@@ -7,7 +7,7 @@
         </div>
         <div class='grid'>
             <h2>Transactions</h2>
-            <Table :head="trxHead" :data="trxData"/>
+            <Table :head="trxHead" :data="trxData" :clickable="true" @click="click"/>
         </div>
     </div>
 </template>
@@ -39,6 +39,11 @@
                     this.trxData = tablizeBlockTrx(data.data.data);
                 })
                 .catch(err => { console.error(err); })
+        },
+        methods: {
+            click(i) {
+                this.$router.push("/trx/" + this.trxData[i][0])
+            }
         }
     }
 </script>

@@ -3,7 +3,7 @@ const mongo = require('../lib/mongo.js');
 // get most recent transactions from mongo
 const getRecent = fn => async (ctx, next) => {
 
-    let {since, page, size, from, block_num, trx_num} = ctx.query;
+    let {since, page, size, from, block_num, trx_id} = ctx.query;
 
     // check params of input
     if (!(since = Date.parse(since))) since = new Date().getTime();
@@ -13,7 +13,7 @@ const getRecent = fn => async (ctx, next) => {
     if (!(size = parseInt(size, 10))) size = 10;
     else if (size < 10) size = 10;
     if (!(block_num = parseInt(block_num, 10))) block_num = 0;
-    if (!(trx_num = parseInt(trx_num, 10))) trx_num = 0;
+    if (!trx_id) trx_id = null;
 
     // set return content of query
     ctx.type = 'application/json';
@@ -23,7 +23,7 @@ const getRecent = fn => async (ctx, next) => {
     let result = {
         state: 1,
         since, page, size, from,
-        data: await fn(since, page, size, from, block_num || trx_num)
+        data: await fn(since, page, size, from, block_num || trx_id)
     };
 
     if (!result.data) result = { state: 0, error: "resource not found" }
@@ -31,7 +31,7 @@ const getRecent = fn => async (ctx, next) => {
     
 }
 
-const getBlocks = async (since, page, size, from, trx_num) => {
+const getBlocks = async (since, page, size, from, trx_id) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Blocks`);
         return await col.find({timestamp: {'$lte': new Date(since), '$gte': new Date(from)}}).sort({block_num:-1, timestamp: -1}).skip(size * page).limit(size).toArray();
@@ -50,7 +50,18 @@ const getTransactions = async (since, page, size, from, block_num) => {
     return res[1] || [];
 }
 
+const getActions = async (since, page, size, from, trx_id) => {
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Actions`);
+        let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
+        if (trx_id) schema.trx_id = trx_id;
+        return await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray();
+    });
+    return res[1] || [];
+}
+
 module.exports = [
     ['get', '/block', getRecent(getBlocks)],
     ['get', '/transaction', getRecent(getTransactions)],
+    ['get', '/action', getRecent(getActions)],
 ];
