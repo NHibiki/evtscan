@@ -1,3 +1,29 @@
+export const msToTimeStr = function (time) {
+
+    let timeStr = 's';
+    time = parseInt(time, 10) || 0;
+
+    // show percent of time if time is less than 60s
+    if (time < 60 * 1000) return `${Math.floor(time / 10) / 100} secs`;
+    else time = Math.floor(time / 1000);
+    
+    // show hhmmss of time
+    timeStr = (time % 60) + timeStr;
+    time = Math.floor(time / 60);
+    if (time <= 0) return timeStr;
+    else timeStr = "m " + timeStr;
+    // else timeStr = "mins";
+
+    timeStr = (time % 60) + timeStr;
+    time = Math.floor(time / 60);
+    if (time <= 0) return timeStr;
+    else timeStr = time + "h " + timeStr;
+    // else timeStr = time + "hours";
+
+    return timeStr;
+
+}
+
 export const tablizeBlock = function (data) {
 
     let res = [];
@@ -100,10 +126,12 @@ export const tablizeTransactions = function (data) {
 }
 
 export default {
+    msToTimeStr,
+
     tablizeBlock,
     tablizeBlockTrx,
     tablizeTrx,
     tablizeTrxAction,
     tablizeBlocks,
-    tablizeTransactions
+    tablizeTransactions,
 }

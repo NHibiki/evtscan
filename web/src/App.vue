@@ -26,7 +26,7 @@
                     <li><a href="https://everitoken.io">EveriToken</a></li>
                     <li><a href="#">EveriPay</a></li>
                     <!--<li class="divider"></li>-->
-                    <li><a href="#">White Papper</a></li>
+                    <li><a href="https://everitoken.io/docs/whitepaper.pdf">White Papper</a></li>
                 </div>
                 <div class="column">
                     <li><b>Open Source</b></li>

@@ -6,11 +6,13 @@
                   &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp; <router-link :to="'/block/' + item.block_num"><span class="shortspan"><span>{{ "0x" + item.block_id.toLocaleUpperCase() }}</span></span></router-link></span>
             <span><i>Trace:</i> <b>{{ item.trace.charge }}</b> charged <b>{{ item.trace.elapsed }}</b> elapsed</span>
         </div>
-        <div class='timer'> &lt; {{ since(item.updated_at) }} secs </div>
+        <div class='timer'> &lt; {{ since(item.updated_at) }} </div>
     </div>
 </template>
 
 <script>
+    import { msToTimeStr } from '@/lib/util';
+
     export default {
         name: 'TrxView',
         props: ['item'],
@@ -20,7 +22,7 @@
         },
         methods: {
             since(time) {
-                return Math.round((new Date().getTime() - new Date(time).getTime()) / 10) / 100;
+                return msToTimeStr(new Date().getTime() - new Date(time).getTime());
             }
         },
         created() {}

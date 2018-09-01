@@ -6,11 +6,13 @@
             <span><i>Block ID:</i> <router-link :to="'/block/' + item.block_num">{{ item.block_id }}</router-link></span>
             <span><i>Trxes:</i> <b>{{ item.trx_count }}</b> &nbsp;&nbsp; Pending: <b :style="`color:${item.pending ? 'green' : 'red'}`">{{ item.pending }}</b></span>
         </div>
-        <div class='timer'> &lt; {{ since(item.timestamp) }} secs </div>
+        <div class='timer'> &lt; {{ since(item.timestamp) }} </div>
     </div>
 </template>
 
 <script>
+    import { msToTimeStr } from '@/lib/util';
+
     export default {
         name: 'BlockView',
         props: ['item'],
@@ -20,7 +22,7 @@
         },
         methods: {
             since(time) {
-                return Math.round((new Date().getTime() - new Date(time).getTime()) / 10) / 100;
+                return msToTimeStr(new Date().getTime() - new Date(time).getTime());
             }
         }
     }

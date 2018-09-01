@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const LOCALDEV = false;
+const LOCALDEV = true;//false;
 
 let endPoint = LOCALDEV ? 
                     "http://localhost:8080/api" :
