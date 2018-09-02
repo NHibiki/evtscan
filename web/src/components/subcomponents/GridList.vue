@@ -44,6 +44,9 @@
 </script>
 
 <style lang='scss' scoped>
+    
+    $GridHeight: 580px;
+    
     .grid {
         background: #FFF;
         width: calc(100% - 40px);
@@ -51,7 +54,7 @@
         max-width: 490px;
         /* min-height: 400px; */
         height: min-content;
-        max-height: 640px;
+        max-height: 80px + $GridHeight;
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 5px 25px rgba(0, 0, 0, .05);
@@ -82,7 +85,7 @@
             overflow-x: hidden;
             overflow-y: scroll;
             height: 100%;
-            max-height: 560px;
+            max-height: $GridHeight;
             margin: 0 auto;
             max-width: 430px;
             position: relative;

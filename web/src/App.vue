@@ -60,6 +60,7 @@
         display: block;
         margin: 0 0;
         margin-bottom: 20px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, .05);
         position: relative;
         height: 73px;
         font-weight: 300;
