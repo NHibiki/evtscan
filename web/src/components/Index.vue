@@ -1,7 +1,7 @@
 <template>
     <div class='dualList'>
         <GridList title="Blocks" endpoint="block" :for="BlockView" />
-        <GridList title="Transactions" endpoint="transaction" :for="TrxView" />
+        <GridList title="Transactions" :endpoint="trxEndpoint" :activeTab="activeTab" :tabs="trxTabs" :for="TrxView" />
     </div>
 </template>
 
@@ -15,10 +15,32 @@
         data () {
             return {
                 msg: 'Welcome to Your Vue.js App',
+                trxEndpoint: 'transaction',
+                activeTab: 'all',
+                trxTabs: {
+                    all: {
+                        name: "All",
+                        callback: this.changeEndpoint.bind(this, 'transaction', 'all'),
+                    },
+                    everipay: {
+                        name: "Pay",
+                        callback: this.changeEndpoint.bind(this, 'everipay', 'everipay'),
+                    },
+                    everipass: {
+                        name: "Pass",
+                        callback: this.changeEndpoint.bind(this, 'everipass', 'everipass'),
+                    },
+                },
                 TrxView, BlockView
             }
         },
-        components: { GridList }
+        components: { GridList },
+        methods: {
+            changeEndpoint(endpoint, id) {
+                this.activeTab = id;
+                this.trxEndpoint = endpoint;
+            }
+        }
     }
 </script>
 

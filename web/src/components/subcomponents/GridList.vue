@@ -2,6 +2,7 @@
     <div class='grid'>
         <div class='grid-wrapper'>
             <h2>{{ title }}</h2>
+            <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /></div>
             <div class="trans"></div>
             <div class='grid-inner'>
                 <LineScalePulseOutRapidLoader v-if="!items" color="#e6a938" size="40px" class="loader"/> 
@@ -15,20 +16,33 @@
     import { getRecent } from '@/lib/api';
     import { LineScalePulseOutRapidLoader } from 'vue-loaders';
 
+    import Switcher from '@/components/subcomponents/Switcher';
+
     export default {
         name: 'GridList',
-        props: ['title', 'endpoint', 'for'],
+        props: ['title', 'endpoint', 'for', 'tabs', 'activeTab'],
         data () {
             return {
+                hasTab: this.tabs && Object.keys(this.tabs).length,
                 items: null,
                 SubView: this.for
             }
         },
         created() {
-            getRecent(this.endpoint)
+            this.getDataList();
+        },
+        watch: {
+            'endpoint' () {
+                this.items = null;
+                this.getDataList();
+            }
+        },
+        methods: {
+            getDataList() {
+                getRecent(this.endpoint)
                 .then(data => {
                     let rev = data.data.data;
-                    this.items = (this.items || []).concat(rev)
+                    this.items = rev; //(this.items || []).concat(rev)
                     // let i = 0;
                     // let inv = setInterval(() => {
                     //     if (i >= rev.length) clearInterval(inv);
@@ -38,8 +52,9 @@
                     // }, 100);
                 })
                 .catch(err => { console.error(err); })
+            }
         },
-        components: { LineScalePulseOutRapidLoader }
+        components: { LineScalePulseOutRapidLoader, Switcher }
     }
 </script>
 
@@ -75,6 +90,11 @@
             display: block;
             position: relative;
             text-align: center;
+        }
+
+        .switch {
+            position: absolute;
+            right: 32px; top: 24px;
         }
 
         .grid-wrapper {

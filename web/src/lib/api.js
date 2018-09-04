@@ -9,8 +9,13 @@ let endPoint = LOCALDEV ?
 export const get = async (uri, params={}, headers={}) => Axios.get(endPoint + uri, { params, headers });
 
 export const getRecent = async (thing, page=0, size=15, since=null) => {
+    if (['everipay', 'everipass'].includes(thing)) return getTrxByName(thing);
     return get(thing.startsWith('/') ? thing : "/" + thing,
         { page, size, since }, {});
+}
+
+export const getTrxByName = async (name, page=0, size=15, since=null) => {
+    return get(`/trxByName`, { trx_name: name, page, size, since });
 }
 
 export const getDetail = async (thing, id) => {
@@ -30,7 +35,8 @@ export default {
     endPoint,
     get,
     getRecent,
+    getTrxByName,
     getDetail,
     getTrxOnBlock,
-    getActionOnTrx
+    getActionOnTrx,
 }
