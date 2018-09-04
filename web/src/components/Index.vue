@@ -1,5 +1,5 @@
 <template>
-    <div class='dualList'>
+    <div class='dualList' :style="{'min-height': minHeight + 'px'}">
         <GridList title="Blocks" endpoint="block" :for="BlockView" />
         <GridList title="Transactions" :endpoint="trxEndpoint" :activeTab="activeTab" :tabs="trxTabs" :for="TrxView" />
     </div>
@@ -13,32 +13,32 @@
     export default {
         name: 'Index',
         data () {
+            let cb = this.changeEndpoint.bind(this);
             return {
+                minHeight: 0,
                 msg: 'Welcome to Your Vue.js App',
                 trxEndpoint: 'transaction',
                 activeTab: 'all',
                 trxTabs: {
-                    all: {
-                        name: "All",
-                        callback: this.changeEndpoint.bind(this, 'transaction', 'all'),
-                    },
-                    everipay: {
-                        name: "Pay",
-                        callback: this.changeEndpoint.bind(this, 'everipay', 'everipay'),
-                    },
-                    everipass: {
-                        name: "Pass",
-                        callback: this.changeEndpoint.bind(this, 'everipass', 'everipass'),
-                    },
+                    all: { name: "All", endpoint: "transaction", callback: cb },
+                    everipay: { name: "Pay", endpoint: "everipay", callback: cb },
+                    everipass: { name: "Pass", endpoint: "everipass", callback: cb },
                 },
                 TrxView, BlockView
             }
         },
         components: { GridList },
+        created() {
+            if (!window) return;
+            window.onresize = function() {
+                this.minHeight = window.innerHeight - 385;
+            }.bind(this);
+            window.onresize();
+        },
         methods: {
-            changeEndpoint(endpoint, id) {
+            changeEndpoint(id, tab) {
                 this.activeTab = id;
-                this.trxEndpoint = endpoint;
+                this.trxEndpoint = tab.endpoint;
             }
         }
     }
@@ -50,6 +50,7 @@
         justify-content: space-around;
         flex-direction: row;
         max-width: 1100px;
+        position: relative;
         padding: 0 20px;
         margin: 0 auto;
 

@@ -2,6 +2,7 @@
     <div>
         <div class='grid'>
             <h2 style="margin-right: 120px;">{{ name }} </h2>
+            <div class="switch"><Switcher v-if="name === 'Transactions'" :tabs="trxTabs" :active="activeTab" /></div>
             <a class="sidebtn" href="javascript:history.back()">Back</a>
             <Table :head="tableHeader" :data="data" :clickable="true" @click="click"/>
             <div class="pager">
@@ -14,9 +15,11 @@
 </template>
 
 <script>
-    import Table from '@/components/subcomponents/Table';
     import { getRecent } from '@/lib/api';
     import Util from '@/lib/util';
+
+    import Table from '@/components/subcomponents/Table';
+    import Switcher from '@/components/subcomponents/Switcher';
 
     export default {
         name: "List",
@@ -26,12 +29,13 @@
         created() {
             this.refreshData()
         },
-        components: { Table },
+        components: { Table, Switcher },
         methods: {
             click(i) {
                 this.$router.push(this.dataLink[i]);
             },
             resetData() {
+                let cb = this.changeEndpoint.bind(this);
                 let tableHeader = ['Transaction ID', 'Block Num', 'Pending', 'Timestamp'];
                 if (this.$route.name !== 'Transactions') {
                     tableHeader = ['Block Num', 'Block ID', 'Producer', 'Timestamp'];
@@ -42,7 +46,13 @@
                     endpoint: "/" + this.$route.name.substr(0, this.$route.name.length - 1).toLocaleLowerCase(),
                     data: null,
                     page: 0,
-                    dataLink: []
+                    activeTab: 'all',
+                    dataLink: [],
+                    trxTabs: {
+                        all: { name: "All", endpoint: "transaction", callback: cb },
+                        everipay: { name: "Pay", endpoint: "everipay", callback: cb },
+                        everipass: { name: "Pass", endpoint: "everipass", callback: cb },
+                    },
                 }
             },
             refreshData() {
@@ -57,6 +67,14 @@
                 if (this.data.length < 20 && adder > 0) return;
                 if (this.page + adder < 0) return;  
                 this.page += adder;
+                this.data = null;
+                this.dataLink = null;
+                this.refreshData();
+            },
+            changeEndpoint(id, tab) {
+                this.activeTab = id;
+                this.endpoint = tab.endpoint;
+                this.page = 0;
                 this.data = null;
                 this.dataLink = null;
                 this.refreshData();
@@ -113,20 +131,29 @@
 
         }
 
+        .switch {
+            position: absolute;
+            right: 122px; top: 26px;
+        }
+
         .sidebtn {
-            font-family: "Roboto";
+            font-family: "Quicksand";
+            font-weight: 500;
+            margin: 2px 0;
             padding: 6px 20px;
             display: block;
             position: absolute;
             right: 20px;
             top: 22px;
             color: #e6a938;
-            border: 1px solid #e6a938;
-            border-radius: 8px;
+            /* border: 1px solid #e6a938; */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+            border-radius: 40px;
 
             &:hover {
                 background: #e6a938;
                 color: white;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
             }
 
         }

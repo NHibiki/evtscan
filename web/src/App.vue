@@ -2,7 +2,7 @@
     <div id="evtscan">
         <header class="header">
             <div class="content">
-                <a class="logo" style="cursor:default;" href="javascript:;">everi Token</a>
+                <router-link to="/" class="logo">everi Token</router-link>
                 <ul class="menu">
                     <li><router-link to="/">Home</router-link></li>
                     <li><router-link to="/block">Block</router-link></li>
@@ -32,7 +32,7 @@
                     <li><b>Open Source</b></li>
                     <li><a href="https://github.com/everitoken">Github</a></li>
                     <!--<li class="divider"></li>-->
-                    <li><a href="https://github.com/everitoken/evtscan">EvtScan</a></li>
+                    <li><a href="https://github.com/NHibiki/evtscan">EvtScan</a></li>
                     <li><a href="https://github.com/everitoken/evt">EvtNet</a></li>
                 </div>
             </div>
@@ -92,6 +92,7 @@
                 background-size: contain;
                 font-size: 0px;
                 background-image: url('/static/images/logo@2x.png');
+                cursor: pointer;
             }
 
             .menu {

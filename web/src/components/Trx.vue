@@ -95,19 +95,23 @@
         position: relative;
 
         .sidebtn {
-            font-family: "Roboto";
+            font-family: "Quicksand";
+            font-weight: 500;
+            margin: 2px 0;
             padding: 6px 20px;
             display: block;
             position: absolute;
             right: 20px;
             top: 22px;
             color: #e6a938;
-            border: 1px solid #e6a938;
-            border-radius: 8px;
+            /* border: 1px solid #e6a938; */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+            border-radius: 40px;
 
             &:hover {
                 background: #e6a938;
                 color: white;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
             }
 
         }

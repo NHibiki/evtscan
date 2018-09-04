@@ -26,12 +26,11 @@
         },
         methods: {
             onclick(id, tab) {
-                tab.callback && tab.callback();
+                tab.callback && tab.callback(id, tab);
             }
         },
         watch: {
             'active' () {
-                console.log(this.active)
                 this.activeTab = this.active || this.activeTab;
             }
         },
@@ -80,7 +79,7 @@
                     &.active {
                         box-shadow: 2px 5px 5px rgba(0, 0, 0, .15);
                         background: #f6b948;
-                        transform: scale(1.02);
+                        /* transform: scale(1.02); */
                     }
                 
                 }
