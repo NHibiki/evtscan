@@ -28,7 +28,7 @@
             }
         },
         components: { GridList },
-        created() {
+        mounted () {
             if (!window) return;
             window.onresize = function() {
                 this.minHeight = window.innerHeight - 385;

@@ -60,7 +60,8 @@
 
 <style lang='scss' scoped>
     
-    $GridHeight: 580px;
+    /* $GridHeight: 580px; */
+    $GridHeight: 100%;
     
     .grid {
         background: #FFF;
@@ -69,7 +70,7 @@
         max-width: 490px;
         /* min-height: 400px; */
         height: min-content;
-        max-height: 80px + $GridHeight;
+        max-height: calc(80px + #{$GridHeight});
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 5px 25px rgba(0, 0, 0, .05);
@@ -99,6 +100,7 @@
 
         .grid-wrapper {
             overflow-x: hidden;
+            height: 100%;
         }
 
         .grid-inner {

@@ -6,7 +6,7 @@
                   &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp; <router-link :to="'/block/' + item.block_num"><span class="shortspan"><span>{{ "0x" + item.block_id.toLocaleUpperCase() }}</span></span></router-link></span>
             <span><i>Trace:</i> <b>{{ item.trace.charge }}</b> charged <b>{{ item.trace.elapsed }}</b> elapsed</span>
         </div>
-        <div class='timer'> &lt; {{ since(item.updated_at) }} </div>
+        <div class='timer'> &gt; {{ since(item.updated_at) }} </div>
     </div>
 </template>
 
@@ -81,7 +81,7 @@
                     transition: .1s linear;
                     text-decoration: none;
                     outline: none;
-                    color: #59E;
+                    color: #26E;
 
                     &:hover {
                         color: #e6a938;

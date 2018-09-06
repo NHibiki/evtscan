@@ -2,7 +2,7 @@
     <div id="evtscan">
         <header class="header">
             <div class="content">
-                <router-link to="/" class="logo">everi Token</router-link>
+                <router-link to="/" class="logo">evtScan</router-link>
                 <ul class="menu">
                     <li><router-link to="/">Home</router-link></li>
                     <li><router-link to="/block">Block</router-link></li>
@@ -16,24 +16,24 @@
                 <div class="column">
                     <li><span>
                         EvtScan Copyright ©️2018 <br /><br />
-                        By EveriToken Development Team. <br />
+                        By <a href="https://github.com/NHibiki">@NHibiki</a> with <a class="heart">&hearts;</a>. <br />
                         Distributed By Vue.js <br />
                         All Rights Reserved.
                     </span></li>
                 </div>
                 <div class="column">
                     <li><b>Friendly Link</b></li>
-                    <li><a href="https://everitoken.io">EveriToken</a></li>
-                    <li><a href="#">EveriPay</a></li>
+                    <li><a href="https://everitoken.io">everiToken</a></li>
+                    <li><a href="https://everitoken.io/everipay">everiPay</a></li>
+                    <li><a href="http://myevt.io">evtWallet</a></li>
                     <!--<li class="divider"></li>-->
-                    <li><a href="https://everitoken.io/docs/whitepaper.pdf">White Papper</a></li>
+                    <!--<li><a href="https://everitoken.io/docs/whitepaper.pdf">White Papper</a></li>-->
                 </div>
                 <div class="column">
                     <li><b>Open Source</b></li>
-                    <li><a href="https://github.com/everitoken">Github</a></li>
+                    <li><a href="https://github.com/NHibiki/evtscan">evtScan</a></li>
                     <!--<li class="divider"></li>-->
-                    <li><a href="https://github.com/NHibiki/evtscan">EvtScan</a></li>
-                    <li><a href="https://github.com/everitoken/evt">EvtNet</a></li>
+                    <li><a href="https://github.com/everitoken">everiToken Networks</a></li>
                 </div>
             </div>
         </footer>
@@ -159,7 +159,7 @@
             bottom: 0;
             left: 0;
             background-image: url('/static/images/footer.jpg');
-            opacity: 0.03;
+            /* opacity: 0.03; */
             z-index: -1;
         }
 
@@ -173,6 +173,11 @@
             justify-content: space-around;
             margin-top: 40px;
             height: 100%;
+
+            .heart {
+                font-family: unset;
+                color: #F66;
+            }
 
             @media only screen and (max-width: 720px) {
             
@@ -236,7 +241,7 @@
             a {
                 text-decoration: none;
                 font-weight: 400;
-                color: #59E;
+                color: #26E;
                 transition: .3s linear;
 
                 &:hover {

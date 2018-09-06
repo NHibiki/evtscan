@@ -6,7 +6,7 @@
             <span><i>Block ID:</i> <router-link :to="'/block/' + item.block_num">{{ item.block_id }}</router-link></span>
             <span><i>Trxes:</i> <b>{{ item.trx_count }}</b> &nbsp;&nbsp; Pending: <b :style="`color:${item.pending ? 'green' : 'red'}`">{{ item.pending }}</b></span>
         </div>
-        <div class='timer'> &lt; {{ since(item.timestamp) }} </div>
+        <div class='timer'> &gt; {{ since(item.timestamp) }} </div>
     </div>
 </template>
 
@@ -85,7 +85,7 @@
                     transition: .1s linear;
                     text-decoration: none;
                     outline: none;
-                    color: #59E;
+                    color: #26E;
 
                     &:hover {
                         color: #e6a938;
