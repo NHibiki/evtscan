@@ -5,8 +5,8 @@
                 <router-link to="/" class="logo">evtScan</router-link>
                 <ul class="menu">
                     <li><router-link to="/">Home</router-link></li>
-                    <li><router-link to="/block">Block</router-link></li>
-                    <li><router-link to="/trx">Transaction</router-link></li>
+                    <li><router-link to="/block">Blocks</router-link></li>
+                    <li><router-link to="/trx">Transactions</router-link></li>
                 </ul>
             </div>
         </header>
@@ -15,17 +15,17 @@
             <div class="footer-wrapper">
                 <div class="column">
                     <li><span>
-                        EvtScan Copyright ©️2018 <br /><br />
+                        evtScan Copyright ©️2018 <br /><br />
                         By <a href="https://github.com/NHibiki">@NHibiki</a> with <a class="heart">&hearts;</a>. <br />
                         Distributed By Vue.js <br />
                         All Rights Reserved.
                     </span></li>
                 </div>
                 <div class="column">
-                    <li><b>Friendly Link</b></li>
+                    <li><b>Friendly Links</b></li>
                     <li><a href="https://everitoken.io">everiToken</a></li>
                     <li><a href="https://everitoken.io/everipay">everiPay</a></li>
-                    <li><a href="http://myevt.io">evtWallet</a></li>
+                    <li><a href="http://myevt.io">MyEVT Wallet</a></li>
                     <!--<li class="divider"></li>-->
                     <!--<li><a href="https://everitoken.io/docs/whitepaper.pdf">White Papper</a></li>-->
                 </div>
@@ -33,7 +33,7 @@
                     <li><b>Open Source</b></li>
                     <li><a href="https://github.com/NHibiki/evtscan">evtScan</a></li>
                     <!--<li class="divider"></li>-->
-                    <li><a href="https://github.com/everitoken">everiToken Networks</a></li>
+                    <li><a href="https://github.com/everitoken">everiToken</a></li>
                 </div>
             </div>
         </footer>

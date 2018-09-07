@@ -2,9 +2,9 @@
     <div class='item'>
         <div class='blockspec'>
             <span><i>TX#:</i> <router-link :to="'/trx/' + item.trx_id">{{ "0x" + item.trx_id.toLocaleUpperCase() }}</router-link></span>
-            <span><i>Payer:</i> <span class="shortspan"><span>{{ "0x" + item.payer.toLocaleUpperCase() }}</span></span>
-                  &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp; <router-link :to="'/block/' + item.block_num"><span class="shortspan"><span>{{ "0x" + item.block_id.toLocaleUpperCase() }}</span></span></router-link></span>
-            <span><i>Trace:</i> <b>{{ item.trace.charge }}</b> charged <b>{{ item.trace.elapsed }}</b> elapsed</span>
+            <span><i>Payer:</i> <span class="shortspan"><span :title="item.payer.toLocaleUpperCase()">{{ item.payer.toLocaleUpperCase() }}</span></span>
+                  &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp; <router-link :to="'/block/' + item.block_num"><span class="shortspan"><span :title="'0x' + item.block_id.toLocaleUpperCase()">{{ "0x" + item.block_id.toLocaleUpperCase() }}</span></span></router-link></span>
+            <span><i>Trace:</i> <b>{{ item.trace.charge / 100000.0 }} EVT</b> charged <b>{{ item.trace.elapsed }} us</b> elapsed</span>
         </div>
         <div class='timer'> &gt; {{ since(item.updated_at) }} </div>
     </div>
