@@ -47,7 +47,7 @@
             font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
-            overflow-x: scroll;
+            overflow-x: auto;
             word-break: break-all;
             text-overflow: ellipsis;
             white-space: nowrap;

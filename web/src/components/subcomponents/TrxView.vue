@@ -6,7 +6,7 @@
                   &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp; <router-link :to="'/block/' + item.block_num"><span class="shortspan"><span :title="'0x' + item.block_id.toLocaleUpperCase()">{{ "0x" + item.block_id.toLocaleUpperCase() }}</span></span></router-link></span>
             <span><i>Trace:</i> <b>{{ item.trace.charge / 100000.0 }} EVT</b> charged <b>{{ item.trace.elapsed }} us</b> elapsed</span>
         </div>
-        <div class='timer'> &gt; {{ since(item.updated_at) }} </div>
+        <div class='timer'> &gt; {{ since(item.updated_at || item.created_at) }} </div>
     </div>
 </template>
 
