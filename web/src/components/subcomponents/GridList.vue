@@ -76,16 +76,18 @@
         .switch {
             position: absolute;
             right: 32px; top: 24px;
+            z-index: 2;
         }
 
         .grid-wrapper {
-            overflow-x: hidden;
+            /* overflow-x: hidden; */
+            overflow: hidden;
             height: 100%;
         }
 
         .grid-inner {
             overflow-x: hidden;
-            overflow-y: scroll;
+            overflow-y: auto;
             height: 100%;
             max-height: $GridHeight;
             margin: 0 auto;

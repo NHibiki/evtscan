@@ -7,6 +7,11 @@
         </div>
 
         <div class='grid'>
+            <h2>Actions in this Transaction</h2>
+            <Table :data="actions" :head="actionHeaders" :clickable="true" @click="openModal" />
+        </div>
+
+        <div class='grid'>
             <h2>Public Keys signed this Transaction</h2>
             <Table :data="keys" :head="keyHeaders"/>
         </div>
@@ -14,11 +19,6 @@
         <div class='grid'>
             <h2>Signatures in this Transaction</h2>
             <Table :data="sigs" :head="sigHeaders"/>
-        </div>
-
-        <div class='grid'>
-            <h2>Actions in this Transaction</h2>
-            <Table :data="actions" :head="actionHeaders" :clickable="true" @click="openModal" />
         </div>
 
         <Dialog v-if="showModal" @close="closeModal">

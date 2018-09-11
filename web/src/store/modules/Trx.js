@@ -33,16 +33,16 @@ export default () => ({
     },
     actions: {
         updateData: ({ commit, state }) => {
-            getDetail("transaction", state.id)
-                .then(recvData => {
-                    let [data, keys, sigs] = tablizeTrx(recvData.data.data);
-                    commit('updateDataMut', {data, keys, sigs});
-                })
-                .catch(err => { console.error(err); });
             getActionOnTrx(state.id)
                 .then(recvData => {
                     let [actions, actionsData] = tablizeTrxAction(recvData.data.data);
                     commit('updateDataMut', {actions, actionsData, showData: actionsData[0]});
+                })
+                .catch(err => { console.error(err); });
+            getDetail("transaction", state.id)
+                .then(recvData => {
+                    let [data, keys, sigs] = tablizeTrx(recvData.data.data);
+                    commit('updateDataMut', {data, keys, sigs});
                 })
                 .catch(err => { console.error(err); });
         }
