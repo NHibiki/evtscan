@@ -5,17 +5,18 @@
             <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /></div>
             <div class="trans"></div>
             <div class='grid-inner'>
-                <LineScalePulseOutRapidLoader v-if="!items" color="#e6a938" size="40px" class="loader"/> 
-                <component :key="item._id" :item="item" :is="SubView" v-if="items" v-for="item in items || []"/>
+                <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/> 
+                <component :key="item._id" :item="item" :is="SubView" v-if="items[endpoint]" v-for="item in items[endpoint] || []"/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { getRecent } from '@/lib/api';
+    import { createNamespacedHelpers } from 'vuex';
+    const { mapState, mapActions } = createNamespacedHelpers('GridList');
+    
     import { LineScalePulseOutRapidLoader } from 'vue-loaders';
-
     import Switcher from '@/components/subcomponents/Switcher';
 
     export default {
@@ -24,36 +25,15 @@
         data () {
             return {
                 hasTab: this.tabs && Object.keys(this.tabs).length,
-                items: null,
                 SubView: this.for
             }
         },
-        created() {
-            this.getDataList();
-        },
+        computed: mapState(['items']),
+        created() { this.getDataList(this.endpoint); },
         watch: {
-            'endpoint' () {
-                this.items = null;
-                this.getDataList();
-            }
+            'endpoint' () { this.getDataList(this.endpoint); }
         },
-        methods: {
-            getDataList() {
-                getRecent(this.endpoint)
-                .then(data => {
-                    let rev = data.data.data;
-                    this.items = rev; //(this.items || []).concat(rev)
-                    // let i = 0;
-                    // let inv = setInterval(() => {
-                    //     if (i >= rev.length) clearInterval(inv);
-                    //     else {
-                    //         this.items.unshift(rev.pop())
-                    //     }
-                    // }, 100);
-                })
-                .catch(err => { console.error(err); })
-            }
-        },
+        methods: mapActions(['getDataList']),
         components: { LineScalePulseOutRapidLoader, Switcher }
     }
 </script>

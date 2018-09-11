@@ -5,7 +5,7 @@ import Index from './modules/Index';
 import Block from './modules/Block';
 import Trx from './modules/Trx';
 import ShowList from './modules/ShowList';
-// import GridList from './modules/GridList';
+import GridList from './modules/GridList';
 
 Vue.use(Vuex)
 let stateStore = null;
@@ -17,6 +17,7 @@ export function resetStore() {
             Block: Block(),
             Trx: Trx(),
             ShowList: ShowList(),
+            GridList: GridList(),
         },
     });
 }
