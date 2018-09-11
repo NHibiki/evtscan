@@ -17,11 +17,7 @@
     export default {
         name: 'Table',
         props: ['head', 'data', 'clickable'],
-        data () {
-            return {
-                that: this
-            }
-        },
+        data () { return {} },
         components: { TableRow, LineScalePulseOutRapidLoader },
         methods: {
             click: function(i) {

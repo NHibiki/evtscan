@@ -26,7 +26,7 @@
         },
         methods: {
             onclick(id, tab) {
-                tab.callback && tab.callback(id, tab);
+                tab.callback && tab.callback({id, tab});
             }
         },
         watch: {

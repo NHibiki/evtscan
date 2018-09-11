@@ -6,6 +6,9 @@
 </template>
 
 <script>
+    import { createNamespacedHelpers } from 'vuex';
+    const { mapState, mapMutations } = createNamespacedHelpers('Index');
+
     import GridList from '@/components/subcomponents/GridList';
     import TrxView from '@/components/subcomponents/TrxView';
     import BlockView from '@/components/subcomponents/BlockView';
@@ -15,10 +18,6 @@
         data () {
             let cb = this.changeEndpoint.bind(this);
             return {
-                minHeight: 0,
-                msg: 'Welcome to Your Vue.js App',
-                trxEndpoint: 'transaction',
-                activeTab: 'all',
                 trxTabs: {
                     all: { name: "All", endpoint: "transaction", callback: cb },
                     everipay: { name: "Pay", endpoint: "everipay", callback: cb },
@@ -27,20 +26,16 @@
                 TrxView, BlockView
             }
         },
+        computed: mapState(['minHeight', 'trxEndpoint', 'activeTab']),
         components: { GridList },
         mounted () {
             if (!window) return;
             window.onresize = function() {
-                this.minHeight = window.innerHeight - 385;
+                this.changeMinHeight(window.innerHeight - 385);
             }.bind(this);
             window.onresize();
         },
-        methods: {
-            changeEndpoint(id, tab) {
-                this.activeTab = id;
-                this.trxEndpoint = tab.endpoint;
-            }
-        }
+        methods: mapMutations(['changeEndpoint', 'changeMinHeight'])
     }
 </script>
 

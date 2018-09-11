@@ -26,9 +26,7 @@
 <script>
     export default {
         name: 'Dialog',
-        data () {
-            return {}
-        }
+        data () { return {} }
     }
 </script>
 

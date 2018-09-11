@@ -6,9 +6,7 @@
     export default {
         name: 'TableRow',
         props: ['items', 'clickable'],
-        data () {
-            return {}
-        }
+        data () { return {} }
     }
 </script>
 

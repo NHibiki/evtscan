@@ -16,10 +16,7 @@
     export default {
         name: 'TrxView',
         props: ['item'],
-        data () {
-            return {
-            }
-        },
+        data () { return {} },
         methods: {
             since(time) {
                 return msToTimeStr(new Date().getTime() - new Date(time).getTime());

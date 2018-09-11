@@ -15,8 +15,8 @@
 </template>
 
 <script>
-    import { getRecent } from '@/lib/api';
-    import Util from '@/lib/util';
+    import { createNamespacedHelpers } from 'vuex';
+    const { mapState, mapMutations, mapActions } = createNamespacedHelpers('ShowList');
 
     import Table from '@/components/subcomponents/Table';
     import Switcher from '@/components/subcomponents/Switcher';
@@ -24,69 +24,27 @@
     export default {
         name: "List",
         data () {
-            return this.resetData()
-        },
-        created() {
-            this.refreshData()
-        },
-        components: { Table, Switcher },
-        methods: {
-            click(i) {
-                this.$router.push(this.dataLink[i]);
-            },
-            resetData() {
-                let cb = this.changeEndpoint.bind(this);
-                let tableHeader = ['Transaction ID', 'Block Num', 'Pending', 'Timestamp'];
-                if (this.$route.name !== 'Transactions') {
-                    tableHeader = ['Block Num', 'Block ID', 'Producer', 'Timestamp'];
-                }
-                return {
-                    tableHeader,
-                    name: this.$route.name,
-                    endpoint: "/" + this.$route.name.substr(0, this.$route.name.length - 1).toLocaleLowerCase(),
-                    data: null,
-                    page: 0,
-                    activeTab: 'all',
-                    dataLink: [],
-                    trxTabs: {
-                        all: { name: "All", endpoint: "transaction", callback: cb },
-                        everipay: { name: "Pay", endpoint: "everipay", callback: cb },
-                        everipass: { name: "Pass", endpoint: "everipass", callback: cb },
-                    },
-                }
-            },
-            refreshData() {
-                getRecent(this.endpoint, this.page, 20)
-                    .then(data => {
-                        [this.data, this.dataLink] = Util[`tablize${this.name}`](data.data.data);
-                    })
-                    .catch(err => { console.error(err); })
-            }, 
-            more(adder) {
-                if (!adder) return;
-                if (this.data.length < 20 && adder > 0) return;
-                if (this.page + adder < 0) return;  
-                this.page += adder;
-                this.data = null;
-                this.dataLink = null;
-                this.refreshData();
-            },
-            changeEndpoint(id, tab) {
-                this.activeTab = id;
-                this.endpoint = tab.endpoint;
-                this.page = 0;
-                this.data = null;
-                this.dataLink = null;
-                this.refreshData();
+            let cb = this.changeEndpoint.bind(this);
+            return {
+                trxTabs: {
+                    all: { name: "All", endpoint: "transaction", callback: cb },
+                    everipay: { name: "Pay", endpoint: "everipay", callback: cb },
+                    everipass: { name: "Pass", endpoint: "everipass", callback: cb },
+                },
             }
+        },
+        created() { this.resetData(this.$route.name); this.refreshData(); },
+        components: { Table, Switcher },
+        computed: mapState(['tableHeader', 'name', 'endpoint', 'data', 'page', 'activeTab', 'dataLink']),
+        methods: {
+            click(i) { this.$router.push(this.dataLink[i]); },
+            ...mapMutations(['resetData']),
+            ...mapActions(['refreshData', 'more', 'changeEndpoint']),
         },
         beforeRouteEnter (to, from, next) {
             if (from.name && to.name === 'Transactions' || to.name === 'Blocks') {
                 next(vm => {
-                    let newData = vm.resetData();
-                    for (let k in newData) {
-                        vm[k] = newData[k];
-                    }
+                    vm.resetData(to.name);
                     vm.refreshData();
                 });
             } else {
@@ -96,10 +54,7 @@
         beforeRouteLeave(to, from, next) {
             if (to.name === 'Transactions' || to.name === 'Blocks') {
                 next();
-                let newData = this.resetData();
-                for (let k in newData) {
-                    this[k] = newData[k];
-                }
+                this.resetData(to.name);
                 this.refreshData();
             } else {
                 next();

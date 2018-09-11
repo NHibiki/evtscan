@@ -18,10 +18,10 @@
 
         <div class='grid'>
             <h2>Actions in this Transaction</h2>
-            <Table :data="actions" :head="actionHeaders" :clickable="true" @click="click" />
+            <Table :data="actions" :head="actionHeaders" :clickable="true" @click="openModal" />
         </div>
 
-        <Dialog v-if="showModal" @close="close">
+        <Dialog v-if="showModal" @close="closeModal">
             <div slot="body">
                 <vue-json-pretty
                     :path="'res'"
@@ -34,50 +34,27 @@
 </template>
 
 <script>
+    import { createNamespacedHelpers } from 'vuex';
+    const { mapState, mapMutations, mapActions } = createNamespacedHelpers('Trx');
+
     import Table from '@/components/subcomponents/Table';
     import Dialog from '@/components/subcomponents/Dialog';
-    import { getDetail, getActionOnTrx } from '@/lib/api';
-    import { tablizeTrx, tablizeTrxAction } from '@/lib/util';
 
     export default {
         name: 'Block',
         data () {
             return {
-                id: this.$route.params.id,
-                data: null,
                 keyHeaders: ['Public Key'],
-                keys: null,
                 sigHeaders: ['Signature'],
-                sigs: null,
                 actionHeaders: ['Name', 'Domain', 'Key'],
-                actions: null,
-                actionsData: [],
-                showData: {},
-                showModal: false
             }
         },
+        computed: mapState(['id', 'data', 'keys', 'sigs', 'actions', 'trxData', 'actionsData', 'showData', 'showModal']),
         components: { Table, Dialog },
-        created() {
-            getDetail("transaction", this.$route.params.id)
-                .then(data => {
-                    [this.data, this.keys, this.sigs] = tablizeTrx(data.data.data);
-                })
-                .catch(err => { console.error(err); });
-            getActionOnTrx(this.$route.params.id)
-                .then(data => {
-                    [this.actions, this.actionsData] = tablizeTrxAction(data.data.data);
-                    this.showData = this.actionsData[0];
-                })
-                .catch(err => { console.error(err); });
-        },
+        created() { this.resetData(this.$route.params.id); this.updateData(); },
         methods: {
-            close() {
-                this.showModal = false
-            },
-            click(i) {
-                this.showData = this.actionsData[i || 0] || {}
-                this.showModal = true
-            }
+            ...mapMutations(['resetData', 'closeModal', 'openModal']),
+            ...mapActions(['updateData']),
         }
     }
 </script>

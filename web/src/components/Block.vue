@@ -13,37 +13,25 @@
 </template>
 
 <script>
+    import { createNamespacedHelpers } from 'vuex';
+    const { mapState, mapMutations, mapActions } = createNamespacedHelpers('Block');
+
     import Table from '@/components/subcomponents/Table';
-    import { getDetail, getTrxOnBlock } from '@/lib/api';
-    import { tablizeBlock, tablizeBlockTrx } from '@/lib/util';
 
     export default {
         name: 'Block',
         data () {
             return {
-                id: this.$route.params.id,
-                data: null,
                 trxHead: ["Trx ID", "Pending", "Timestamp"],
-                trxData: null,
             }
         },
+        computed: mapState(['id', 'data', 'trxData']),
         components: { Table },
-        created() {
-            getDetail("block", this.$route.params.id)
-                .then(data => {
-                    this.data = tablizeBlock(data.data.data);
-                })
-                .catch(err => { console.error(err); })
-            getTrxOnBlock(this.$route.params.id)
-                .then(data => {
-                    this.trxData = tablizeBlockTrx(data.data.data);
-                })
-                .catch(err => { console.error(err); })
-        },
+        created() { this.resetData(this.$route.params.id); this.updateData(); },
         methods: {
-            click(i) {
-                this.$router.push("/trx/" + this.trxData[i][0])
-            }
+            click(i) { this.$router.push("/trx/" + this.trxData[i][0]) },
+            ...mapMutations(['resetData']),
+            ...mapActions(['updateData']),
         }
     }
 </script>
