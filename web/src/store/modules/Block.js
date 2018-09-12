@@ -11,6 +11,8 @@ export default () => ({
     mutations: {
         resetData: (state, id) => {
             state.id = id;
+            state.data = null;
+            state.trxData = null;
         },
         updateDataMut: (state, thing) => {
             Object.keys(thing).forEach(k => {
