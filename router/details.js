@@ -46,7 +46,25 @@ const getTransaction = async id => {
     return res[1] || [];
 }
 
+const getFungible = async id => {
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Fungibles`);
+        return await col.findOne({name: id || ""});
+    });
+    return res[1] || [];
+}
+
+const getDomain = async id => {
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Domains`);
+        return await col.findOne({name: id || ""});
+    });
+    return res[1] || [];
+}
+
 module.exports = [
     ['get', '/block/:id', getDetail(getBlock)],
     ['get', '/transaction/:id', getDetail(getTransaction)],
+    ['get', '/fungible/:id', getDetail(getFungible)],
+    ['get', '/domain/:id', getDetail(getDomain)],
 ];

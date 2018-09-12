@@ -6,7 +6,7 @@
             <div class="trans"></div>
             <div class='grid-inner'>
                 <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/> 
-                <component :key="item._id" :item="item" :is="SubView" v-if="items[endpoint]" v-for="item in items[endpoint] || []"/>
+                <component :key="item._id" :item="item" :endpoint="endpoint" :is="SubView" v-if="items[endpoint]" v-for="item in items[endpoint] || []"/>
             </div>
         </div>
     </div>

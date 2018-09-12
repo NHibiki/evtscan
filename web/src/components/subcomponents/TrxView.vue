@@ -4,7 +4,9 @@
             <span><i>TX#:</i> <router-link :to="'/trx/' + item.trx_id">{{ "0x" + item.trx_id.toLocaleUpperCase() }}</router-link></span>
             <span><i>Payer:</i> <span class="shortspan"><span :title="item.payer.toLocaleUpperCase()">{{ item.payer.toLocaleUpperCase() }}</span></span>
                   &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp; <router-link :to="'/block/' + item.block_num"><span class="shortspan"><span :title="'0x' + item.block_id.toLocaleUpperCase()">{{ "0x" + item.block_id.toLocaleUpperCase() }}</span></span></router-link></span>
-            <span><i>Trace:</i> <b>{{ item.trace.charge / 100000.0 }} EVT</b> charged <b>{{ item.trace.elapsed }} us</b> elapsed</span>
+            <span v-if="endpoint === 'transaction'"><i>Trace:</i> <b>{{ item.trace.charge / 100000.0 }} EVT</b> charged <b>{{ item.trace.elapsed }} us</b> elapsed</span>
+            <span v-if="endpoint === 'everipay'"><i>Pay:</i> <b>{{ item.data.number }}</b> &nbsp;<i>To</i> <span class="shortspan"><span :title="item.data.payee.toLocaleUpperCase()">{{ item.data.payee.toLocaleUpperCase() }}</span></span></span>
+            <span v-if="endpoint === 'everipass'"><i>Domain:</i> <span class="shortspan"><span><b>{{ item.domain }}</b></span></span> &nbsp;<i>with Key</i> <span class="shortspan"><span :title="(item.keys[0] || 'NONE').toLocaleUpperCase()">{{ (item.keys[0] || 'NONE').toLocaleUpperCase() }}</span></span></span>
         </div>
         <div class='timer'> &gt; {{ since(item.updated_at || item.created_at) }} </div>
     </div>
@@ -15,7 +17,7 @@
 
     export default {
         name: 'TrxView',
-        props: ['item'],
+        props: ['item', 'endpoint'],
         data () { return {} },
         methods: {
             since(time) {
@@ -88,7 +90,7 @@
 
                 &.shortspan {
                     display: inline-flex;
-                    max-width: 35%;
+                    max-width: 30%;
                 }
             }
 

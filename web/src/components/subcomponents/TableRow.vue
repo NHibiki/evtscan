@@ -1,5 +1,5 @@
 <template>
-    <tr @click="$emit('click')" :class="{ clickable }"><th :key="items.indexOf(item)" v-for="item in items"><span>{{ item }}</span></th></tr>
+    <tr @click="$emit('click')" :class="{ clickable }"><th :key="items.indexOf(item) + Math.random()" v-for="item in items"><span>{{ item }}</span></th></tr>
 </template>
 
 <script>
