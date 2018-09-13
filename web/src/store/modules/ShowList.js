@@ -31,8 +31,12 @@ export default () => ({
         },
         resetData: (state, name) => {
             let tableHeader = ['Transaction ID', 'Block Num', 'Pending', 'Timestamp'];
-            if (name !== 'Transactions') {
+            if (name === 'Blocks') {
                 tableHeader = ['Block Num', 'Block ID', 'Producer', 'Timestamp'];
+            } else if (name === 'Fungibles') {
+                tableHeader = ['Name', 'Sym ID', 'Creator', 'Timestamp'];
+            } else if (name === 'Domains') {
+                tableHeader = ['Name', 'Creator', 'Timestamp'];
             }
             state.tableHeader = tableHeader;
             state.name = name;

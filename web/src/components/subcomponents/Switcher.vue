@@ -56,10 +56,11 @@
             border-radius: 40px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, .1);
 
-            .switch {
+            span.switch {
                 font-size: 14px;
                 padding: 4px 10px;
                 border-radius: 40px;
+                font-weight: 600;
                 width: 32px;
                 text-align: center;
                 display: inline-block;

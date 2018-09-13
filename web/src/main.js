@@ -8,12 +8,14 @@ import store from './store'
 
 import VueJsonPretty from 'vue-json-pretty';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faAngleLeft, faAngleRight, faBars, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faTimes);
 library.add(faAngleLeft);
 library.add(faAngleRight);
+library.add(faBars);
+library.add(faHeart);
 
 Vue.component('fa', FontAwesomeIcon);
 Vue.component('vue-json-pretty', VueJsonPretty);

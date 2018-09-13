@@ -3,11 +3,17 @@
         <header class="header">
             <div class="content">
                 <router-link to="/" class="logo">evtScan</router-link>
-                <ul class="menu">
+                <ul :class="{menu: true, open}" @click="switchOpen">
                     <li><router-link to="/">Home</router-link></li>
                     <li><router-link to="/block">Blocks</router-link></li>
                     <li><router-link to="/trx">Transactions</router-link></li>
+                    <li><router-link to="/fungible">Fungibles</router-link></li>
+                    <li><router-link to="/domain">Domains</router-link></li>
                 </ul>
+                <a @click="switchOpen" class="menuSwitch">
+                    <fa v-if="!open" icon="bars"/>
+                    <fa v-if="open" icon="times"/>
+                </a>
             </div>
         </header>
         <router-view/>
@@ -16,7 +22,7 @@
                 <div class="column">
                     <li><span>
                         evtScan Copyright ©️2018 <br /><br />
-                        By <a href="https://github.com/NHibiki">@NHibiki</a> with <a class="heart">&hearts;</a>. <br />
+                        By <a href="https://github.com/NHibiki">@NHibiki</a> with <a class="heart"><fa icon="heart"/></a>. <br />
                         Distributed By Vue.js <br />
                         All Rights Reserved.
                     </span></li>
@@ -42,8 +48,12 @@
 
 <script>
 
+    import { mapState, mapMutations } from 'vuex';
+
     export default {
-        name: 'App'
+        name: 'App',
+        computed: mapState('App', ['open']),
+        methods: mapMutations('App', ['switchOpen'])
     }
 
 </script>
@@ -83,6 +93,11 @@
             -ms-flex-pack: justify;
             justify-content: space-between;
 
+            @media screen and (max-width: 768px) {
+                padding: 0;
+                margin: 0;
+            }
+
             .logo {
                 display: block;
                 width: 221px;
@@ -93,6 +108,15 @@
                 font-size: 0px;
                 background-image: url('/static/images/logo@2x.png');
                 cursor: pointer;
+            }
+
+            .menuSwitch {
+                font-size: 22px;
+                color: #e5a637;
+
+                @media screen and (min-width: 768px) {
+                    display: none;
+                }
             }
 
             .menu {
@@ -132,6 +156,46 @@
                     &:hover {
                         color: #e5a637;
                         outline: none;
+                    }
+
+                }
+
+                @media screen and (max-width: 768px) {
+
+                    & {
+                        display: block;
+                        position: absolute;
+                        top: 54px;
+                        left: 0;
+                        height: 0px;
+                        padding: 0;
+                        overflow: hidden;
+                        background: #FFF;
+                        width: 100%;
+                        z-index: 3;
+                        text-align: center;
+                        transition: .3s linear;
+
+                        &.open {
+                            height: unset;
+                            padding: 24px 0;
+                        }
+
+                        li a {
+
+                            width: 65%;
+                            min-width: 140px;
+                            margin: 4px auto;
+                            line-height: 40px;
+                            border-radius: 40px;
+
+                            &:hover {
+                                background: #FAFAFA;
+                                outline: none;
+                            }
+
+                        }
+
                     }
 
                 }

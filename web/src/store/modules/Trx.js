@@ -17,6 +17,11 @@ export default () => ({
     mutations: {
         resetData: (state, id) => {
             state.id = id;
+            state.data = null;
+            state.keys = null;
+            state.sigs = null;
+            state.actions = null;
+            state.trxData = null;
         },
         closeModal(state) {
             state.showModal = false

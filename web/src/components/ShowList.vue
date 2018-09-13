@@ -17,6 +17,7 @@
 <script>
     import { createNamespacedHelpers } from 'vuex';
     const { mapState, mapMutations, mapActions } = createNamespacedHelpers('ShowList');
+    const showListNames = ['Transactions', 'Blocks', 'Fungibles', 'Domains'];
 
     import Table from '@/components/subcomponents/Table';
     import Switcher from '@/components/subcomponents/Switcher';
@@ -42,7 +43,7 @@
             ...mapActions(['refreshData', 'more', 'changeEndpoint']),
         },
         beforeRouteEnter (to, from, next) {
-            if (from.name && to.name === 'Transactions' || to.name === 'Blocks') {
+            if (from.name && showListNames.includes(to.name)) {
                 next(vm => {
                     vm.resetData(to.name);
                     vm.refreshData();
@@ -52,7 +53,7 @@
             }
         },
         beforeRouteLeave(to, from, next) {
-            if (to.name === 'Transactions' || to.name === 'Blocks') {
+            if (showListNames.includes(to.name)) {
                 next();
                 this.resetData(to.name);
                 this.refreshData();
@@ -107,7 +108,7 @@
 
             &:hover {
                 background: #e6a938;
-                color: white;
+                color: #FFF;
                 box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
             }
 
