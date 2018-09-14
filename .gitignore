@@ -3,3 +3,12 @@
 
 # Nodejs Dependencies
 node_modules
+
+# Nuxt File
+.nuxt
+
+# logs
+npm-debug.log
+
+# Nuxt generate
+dist
