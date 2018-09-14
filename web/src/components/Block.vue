@@ -25,12 +25,13 @@
                 trxHead: ["Trx ID", "Pending", "Timestamp"],
             }
         },
-        computed: mapState(['id', 'data', 'trxData']),
+        computed: mapState(['id', 'data', 'trxData', 'ssr']),
         components: { Table },
-        created() { this.resetData(this.$route.params.id); this.updateData(); },
+        created() { if (this.ssr) {this.isSSR(false); return;} this.resetData(this.$route.params.id); return this.updateData(); },
+        asyncData({store, route}) { store.commit('Block/isSSR'); store.commit('Block/resetData', route.params.id); return store.dispatch('Block/updateData'); },
         methods: {
             click(i) { this.$router.push("/trx/" + this.trxData[i][0]) },
-            ...mapMutations(['resetData']),
+            ...mapMutations(['resetData', 'isSSR']),
             ...mapActions(['updateData']),
         }
     }

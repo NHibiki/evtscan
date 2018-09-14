@@ -1,10 +1,13 @@
 import Axios from 'axios';
 
-const LOCALDEV = window.location.host.startsWith("localhost");
-
-let endPoint = LOCALDEV ? 
+let LOCALDEV = true;
+let endPoint = LOCALDEV ? "http://localhost:8080/api" : "http://localhost/api";
+try {
+    LOCALDEV = window.location.host.startsWith("localhost");
+    endPoint = LOCALDEV ? 
                     "http://localhost:8080/api" :
                     ((window.location.protocol || "https:") + "//" + (window.location.host || "evtscan.io") + "/api");
+} catch (error) {}
 
 export const get = async (uri, params={}, headers={}) => Axios.get(endPoint + uri, { params, headers });
 

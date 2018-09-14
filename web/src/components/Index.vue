@@ -29,7 +29,9 @@
         computed: mapState(['minHeight', 'trxEndpoint', 'activeTab']),
         components: { GridList },
         mounted () {
-            if (!window) return;
+            try {
+                if (!window) return;
+            } catch(error) { return; }
             window.onresize = function() {
                 this.changeMinHeight(window.innerHeight - 385);
             }.bind(this);

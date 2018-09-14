@@ -51,7 +51,7 @@
         },
         computed: mapState(['id', 'data', 'keys', 'sigs', 'actions', 'trxData', 'actionsData', 'showData', 'showModal']),
         components: { Table, Dialog },
-        created() { this.resetData(this.$route.params.id); this.updateData(); },
+        created() { this.resetData(this.$route.params.id); return this.updateData(); },
         methods: {
             ...mapMutations(['resetData', 'closeModal', 'openModal']),
             ...mapActions(['updateData']),

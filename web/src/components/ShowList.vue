@@ -34,7 +34,7 @@
                 },
             }
         },
-        created() { this.resetData(this.$route.name); this.refreshData(); },
+        created() { this.resetData(this.$route.name); return this.refreshData(); },
         components: { Table, Switcher },
         computed: mapState(['tableHeader', 'name', 'endpoint', 'data', 'page', 'activeTab', 'dataLink']),
         methods: {

@@ -7,8 +7,10 @@ export default () => ({
         id: "",
         data: null,
         trxData: null,
+        ssr: false,
     },
     mutations: {
+        isSSR: (state, isOrNot=true) => { state.ssr = isOrNot },
         resetData: (state, id) => {
             state.id = id;
             state.data = null;
@@ -22,15 +24,16 @@ export default () => ({
     },
     actions: {
         updateData: ({ commit, state }) => {
-            getDetail("block", state.id)
-                .then(data => {
-                    commit('updateDataMut', {data: tablizeBlock(data.data.data)});
-                })
-                .catch(err => { console.error(err); })
-            getTrxOnBlock(state.id)
-                .then(data => {
-                    commit('updateDataMut', {trxData: tablizeBlockTrx(data.data.data)});
-                })
+            return Promise.all([getDetail("block", state.id)
+                    .then(data => {
+                        commit('updateDataMut', {data: tablizeBlock(data.data.data)});
+                        return Promise.resolve(true);
+                    }),
+                getTrxOnBlock(state.id)
+                    .then(data => {
+                        commit('updateDataMut', {trxData: tablizeBlockTrx(data.data.data)});
+                        return Promise.resolve(true);
+                    })])
                 .catch(err => { console.error(err); })
         }
     }

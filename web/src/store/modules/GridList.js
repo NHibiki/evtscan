@@ -18,20 +18,21 @@ export default () => ({
     actions: {
         getDataList({ commit, state }, endpoint) {
             commit('flushDataMut', endpoint);
-            getRecent(endpoint)
-            .then(data => {
-                let items = data.data.data;
-                commit('getDataListMut', {endpoint, items});
-                //(this.items || []).concat(rev)
-                // let i = 0;
-                // let inv = setInterval(() => {
-                //     if (i >= rev.length) clearInterval(inv);
-                //     else {
-                //         this.items.unshift(rev.pop())
-                //     }
-                // }, 100);
-            })
-            .catch(err => { console.error(err); })
+            return getRecent(endpoint)
+                .then(data => {
+                    let items = data.data.data;
+                    commit('getDataListMut', {endpoint, items});
+                    //(this.items || []).concat(rev)
+                    // let i = 0;
+                    // let inv = setInterval(() => {
+                    //     if (i >= rev.length) clearInterval(inv);
+                    //     else {
+                    //         this.items.unshift(rev.pop())
+                    //     }
+                    // }, 100);
+                    return Promise.resolve(true);
+                })
+                .catch(err => { console.error(err); })
         }
     }
 })

@@ -32,10 +32,11 @@ export default () => ({
     },
     actions: {
         updateData: ({ commit, state }) => {
-            getDetail("domain", state.id)
+            return getDetail("domain", state.id)
                 .then(recvData => {
                     let [data, detailedData, detailedActions] = tablizeDomain(recvData.data.data);
                     commit('updateDataMut', {data, detailedData, detailedActions});
+                    return Promise.resolve(true);
                 })
                 .catch(err => { console.error(err); });
         }

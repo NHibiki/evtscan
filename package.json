@@ -19,12 +19,21 @@
   },
   "homepage": "https://github.com/everitoken/evtscan#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.4",
+    "@fortawesome/free-solid-svg-icons": "^5.3.1",
+    "@fortawesome/vue-fontawesome": "^0.1.1",
     "argparse": "^1.0.10",
+    "axios": "^0.18.0",
+    "babel-runtime": "^6.26.0",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
     "mongodb": "^3.1.3",
-    "vue-loaders": "^2.0.0"
+    "vue": "^2.5.17",
+    "vue-loaders": "^2.0.0",
+    "vue-router": "^3.0.1",
+    "vue-server-renderer": "^2.5.17",
+    "vuex": "^3.0.1"
   }
 }

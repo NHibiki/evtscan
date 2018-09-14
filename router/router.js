@@ -2,10 +2,11 @@ const fs = require('fs'),
       path = require('path'),
       KoaStatic     = require('koa-static'),
       KoaSend       = require('koa-send'),
-      KoaRouter     = require('koa-router');
+      KoaRouter     = require('koa-router'),
+      VueSSR        = require('../lib/vuessr');
 
 const router = new KoaRouter();
-const inject = function (app) {
+const inject = function (app, config) {
 
     // make sure {Koa Instance} was passed in
     if (typeof app.use != 'function') {
@@ -27,6 +28,7 @@ const inject = function (app) {
         }
     });
 
+    if (config.ssr) app.use(KoaStatic(path.join(__dirname, '../web/mapFile')))
     app.use(router.routes())
        .use(router.allowedMethods())
        .use(KoaStatic(path.join(__dirname, '../web/dist')))
@@ -36,10 +38,15 @@ const inject = function (app) {
                 ctx.type = 'application/json';
                 ctx.set('Access-Control-Allow-Origin', '*');
                 ctx.set('Access-Control-Allow-Methods', 'GET');
-                ctx.body = { state: 0, error: 'no such api' };
-            } else if (ctx.status === 404 && ctx.method === 'GET') try {
-                await KoaSend(ctx, '/web/dist/index.html')
-            } catch (err) {console.error(err)}
+                ctx.body = { state: 0, error: 'Not Found' };
+            } else if (ctx.status === 404 && ctx.method === 'GET') {
+                try {
+                    if (!config.ssr)
+                        await KoaSend(ctx, '/web/dist/index.html')
+                    else
+                        ctx.body = await VueSSR.renderToString({url: ctx.url});
+                } catch (err) {console.error(err)}
+            }
        });
 
 }

@@ -47,9 +47,12 @@ export default () => ({
         },
     },
     actions: {
-        async refreshData({ commit, state }) {
-            getRecent(state.endpoint, state.page, 20)
-                .then(data => { commit('refreshDataMut', Util[`tablize${state.name}`](data.data.data)) })
+        refreshData({ commit, state }) {
+            return getRecent(state.endpoint, state.page, 20)
+                .then(data => {
+                    commit('refreshDataMut', Util[`tablize${state.name}`](data.data.data));
+                    return Promise.resolve(true);
+                })
                 .catch(err => { console.error(err); })
         }, 
         more({ commit, dispatch, state }, adder) {

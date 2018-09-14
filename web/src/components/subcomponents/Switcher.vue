@@ -21,9 +21,7 @@
                 activeTab: this.active || (keys.length && keys[0]) || null
             }
         },
-        created() {
-            
-        },
+        created() {},
         methods: {
             onclick(id, tab) {
                 tab.callback && tab.callback({id, tab});

@@ -11,10 +11,9 @@ import ShowList from './modules/ShowList';
 import GridList from './modules/GridList';
 
 Vue.use(Vuex)
-let stateStore = null;
 
-export function resetStore() {
-    return stateStore = new Vuex.Store({
+export function createStore() {
+    return new Vuex.Store({
         modules: {
             App: App(),
             Index: Index(),
@@ -27,6 +26,3 @@ export function resetStore() {
         },
     });
 }
-
-if (!stateStore) resetStore();
-export default stateStore;

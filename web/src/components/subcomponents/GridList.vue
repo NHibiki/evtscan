@@ -29,7 +29,7 @@
             }
         },
         computed: mapState(['items']),
-        created() { this.getDataList(this.endpoint); },
+        created() { return this.getDataList(this.endpoint); },
         watch: {
             'endpoint' () { this.getDataList(this.endpoint); }
         },
