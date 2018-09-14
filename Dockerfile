@@ -5,8 +5,8 @@ WORKDIR /evtscan
 COPY . .
 
 # Build Server Side
-RUN sed -i 's/v3.8/edge/g' /etc/apk/repositories \
-    && apk add --no-cache python nodejs=8.11.4-r0 \
+# sed -i 's/v3.8/edge/g' /etc/apk/repositories \
+RUN apk add --no-cache python nodejs=8.11.4-r0 \
     && apk add --no-cache npm=8.11.4-r0 \
     && rm -rf ./node_modules \
     && npm i -g yarn \
@@ -15,7 +15,8 @@ RUN sed -i 's/v3.8/edge/g' /etc/apk/repositories \
     && cd web \
     && rm -rf ./node_modules \
     && yarn \
-    && npm run build \
+    && yarn build \
+    && cp ./static/favicon.ico ./.nuxt/dist/favicon.ico \
     && cd .. \
 # Clean Out
     && cd web \
@@ -23,7 +24,8 @@ RUN sed -i 's/v3.8/edge/g' /etc/apk/repositories \
     && cd .. \
     && npm un -g yarn \
     && apk del python npm \
-    && rm -rf /usr/local/share/.cache
+    && rm -rf /usr/local/share/.cache \
+    && ln -s ./web/.nuxt ./.nuxt
 
 EXPOSE 80
 ENTRYPOINT ["node", "index.js"]

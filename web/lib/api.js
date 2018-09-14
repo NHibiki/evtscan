@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-let LOCALDEV = true;
+let LOCALDEV = false;
 let endPoint = LOCALDEV ? "http://localhost:8080/api" : "http://localhost/api";
 try {
     LOCALDEV = window.location.host.startsWith("localhost");

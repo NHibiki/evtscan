@@ -10,7 +10,7 @@ export const state = () => ({
     showModal: false
 });
 
-export const mutations = () => ({
+export const mutations = {
     resetData: (state, id) => {
         state.id = id;
         state.data = null;
@@ -28,12 +28,12 @@ export const mutations = () => ({
             state[k] = thing[k];
         });
     }
-});
+};
 
-export const actions = () => ({
+export const actions = {
     async updateData({ commit, state }) {
         let recvData = (await getDetail("domain", state.id)).data.data;
         let [data, detailedData, detailedActions] = tablizeDomain(recvData);
         commit('updateDataMut', {data, detailedData, detailedActions});
     }
-});
+};

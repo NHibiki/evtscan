@@ -51,7 +51,8 @@
         },
         computed: mapState(['id', 'data', 'keys', 'sigs', 'actions', 'trxData', 'actionsData', 'showData', 'showModal']),
         components: { Table, Dialog },
-        created() { this.resetData(this.$route.params.id); return this.updateData(); },
+        // created() { this.resetData(this.$route.params.id); return this.updateData(); },
+        asyncData({store, route, isServer}) { store.commit('trx/resetData', route.params.id); let promise = store.dispatch('trx/updateData'); if (isServer) return promise; },
         methods: {
             ...mapMutations(['resetData', 'closeModal', 'openModal']),
             ...mapActions(['updateData']),

@@ -5,11 +5,11 @@ export const state = () => ({
     id: "",
     data: null,
     trxData: null,
-    ssr: false,
+    // ssr: false,
 });
 
 export const mutations = {
-    isSSR: (state, isOrNot=true) => { state.ssr = isOrNot },
+    // isSSR: (state, isOrNot=true) => { state.ssr = isOrNot },
     resetData: (state, id) => {
         state.id = id;
         state.data = null;

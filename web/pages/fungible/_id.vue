@@ -39,7 +39,8 @@
         },
         computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'showData', 'showModal']),
         components: { Table, Dialog },
-        created() { this.resetData(this.$route.params.id); return this.updateData(); },
+        // created() { this.resetData(this.$route.params.id); return this.updateData(); },
+        asyncData({store, route, isServer}) { store.commit('fungible/resetData', route.params.id); let promise = store.dispatch('fungible/updateData'); if (isServer) return promise; },
         methods: {
             ...mapMutations(['resetData', 'closeModal', 'openModal']),
             ...mapActions(['updateData']),

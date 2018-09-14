@@ -31,13 +31,13 @@ export const mutations = {
     resetData: (state, path) => {
         let tableHeader = ['Transaction ID', 'Block Num', 'Pending', 'Timestamp'];
         let name = "Transactions";
-        if (path === '/block') {
+        if (path === 'block') {
             tableHeader = ['Block Num', 'Block ID', 'Producer', 'Timestamp'];
             name = "Blocks";
-        } else if (path === '/fungible') {
+        } else if (path === 'fungible') {
             tableHeader = ['Name', 'Sym ID', 'Creator', 'Timestamp'];
             name = "Fungibles";
-        } else if (path === '/domain') {
+        } else if (path === 'domain') {
             tableHeader = ['Name', 'Creator', 'Timestamp'];
             name = "Domains";
         }
@@ -53,7 +53,6 @@ export const mutations = {
 export const actions = {
     async refreshData({ commit, state }) {
         let recvData = (await getRecent(state.endpoint, state.page, 20)).data.data;
-        console.log(`tablize${state.name}`)
         commit('refreshDataMut', Util[`tablize${state.name}`](recvData));
     }, 
     async more({ commit, dispatch, state }, adder) {
