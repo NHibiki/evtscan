@@ -4,7 +4,7 @@
   "description": "evtscan - an explorer for everiToken.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "NODE_ENV=production node index.js",
     "push": "docker build . -t nhibiki/evtscan:dev && docker push nhibiki/evtscan:dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,12 +19,19 @@
   },
   "homepage": "https://github.com/everitoken/evtscan#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.4",
+    "@fortawesome/free-solid-svg-icons": "^5.3.1",
+    "@fortawesome/vue-fontawesome": "^0.1.1",
     "argparse": "^1.0.10",
+    "axios": "^0.18.0",
     "koa": "^2.5.2",
+    "koa-mount": "^3.0.0",
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
+    "loaders.css": "^0.1.2",
     "mongodb": "^3.1.3",
+    "nuxt": "^1.4.2",
     "vue-loaders": "^2.0.0"
   }
 }

@@ -1,11 +1,22 @@
-const fs = require('fs'),
-      path = require('path'),
-      KoaStatic     = require('koa-static'),
-      KoaSend       = require('koa-send'),
-      KoaRouter     = require('koa-router');
+const fs                = require('fs'),
+      path              = require('path'),
+      KoaStatic         = require('koa-static'),
+      KoaMount          = require('koa-mount'),
+      // KoaSend        = require('koa-send'),
+      KoaRouter         = require('koa-router'),
+      { Nuxt, Builder } = require('nuxt');
 
+let   nuxt   = null;
 const router = new KoaRouter();
-const inject = function (app) {
+const inject = function (app, config) {
+
+    // init Nuxt Instance
+    nuxt = new Nuxt({...require('../web/nuxt.config.js'), dev: false});
+    // nuxt = new Nuxt({...require('../web/nuxt.config.js'), dev: !(app.env === 'production')});
+    // if (app.env !== 'production') {
+        // console.info("[Nuxt] Run in DEV Mode.");
+        // new Builder(nuxt).build();
+    // }
 
     // make sure {Koa Instance} was passed in
     if (typeof app.use != 'function') {
@@ -29,17 +40,22 @@ const inject = function (app) {
 
     app.use(router.routes())
        .use(router.allowedMethods())
-       .use(KoaStatic(path.join(__dirname, '../web/dist')))
+       .use(KoaMount("/_nuxt", KoaStatic(path.join(__dirname, ".nuxt/dist"))))
+       .use(async ctx => {
+            if (ctx.path.startsWith("/api/") && ctx.path.startsWith("/_nuxt/")) return;
+            ctx.status = 200;
+            ctx.respond = false;
+            ctx.req.ctx = ctx;
+            await nuxt.render(ctx.req, ctx.res);
+       })
        .use(async (ctx, next) => {
             await next();
             if (ctx.status === 404 && ctx.path.startsWith("/api/")) {
                 ctx.type = 'application/json';
                 ctx.set('Access-Control-Allow-Origin', '*');
                 ctx.set('Access-Control-Allow-Methods', 'GET');
-                ctx.body = { state: 0, error: 'no such api' };
-            } else if (ctx.status === 404 && ctx.method === 'GET') try {
-                await KoaSend(ctx, '/web/dist/index.html')
-            } catch (err) {console.error(err)}
+                ctx.body = { state: 0, error: 'Api Entry Not Found' };
+            }
        });
 
 }
