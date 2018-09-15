@@ -40,6 +40,7 @@ const inject = function (app, config) {
 
     app.use(router.routes())
        .use(router.allowedMethods())
+       .use(KoaStatic(path.join(__dirname, "web/static")))
        .use(KoaMount("/_nuxt", KoaStatic(path.join(__dirname, ".nuxt/dist"))))
        .use(async ctx => {
             if (ctx.path.startsWith("/api/") && ctx.path.startsWith("/_nuxt/")) return;

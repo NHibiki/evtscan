@@ -1,7 +1,7 @@
 <template>
     <transition name="modal">
         <div class="modal-mask">
-            <div class="modal-wrapper" @click="$emit('close')">
+            <div class="modal-wrapper" @click.self="$emit('close')">
                 <div class="modal-container">
                     <a class="modal-close" href="javascript:;" @click="$emit('close')"><fa icon="times"/></a>
 

@@ -1,7 +1,11 @@
 import Axios from 'axios';
 
 let LOCALDEV = false;
-let endPoint = LOCALDEV ? "http://localhost:8080/api" : "http://localhost/api";
+let endPoint = "http://localhost/api";
+try {
+    LOCALDEV = process.env.NODE_ENV === "development" ? true : false;
+    endPoint = LOCALDEV ? "http://localhost:8080/api" : "http://localhost/api";
+} catch (error) {}
 try {
     LOCALDEV = window.location.host.startsWith("localhost");
     endPoint = LOCALDEV ? 

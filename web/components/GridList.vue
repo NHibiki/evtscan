@@ -5,7 +5,8 @@
             <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /></div>
             <div class="trans"></div>
             <div class='grid-inner'>
-                <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/> 
+                <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
+                <div class="noData" v-if="items[endpoint] && !items[endpoint][0]">No Data!</div>
                 <component :key="item._id" :item="item" :endpoint="endpoint" :is="SubView" v-if="items[endpoint]" v-for="item in items[endpoint] || []"/>
             </div>
         </div>
@@ -71,6 +72,7 @@
             display: block;
             position: relative;
             text-align: center;
+            user-select: none;
         }
 
         .switch {
@@ -93,6 +95,18 @@
             margin: 0 auto;
             max-width: 430px;
             position: relative;
+
+            .noData {
+                text-align: center;
+                font-weight: 400;
+                color: #999;
+                font-size: 28px;
+                font-family: "Quicksand", sans-serif;
+                margin: 115px 0 138px 0;
+                cursor: default;
+                user-select: none;
+            }
+
         }
 
         h1, h2, h3, h4, h5, p, span {
