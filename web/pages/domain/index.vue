@@ -82,6 +82,8 @@
             text-align: right;
 
             span {
+                font-family: 'Quicksand';
+                font-weight: 400;
                 margin: 0 20px;
             }
 
@@ -133,12 +135,12 @@
                 display: inline-block;
                 color: #FFF;
                 background: #e6a938;
-                border-radius: 6px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, .05);
+                border-radius: 36px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, .25);
 
                 &:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 5px 25px rgba(0, 0, 0, .2);
+                    transform: translateY(1px);
+                    box-shadow: 0 5px 5px rgba(0, 0, 0, .3);
                 }
             }
 

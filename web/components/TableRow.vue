@@ -15,7 +15,7 @@
     .clickable {
 
         cursor: pointer;
-        border-radius: 10px;
+        border-radius: 30px;
         transition: .3s linear;
 
         &:hover {

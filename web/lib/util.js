@@ -112,11 +112,18 @@ export const tablizeFungible = function (data) {
     delete data.issue;
     delete data.manage;
 
+    let metaData = {};
+    if (!data.metas || !data.metas.length) metaData = null;
+    else (data.metas || []).forEach(m => {
+        metaData[m.key] = m;
+    });
+    delete data.metas;
+
     for (let key in data) {
         res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
     }
 
-    return [res, detailedData, detailedActions];
+    return [res, detailedData, detailedActions, metaData];
 
 }
 

@@ -1,4 +1,5 @@
 const mongo = require('../lib/mongo.js');
+const Axios = require('axios');
 
 // get details of blocks or transactions
 const getDetail = fn => async (ctx, next) => {
@@ -49,7 +50,13 @@ const getTransaction = async id => {
 const getFungible = async id => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Fungibles`);
-        return await col.findOne({name: id || ""});
+        let fungible = await col.findOne({name: id || ""});
+        if (fungible.metas) return fungible;
+        try {
+            let metas = (await Axios.post("https://mainnet1.everitoken.io/v1/evt/get_fungible", {id: fungible.sym_id})).data.metas || [];
+            fungible.metas = metas;
+        } catch (err) {}
+        return fungible;
     });
     return res[1] || [];
 }

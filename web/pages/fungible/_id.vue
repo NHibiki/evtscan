@@ -8,7 +8,12 @@
 
         <div class='grid'>
             <h2>Detailed Info</h2>
-            <Table :data="detailedData" :head="detailedHeaders" :clickable="true" @click="openModal" />
+            <Table :data="detailedData" :head="detailedHeaders" :clickable="true" @click="openDetailedModal" />
+        </div>
+
+        <div class='grid'>
+            <h2>MetaData <img v-if="metaData && metaData['symbol-icon']" class="fungibleIcon" :src="metaData['symbol-icon'].value"/></h2>
+            <Table :data="Object.keys(metaData || {}).map(k => [k, metaData[k].creator])" :head="metaDataHeaders" :clickable="true" @click="openMetaModal" />
         </div>
 
         <Dialog v-if="showModal" @close="closeModal">
@@ -35,14 +40,15 @@
         data () {
             return {
                 detailedHeaders: ['Name', 'Threshold', 'Count'],
+                metaDataHeaders: ['Key', 'Creator'],
             }
         },
-        computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'showData', 'showModal']),
+        computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'metaData', 'showData', 'showModal']),
         components: { Table, Dialog },
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
         asyncData({store, route, isServer}) { store.commit('fungible/resetData', route.params.id); let promise = store.dispatch('fungible/updateData'); if (isServer) return promise; },
         methods: {
-            ...mapMutations(['resetData', 'closeModal', 'openModal']),
+            ...mapMutations(['resetData', 'closeModal', 'openDetailedModal', 'openMetaModal']),
             ...mapActions(['updateData']),
         }
     }
@@ -54,7 +60,7 @@
         background: #FFF;
         width: calc(100% - 40px);
         margin: 32px auto;
-        max-width: 920px;
+        max-width: 1080px;
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 5px 25px rgba(0, 0, 0, .05);
@@ -113,6 +119,15 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             font-family: 'Quicksand';
+
+            .fungibleIcon {
+                display: inline-block;
+                position: relative;
+                height: 30px;
+                width: auto;
+                vertical-align: bottom;
+            }
+
         }
 
     }

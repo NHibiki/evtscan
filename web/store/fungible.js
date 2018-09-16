@@ -6,6 +6,7 @@ export const state = () => ({
     data: null,
     detailedData: null,
     detailedActions: [],
+    metaData: null,
     showData: {},
     showModal: false
 });
@@ -19,8 +20,12 @@ export const mutations = {
     closeModal(state) {
         state.showModal = false
     },
-    openModal(state, i) {
+    openDetailedModal(state, i) {
         state.showData = state.detailedActions[i || 0] || {}
+        state.showModal = true
+    },
+    openMetaModal(state, i) {
+        state.showData = state.metaData[Object.keys(state.metaData)[i || 0]] || {}
         state.showModal = true
     },
     updateDataMut: (state, thing) => {
@@ -33,7 +38,7 @@ export const mutations = {
 export const actions = {
     async updateData({ commit, state }) {
         let recvData = (await getDetail("fungible", state.id)).data.data;
-        let [data, detailedData, detailedActions] = tablizeFungible(recvData);
-        commit('updateDataMut', {data, detailedData, detailedActions});
+        let [data, detailedData, detailedActions, metaData] = tablizeFungible(recvData);
+        commit('updateDataMut', {data, detailedData, detailedActions, metaData});
     }
 };
