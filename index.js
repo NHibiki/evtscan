@@ -25,8 +25,12 @@ const serverPort  = parseInt(args.port, 10);
 const mongoServer = args.mgdb;
 const mongoDB     = args.db;
 const ssr         = true; //args.ssr === "yes" ? true : false;
+const dev         = serverPort !== 80;
 if (ssr) {
     console.log('[Info] Running in SSR Mode.');
+}
+if (dev) {
+    console.log('[Info] Running in DEV Mode.');
 }
 if (!serverPort || !serverAddr) {
     console.error(`[Error] Fail to listen on ${serverAddr}:${serverPort}`);
@@ -36,7 +40,7 @@ Mongo.init(mongoServer, mongoDB);
 
 // prepare for api routers
 const app = new Koa();
-Router.inject(app, {ssr});
+Router.inject(app, {ssr, dev});
 
 // start server
 app.listen(serverPort, serverAddr).on('error', err => {

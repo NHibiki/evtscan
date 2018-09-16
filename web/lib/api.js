@@ -3,7 +3,7 @@ import Axios from 'axios';
 let LOCALDEV = false;
 let endPoint = "http://localhost/api";
 try {
-    LOCALDEV = process.env.NODE_ENV === "development" ? true : false;
+    LOCALDEV = process.env.NUXT_START_ENV === "dev" ? true : false;
     endPoint = LOCALDEV ? "http://localhost:8080/api" : "http://localhost/api";
 } catch (error) {}
 try {

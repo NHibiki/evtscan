@@ -11,12 +11,10 @@ const router = new KoaRouter();
 const inject = function (app, config) {
 
     // init Nuxt Instance
-    nuxt = new Nuxt({...require('../web/nuxt.config.js'), dev: false});
-    // nuxt = new Nuxt({...require('../web/nuxt.config.js'), dev: !(app.env === 'production')});
-    // if (app.env !== 'production') {
-        // console.info("[Nuxt] Run in DEV Mode.");
+    nuxt = new Nuxt({...require('../web/nuxt.config.js'), dev: config.dev});
+    if (config.dev) {
         // new Builder(nuxt).build();
-    // }
+    }
 
     // make sure {Koa Instance} was passed in
     if (typeof app.use != 'function') {
