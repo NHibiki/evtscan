@@ -1,6 +1,6 @@
 {
   "name": "evtscan",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "A NG of evtScan Project.",
   "author": "NHibiki <i@yuuno.cc>",
   "private": true,

@@ -1,4 +1,5 @@
 const mongo = require('../lib/mongo.js');
+const Axios = require('axios');
 
 // get most recent transactions from mongo
 const getRecent = fn => async (ctx, next) => {
@@ -87,7 +88,14 @@ const getFungibles = async (since, page, size, from, creator) => {
         let col = db.collection(`Fungibles`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
         if (creator) schema.creator = creator;
-        return await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray();
+        // return await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray();
+        return await Promise.all((await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray()).map(async d => {
+            try {
+                let metas = (await Axios.post("https://mainnet1.everitoken.io/v1/evt/get_fungible", {id: d.sym_id})).data.metas || [];
+                d.metas = metas;
+                return d;
+            } catch (err) { return d; }
+        }));
     });
     return res[1] || [];
 }

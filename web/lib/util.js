@@ -1,7 +1,8 @@
-export const msToTimeStr = function (time=0) {
+export const msToTimeStr = function (time=0, fix=true) {
 
     let timeStr = 's';
     time = parseInt(time, 10) || 0;
+    if (fix && time < 0) time = 0;
 
     // show percent of time if time is less than 60s
     if (time < 60 * 1000) return `${Math.floor(time / 10) / 100} secs`;
@@ -147,11 +148,18 @@ export const tablizeDomain = function (data={}) {
     delete data.manage;
     delete data.transfer;
 
+    let metaData = {};
+    if (!data.metas || !data.metas.length) metaData = null;
+    else (data.metas || []).forEach(m => {
+        metaData[m.key] = m;
+    });
+    delete data.metas;
+
     for (let key in data) {
         res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
     }
 
-    return [res, detailedData, detailedActions];
+    return [res, detailedData, detailedActions, metaData];
 
 }
 
@@ -189,7 +197,20 @@ export const tablizeFungibles = function (data=[]) {
     let resData = [];
 
     data.forEach(d => {
-        res.push([d.name, d.sym_id, d.creator, d.created_at]);
+        let firstEle = d.name;
+        if (d.metas && Object.keys(d.metas).length) {
+            Object.keys(d.metas).forEach(k => {
+                if (d.metas[k] && d.metas[k].key === "symbol-icon") {
+                    firstEle = {
+                        content: d.name, 
+                        type: "imageSrc", 
+                        data: d.metas[k].value
+                    };
+                }
+            })
+            
+        }
+        res.push([firstEle, d.sym_id, d.creator, d.created_at]);
         resData.push('/fungible/' + d.name);
     });
 

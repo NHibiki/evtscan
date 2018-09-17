@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class='grid'>
-            <h2 style="margin-right: 120px;">Fungible <router-link :to="'/fungible/' + id" style="margin-left: 4px;">#{{ id }}</router-link></h2>
+            <h2 style="margin-right: 120px;">Fungible <img v-if="metaData && metaData['symbol-icon']" class="fungibleIcon" :src="metaData['symbol-icon'].value"/> <router-link :to="'/fungible/' + id" style="margin-left: 4px;">#{{ id }}</router-link></h2>
             <a class="sidebtn" href="javascript:history.back()">Back</a>
             <Table :data="data"/>
         </div>
@@ -12,7 +12,7 @@
         </div>
 
         <div class='grid'>
-            <h2>MetaData <img v-if="metaData && metaData['symbol-icon']" class="fungibleIcon" :src="metaData['symbol-icon'].value"/></h2>
+            <h2>MetaData</h2>
             <Table :data="Object.keys(metaData || {}).map(k => [k, metaData[k].creator])" :head="metaDataHeaders" :clickable="true" @click="openMetaModal" />
         </div>
 

@@ -17,7 +17,7 @@ const inject = function (app, config) {
     }
 
     // make sure {Koa Instance} was passed in
-    if (typeof app.use != 'function') {
+    if (typeof app.use !== 'function') {
         console.error('[Error] Initialization of Koa Failed!');
         process.exit(1);
     }
