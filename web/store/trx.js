@@ -29,7 +29,7 @@ export const mutations = {
         state.showData = state.actionsData[i || 0] || {}
         state.showModal = true
     },
-    updateDataMut: (state, thing) => {
+    updateDataMut: (state, thing={}) => {
         Object.keys(thing).forEach(k => {
             state[k] = thing[k];
         });

@@ -1,4 +1,4 @@
-export const msToTimeStr = function (time) {
+export const msToTimeStr = function (time=0) {
 
     let timeStr = 's';
     time = parseInt(time, 10) || 0;
@@ -24,7 +24,7 @@ export const msToTimeStr = function (time) {
 
 }
 
-export const tablizeBlock = function (data) {
+export const tablizeBlock = function (data={}) {
 
     let res = [];
     delete data._id;
@@ -38,10 +38,9 @@ export const tablizeBlock = function (data) {
 
 }
 
-export const tablizeBlockTrx = function (data) {
+export const tablizeBlockTrx = function (data=[]) {
 
     let res = [];
-    delete data._id;
 
     data.forEach(d => {
         res.push([d.trx_id, d.pending, d.created_at]);
@@ -51,7 +50,7 @@ export const tablizeBlockTrx = function (data) {
 
 }
 
-export const tablizeTrx = function (data) {
+export const tablizeTrx = function (data={}) {
 
     let res = [];
     delete data._id;
@@ -62,8 +61,10 @@ export const tablizeTrx = function (data) {
 
     let trace = data.trace;
     delete data.trace;
-    data["Trace.Elapsed"] = trace.elapsed + " us";
-    data["Trace.Charge"]  = trace.charge / 10e4 + " EVT/PEVT";
+    if (trace) {
+        data["Trace.Elapsed"] = trace.elapsed + " us";
+        data["Trace.Charge"]  = trace.charge / 10e4 + " EVT/PEVT";
+    }
 
     let { keys, signatures } = data;
     delete data.keys;
@@ -73,18 +74,17 @@ export const tablizeTrx = function (data) {
         res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
     }
 
-    keys = keys.map(k => [k]);
-    signatures = signatures.map(k => [k]);
+    keys = (keys || []).map(k => [k]);
+    signatures = (signatures || []).map(k => [k]);
 
     return [res, keys, signatures];
 
 }
 
-export const tablizeTrxAction = function (data) {
+export const tablizeTrxAction = function (data=[]) {
 
     let res = [];
     let resData = [];
-    delete data._id;
 
     data.forEach(d => {
         res.push([d.name, d.domain, d.key]);
@@ -95,18 +95,19 @@ export const tablizeTrxAction = function (data) {
 
 }
 
-export const tablizeFungible = function (data) {
+export const tablizeFungible = function (data={}) {
 
     let res = [];
     delete data._id;
 
-    data.timestamp = data.created_at;
+    if (data.created_at) data.timestamp = data.created_at;
     delete data.created_at;
 
     let detailedData = [];
     let detailedActions = [];
-    [data.issue, data.manage].forEach(d => {
-        detailedData.push([d.name, d.threshold, d.authorizers.length || 0]);
+    [data.issue || [], data.manage || []].forEach(d => {
+        if (!d.length) return;
+        detailedData.push([d.name, d.threshold, d.authorizers ? (d.authorizers.length || 0) : 0]);
         detailedActions.push(d);
     });
     delete data.issue;
@@ -127,18 +128,19 @@ export const tablizeFungible = function (data) {
 
 }
 
-export const tablizeDomain = function (data) {
+export const tablizeDomain = function (data={}) {
 
     let res = [];
     delete data._id;
 
-    data.timestamp = data.created_at;
+    if (data.created_at) data.timestamp = data.created_at;
     delete data.created_at;
 
     let detailedData = [];
     let detailedActions = [];
-    [data.issue, data.transfer, data.manage].forEach(d => {
-        detailedData.push([d.name, d.threshold, d.authorizers.length || 0]);
+    [data.issue || [], data.transfer || [], data.manage || []].forEach(d => {
+        if (!d.length) return;
+        detailedData.push([d.name, d.threshold, d.authorizers ? (d.authorizers.length || 0) : 0]);
         detailedActions.push(d);
     });
     delete data.issue;
@@ -153,11 +155,10 @@ export const tablizeDomain = function (data) {
 
 }
 
-export const tablizeBlocks = function (data) {
+export const tablizeBlocks = function (data=[]) {
 
     let res = [];
     let resData = [];
-    delete data._id;
 
     data.forEach(d => {
         res.push([d.block_num, d.block_id, d.producer, d.timestamp]);
@@ -168,11 +169,10 @@ export const tablizeBlocks = function (data) {
 
 }
 
-export const tablizeTransactions = function (data) {
+export const tablizeTransactions = function (data=[]) {
 
     let res = [];
     let resData = [];
-    delete data._id;
 
     data.forEach(d => {
         res.push([d.trx_id, d.block_num, d.pending, d.created_at]);
@@ -183,11 +183,10 @@ export const tablizeTransactions = function (data) {
 
 }
 
-export const tablizeFungibles = function (data) {
+export const tablizeFungibles = function (data=[]) {
 
     let res = [];
     let resData = [];
-    delete data._id;
 
     data.forEach(d => {
         res.push([d.name, d.sym_id, d.creator, d.created_at]);
@@ -198,11 +197,10 @@ export const tablizeFungibles = function (data) {
 
 }
 
-export const tablizeDomains = function (data) {
+export const tablizeDomains = function (data=[]) {
 
     let res = [];
     let resData = [];
-    delete data._id;
 
     data.forEach(d => {
         res.push([d.name, d.creator, d.created_at]);

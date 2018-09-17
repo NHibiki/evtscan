@@ -15,7 +15,7 @@ export const mutations = {
         state.data = null;
         state.trxData = null;
     },
-    updateDataMut: (state, thing) => {
+    updateDataMut: (state, thing={}) => {
         Object.keys(thing).forEach(k => {
             state[k] = thing[k];
         });
