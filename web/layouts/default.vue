@@ -7,9 +7,14 @@
                     <li><router-link to="/">Home</router-link></li>
                     <li><router-link to="/block">Blocks</router-link></li>
                     <li><router-link to="/trx">Transactions</router-link></li>
-                    <li><router-link to="/fungible">Fungibles</router-link></li>
-                    <li><router-link to="/domain">Domains</router-link></li>
-                    <li><router-link to="/group">Groups</router-link></li>
+                    <li>
+                        <a class="submenubtn" href="javascript:;">More<fa style="margin-left:8px;" icon="angle-down"/></a>
+                        <div class="submenu"><ul>
+                            <li><router-link to="/fungible">Fungibles</router-link></li>
+                            <li><router-link to="/domain">Domains</router-link></li>
+                            <li><router-link to="/group">Groups</router-link></li>
+                        </ul></div>
+                    </li>
                 </ul>
                 <a @click="switchOpen" class="menuSwitch">
                     <fa v-if="!open" icon="bars"/>
@@ -142,6 +147,10 @@
                 justify-content: center;
                 list-style: none;
 
+                li {
+                    list-style-type: none;
+                }
+
                 li a {
                     display: -webkit-box;
                     display: -ms-flexbox;
@@ -169,6 +178,74 @@
                         outline: none;
                     }
 
+                }
+
+                .submenubtn {
+                    display: none;
+                }
+
+                .submenu ul {
+                    padding: 0;
+                }
+
+                @media screen and (min-width: 768px) {
+
+
+                    .submenubtn {
+                        display: block;
+                    }
+                
+                    .submenubtn:hover +.submenu {
+
+                        opacity: 1;
+                        pointer-events: all;
+
+                    }
+
+                    .submenu {
+
+                        display: block;
+                        position: absolute;
+                        right: 0px;
+                        top: 73px;
+                        margin: 0;
+                        padding: 0;
+                        overflow: hidden;
+                        opacity: 0;
+                        pointer-events: none;
+                        transition: .3s linear;
+
+                        background: transparent;
+                        z-index: 5;
+
+                        &:hover {
+                            opacity: 1;
+                            pointer-events: all;
+                        }
+
+                        ul {
+                            background: #FFF;
+                            margin: 10px;
+                            border-radius: 8px;
+                            overflow: hidden;
+                        }
+
+                        li {
+                            
+                            a {
+                                line-height: 40px;
+                                border-radius: 60px;
+                                margin: 8px 20px;
+                                padding: 0px 30px;
+
+                                &:hover {
+                                    background: #FAFAFA;
+                                }
+                            }
+
+                        }
+
+                    }
                 }
 
                 @media screen and (max-width: 768px) {
