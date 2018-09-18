@@ -40,6 +40,9 @@ export const mutations = {
         } else if (path === 'domain') {
             tableHeader = ['Name', 'Creator', 'Timestamp'];
             name = "Domains";
+        } else if (path === 'group') {
+            tableHeader = ['Name', 'Key', 'Threshold'];
+            name = "Groups";
         }
         state.tableHeader = tableHeader;
         state.name = name;

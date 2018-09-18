@@ -4,7 +4,7 @@ const Axios = require('axios');
 // get most recent transactions from mongo
 const getRecent = fn => async (ctx, next) => {
 
-    let {since, page, size, from, block_num, trx_id, trx_name, creator} = ctx.query;
+    let {since, page, size, from, block_num, trx_id, trx_name, creator, key} = ctx.query;
 
     // check params of input
     if (!(since = Date.parse(since))) since = new Date().getTime();
@@ -17,6 +17,7 @@ const getRecent = fn => async (ctx, next) => {
     if (!trx_id) trx_id = null;
     if (!trx_name) trx_name = null;
     if (!creator) creator = null;
+    if (!key) key = null;
 
     // set return content of query
     ctx.type = 'application/json';
@@ -26,7 +27,7 @@ const getRecent = fn => async (ctx, next) => {
     let result = {
         state: 1,
         since, page, size, from,
-        data: await fn(since, page, size, from, block_num || trx_id || trx_name || creator)
+        data: await fn(since, page, size, from, block_num || trx_id || trx_name || creator || key)
     };
 
     if (!result.data) result = { state: 0, error: "resource not found" }
@@ -110,6 +111,16 @@ const getDomains = async (since, page, size, from, creator) => {
     return res[1] || [];
 }
 
+const getGroups = async (since, page, size, from, key) => {
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Groups`);
+        let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
+        if (key) schema.def = { key };
+        return await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray();
+    });
+    return res[1] || [];
+}
+
 module.exports = [
     ['get', '/block', getRecent(getBlocks)],
     ['get', '/transaction', getRecent(getTransactions)],
@@ -117,4 +128,5 @@ module.exports = [
     ['get', '/trxByName', getRecent(getTrxByName)],
     ['get', '/fungible', getRecent(getFungibles)],
     ['get', '/domain', getRecent(getDomains)],
+    ['get', '/group', getRecent(getGroups)],
 ];

@@ -9,6 +9,7 @@
                     <li><router-link to="/trx">Transactions</router-link></li>
                     <li><router-link to="/fungible">Fungibles</router-link></li>
                     <li><router-link to="/domain">Domains</router-link></li>
+                    <li><router-link to="/group">Groups</router-link></li>
                 </ul>
                 <a @click="switchOpen" class="menuSwitch">
                     <fa v-if="!open" icon="bars"/>

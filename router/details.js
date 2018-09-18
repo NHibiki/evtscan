@@ -69,9 +69,18 @@ const getDomain = async id => {
     return res[1] || [];
 }
 
+const getGroup = async id => {
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Groups`);
+        return await col.findOne({name: id || ""});
+    });
+    return res[1] || [];
+}
+
 module.exports = [
     ['get', '/block/:id', getDetail(getBlock)],
     ['get', '/transaction/:id', getDetail(getTransaction)],
     ['get', '/fungible/:id', getDetail(getFungible)],
     ['get', '/domain/:id', getDetail(getDomain)],
+    ['get', '/group/:id', getDetail(getGroup)],
 ];

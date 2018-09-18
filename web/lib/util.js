@@ -163,6 +163,42 @@ export const tablizeDomain = function (data={}) {
 
 }
 
+export const tablizeGroup = function (data={}) {
+
+    let res = [];
+    delete data._id;
+
+    if (data.created_at) data.timestamp = data.created_at;
+    delete data.created_at;
+
+    data = {...data, ...data.def};
+    data.threshold = (data.root || {}).threshold || 0;
+    delete data.def;
+
+    let detailedData = [];
+    let detailedActions = [];
+    ((data.root || {}).nodes || []).forEach(d => {
+        if (!d || !d.weight) return;
+        detailedData.push([d.weight, d.key || "Group"]);
+        detailedActions.push(d);
+    });
+    delete data.root;
+
+    let metaData = {};
+    if (!data.metas || !data.metas.length) metaData = null;
+    else (data.metas || []).forEach(m => {
+        metaData[m.key] = m;
+    });
+    delete data.metas;
+
+    for (let key in data) {
+        res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
+    }
+
+    return [res, detailedData, detailedActions, metaData];
+
+}
+
 export const tablizeBlocks = function (data=[]) {
 
     let res = [];
@@ -232,6 +268,21 @@ export const tablizeDomains = function (data=[]) {
 
 }
 
+export const tablizeGroups = function (data=[]) {
+
+    let res = [];
+    let resData = [];
+
+    data.forEach(d => {
+        let def = d.def || {};
+        res.push([d.name, def.key || "None", (def.root || {}).threshold || 0]);
+        resData.push('/group/' + d.name);
+    });
+
+    return [res, resData];
+
+}
+
 export default {
     msToTimeStr,
 
@@ -241,8 +292,10 @@ export default {
     tablizeTrxAction,
     tablizeFungible,
     tablizeDomain,
+    tablizeGroup,
     tablizeBlocks,
     tablizeTransactions,
     tablizeFungibles,
     tablizeDomains,
+    tablizeGroups,
 }
