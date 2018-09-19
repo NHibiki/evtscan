@@ -4,10 +4,11 @@
             <h2>{{ title }}</h2>
             <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /></div>
             <div class="trans"></div>
-            <div class='grid-inner'>
+            <div class='grid-inner' @scroll.self="onScroll">
                 <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
                 <div class="noData" v-if="items[endpoint] && !items[endpoint][0]">No Data!</div>
                 <component :key="item._id" :item="item" :endpoint="endpoint" :is="SubView" v-if="items[endpoint]" v-for="item in items[endpoint] || []"/>
+                <BallPulseLoader v-if="items[endpoint] && loading[endpoint]" color="#e6a938" size="12px" class="loader2"/>
             </div>
         </div>
     </div>
@@ -17,7 +18,7 @@
     import { createNamespacedHelpers } from 'vuex';
     const { mapState, mapActions } = createNamespacedHelpers('gridlist');
     
-    import { LineScalePulseOutRapidLoader } from 'vue-loaders';
+    import { LineScalePulseOutRapidLoader, BallPulseLoader } from 'vue-loaders';
     import Switcher from '~/components/Switcher';
 
     export default {
@@ -29,20 +30,30 @@
                 SubView: this.for
             }
         },
-        computed: mapState(['items']),
-        created() { return this.getDataList(this.endpoint); },
+        computed: mapState(['items', 'loading', 'nomoreLoading']),
+        created() { return this.getDataList({endpoint:this.endpoint}); },
         watch: {
-            'endpoint' () { this.getDataList(this.endpoint); }
+            'endpoint' () { this.getDataList({endpoint:this.endpoint}); }
         },
-        methods: mapActions(['getDataList']),
-        components: { LineScalePulseOutRapidLoader, Switcher }
+        methods: {
+            ...mapActions(['getDataList']),
+            onScroll(event) {
+                try { window } catch(err) {return;}
+                let threshold = Math.max(15, (this.items[this.endpoint] || []).length) * 120 - 560 - 20;
+                let {target} = event;
+                if (target.scrollTop > threshold && !this.loading[this.endpoint] && !this.nomoreLoading[this.endpoint]) {
+                    this.getDataList({endpoint:this.endpoint, more:true});
+                }
+            }
+        },
+        components: { LineScalePulseOutRapidLoader, BallPulseLoader, Switcher }
     }
 </script>
 
 <style lang='scss' scoped>
     
     /* $GridHeight: 580px; */
-    $GridHeight: 100%;
+    $GridHeight: 580px;
     
     .grid {
         background: #FFF;
@@ -67,12 +78,13 @@
             z-index: 1;
         }
 
-        .loader {
+        .loader, .loader2 {
             margin: 120px auto;
             display: block;
             position: relative;
             text-align: center;
             user-select: none;
+            &.loader2 {margin: 60px auto;}
         }
 
         .switch {
