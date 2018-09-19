@@ -2,7 +2,7 @@
     <div class='grid'>
         <div class='grid-wrapper'>
             <h2>{{ title }}</h2>
-            <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /></div>
+            <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /><a class="btn" @click.self="onRefresh"><fa icon="redo-alt"/></a></div>
             <div class="trans"></div>
             <div class='grid-inner' @scroll.self="onScroll">
                 <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
@@ -44,6 +44,9 @@
                 if (target.scrollTop > threshold && !this.loading[this.endpoint] && !this.nomoreLoading[this.endpoint]) {
                     this.getDataList({endpoint:this.endpoint, more:true});
                 }
+            },
+            onRefresh() {
+                this.getDataList({endpoint:this.endpoint});
             }
         },
         components: { LineScalePulseOutRapidLoader, BallPulseLoader, Switcher }
@@ -87,10 +90,35 @@
             &.loader2 {margin: 60px auto;}
         }
 
+        .btn {
+            font-size: 12px;
+            line-height: 24px;
+            text-align: center;
+            color: #333;
+            height: 24px;
+            width: 24px;
+            vertical-align: bottom;
+            padding: 3px;
+            margin-left: 18px;
+            border-radius: 30px;
+            background: #EAEAEA;
+            cursor: pointer;
+            transition: .3s linear;
+
+            &:hover {
+                background-color: #e6a938;
+                color: #FFF;
+            }
+        }
+
         .switch {
             position: absolute;
-            right: 32px; top: 24px;
+            right: 24px; top: 24px;
             z-index: 2;
+
+            & > * {
+                display: inline-block;
+            }
         }
 
         .grid-wrapper {
