@@ -1,10 +1,10 @@
 <template>
-    <div class='grid'>
+    <div class='grid' :style="{'max-height': $store.state.indexs.minHeight < 580 ? '' : $store.state.indexs.minHeight + 80 + 'px'}">
         <div class='grid-wrapper'>
             <h2>{{ title }}</h2>
             <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /></div>
             <div class="trans"></div>
-            <div class='grid-inner' @scroll.self="onScroll">
+            <div class='grid-inner' @scroll.self="onScroll" :style="{'max-height': $store.state.indexs.minHeight < 580 ? '' : $store.state.indexs.minHeight + 'px'}">
                 <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
                 <div class="noData" v-if="items[endpoint] && !items[endpoint][0]">No Data!</div>
                 <component :key="item._id" :item="item" :endpoint="endpoint" :is="SubView" v-if="items[endpoint]" v-for="item in items[endpoint] || []"/>
@@ -39,7 +39,8 @@
             ...mapActions(['getDataList']),
             onScroll(event) {
                 try { window } catch(err) {return;}
-                let threshold = Math.max(15, (this.items[this.endpoint] || []).length) * 120 - 560 - 20;
+                let trdM = this.$store.state.indexs.minHeight < 580 ? 580 : this.$store.state.indexs.minHeight;
+                let threshold = Math.max(15, (this.items[this.endpoint] || []).length) * 120 - trdM; // - 560 - 20;
                 let {target} = event;
                 if (target.scrollTop > threshold && !this.loading[this.endpoint] && !this.nomoreLoading[this.endpoint]) {
                     this.getDataList({endpoint:this.endpoint, more:true});
