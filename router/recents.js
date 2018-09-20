@@ -73,7 +73,11 @@ const getTrxByName = async (since, page, size, from, trx_name="everipay") => {
         let actionsData = await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray();
 
         let trxMap = {};
-        actionsData.forEach(a => {delete a.data.link; trxMap[a.trx_id] = a});
+        actionsData.forEach(a => {
+            a.data.key = a.data.link && a.data.link.keys && a.data.link.keys[0] || "";
+            delete a.data.link;
+            trxMap[a.trx_id] = a
+        });
         let trxs = actionsData.map(a => a.trx_id);
 
         col = db.collection(`Transactions`);

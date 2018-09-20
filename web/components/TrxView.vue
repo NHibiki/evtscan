@@ -6,7 +6,7 @@
                   &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp; <router-link :to="'/block/' + item.block_num"><span class="shortspan"><span :title="'0x' + item.block_id.toLocaleUpperCase()">{{ "0x" + item.block_id.toLocaleUpperCase() }}</span></span></router-link></span>
             <span v-if="endpoint === 'transaction'"><i>Trace:</i> <b>{{ item.trace.charge / 100000.0 }} EVT</b> charged &nbsp;<b>{{ item.trace.elapsed }} us</b> elapsed</span>
             <span v-if="endpoint === 'everipay'"><i>Pay:</i> <b>{{ item.data.number }}</b> &nbsp;<i>To</i> <span class="shortspan"><span :title="item.data.payee.toLocaleUpperCase()">{{ item.data.payee.toLocaleUpperCase() }}</span></span></span>
-            <span v-if="endpoint === 'everipass'"><i>Domain:</i> <span class="shortspan"><span><b>{{ item.domain }}</b></span></span> <i>with Key</i> <span class="shortspan"><span :title="(item.keys[0] || 'NONE').toLocaleUpperCase()">{{ (item.keys[0] || 'NONE').toLocaleUpperCase() }}</span></span></span>
+            <span v-if="endpoint === 'everipass'"><i>Domain:</i> <span class="shortspan"><span><b>{{ item.domain }}</b></span></span> &nbsp;<i>with Key</i> <span class="shortspan"><span :title="(item.data.key || 'NONE').toLocaleUpperCase()">{{ (item.data.key || 'NONE').toLocaleUpperCase() }}</span></span></span>
         </div>
         <div class='timer'> &gt; {{ since(item.updated_at || item.created_at) }} </div>
     </div>

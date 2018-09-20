@@ -2,7 +2,7 @@
     <div class='grid' :style="{'max-height': $store.state.indexs.minHeight < 580 ? '' : $store.state.indexs.minHeight + 80 + 'px'}">
         <div class='grid-wrapper'>
             <h2>{{ title }}</h2>
-            <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /><a class="btn" @click.self="onRefresh"><fa icon="redo-alt"/></a></div>
+            <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /><a class="btn" @click="onRefresh"><fa icon="redo-alt"/></a></div>
             <div class="trans"></div>
             <div class='grid-inner' @scroll.self="onScroll" :style="{'max-height': $store.state.indexs.minHeight < 580 ? '' : $store.state.indexs.minHeight + 'px'}">
                 <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
