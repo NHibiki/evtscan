@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/everitoken/evtscan.git"
+    "url": "git+https://github.com/NHibiki/evtscan.git"
   },
   "author": "NHibiki",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/everitoken/evtscan/issues"
+    "url": "https://github.com/NHibiki/evtscan/issues"
   },
-  "homepage": "https://github.com/everitoken/evtscan#readme",
+  "homepage": "https://github.com/NHibiki/evtscan#readme",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
     "@fortawesome/free-solid-svg-icons": "^5.3.1",

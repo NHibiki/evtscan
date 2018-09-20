@@ -1,8 +1,8 @@
 <template>
     <tr @click="$emit('click')" :class="{ clickable }">
         <th :key="items.indexOf(item) + Math.random()" v-for="item in items">
-            <span class="tableClass">
-                {{ ((item && item.content) ? item.content : item) || "None" }}
+            <span class="tableClass" :style="{color: (item && item.color ? item.color : null)}">
+                {{ isNone((item && item.content) ? item.content : item) }}
                 <template v-if="item && item.type && item.data">
                     <img v-if="item.type === 'imageSrc'" :src="item.data" />
                 </template>
@@ -15,7 +15,8 @@
     export default {
         name: 'TableRow',
         props: ['items', 'clickable'],
-        data () { return {} }
+        data () { return {} },
+        methods: { isNone(str) {return str === false ? str : (str || "None")} }
     }
 </script>
 

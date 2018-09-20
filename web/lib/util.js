@@ -219,7 +219,7 @@ export const tablizeTransactions = function (data=[]) {
     let resData = [];
 
     data.forEach(d => {
-        res.push([d.trx_id, d.block_num, d.pending, d.created_at]);
+        res.push([d.trx_id, d.block_num, {content: `${d.pending}`, color:d.pending ? "green" : "red"}, d.created_at]);
         resData.push('/trx/' + d.trx_id);
     });
 
