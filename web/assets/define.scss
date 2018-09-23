@@ -1,0 +1,6 @@
+@import "variable.scss";
+@import "mixins.scss";
+
+%withBackground {
+    background: $background;
+}

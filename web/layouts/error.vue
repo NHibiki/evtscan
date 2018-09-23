@@ -15,6 +15,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+    @import "@/assets/define.scss";
+
     .err {
         max-width: 1100px;
         position: relative;
@@ -22,27 +25,24 @@ export default {
         margin: 0 auto;
 
         h1 {
-            font-family: "Quicksand";
-            font-weight: 300;
+            @include withQuick(300);
             margin: 64px 0;
         }
 
         a {
-            font-family: "Quicksand";
-            font-weight: 300;
+            @include withQuick(300);
+            @include outlineShadow(45px);
             text-decoration: none;
             float: right;
             padding: 10px 20px;
-            border-radius: 45px;
             background: #FFF;
-            color: #e6a938;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+            color: $themeColor;
             transition: .1s linear;
 
             &:hover {
-                background: #e6a938;
+                background: $themeColor;
                 color: white;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+                @include outlineShadowFocus();
             }
 
         }

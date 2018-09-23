@@ -26,6 +26,9 @@
 </script>
 
 <style lang='scss' scoped>
+
+    @import "@/assets/define.scss";
+
     .item {
         background: #EEE;
         width: calc(100% - 40px);
@@ -42,15 +45,13 @@
         &:hover {
             box-shadow: 0 5px 35px rgba(0, 0, 0, .15);
             & .blocknum {
-                background: #e6a938;
+                background: $themeColor;
                 color: #FFF;
             }
         }
 
         * {
-            font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
+            @include withRoboto(400);
         }
 
         .timer {
@@ -85,7 +86,7 @@
                     color: #26E;
 
                     &:hover {
-                        color: #e6a938;
+                        color: $themeColor;
                     }
 
                 }
@@ -100,7 +101,7 @@
             text-align: center;
             margin: 20px 20px;
             color: #EEE;
-            background: #8c5b00;
+            background: darken($themeColor, 15);
             display: flex;
             justify-content: space-around;
             flex-direction: column;
@@ -113,7 +114,7 @@
         }
 
         span > b {
-            color: #e6a938;
+            color: $themeColor;
         }
 
         i {

@@ -69,23 +69,23 @@
 
 <style lang="scss" scoped>
 
+    @import "@/assets/define.scss";
+
     #evtscan {
-        background: #EAEAEA;
+        @extend %withBackground;
     }
 
     .header {
 
         background: #FFF;
         display: block;
-        margin: 0 0;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, .05);
         position: relative;
         height: 73px;
-        font-weight: 300;
-        font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
+        margin: 0 0;
+        margin-bottom: 20px;
+        
+        @include withRoboto(300);
+        @include outlineShadow(0);
 
         .content {
             
@@ -164,18 +164,16 @@
                     padding: 0px 20px;
                     font-size: 16px;
                     font-weight: 300;
-                    color: #1e1e1e;
                     letter-spacing: 0.5px;
                     line-height: 73px;
                     -webkit-transition: 0.3s;
                     transition: 0.3s;
                     text-decoration: none;
-                    color: #1e1e1e;
+                    color: #000;
                     outline: none;
 
                     &:hover {
-                        color: #e5a637;
-                        outline: none;
+                        color: $themeColor;
                     }
 
                 }
@@ -361,12 +359,9 @@
             text-align: right;
             flex: 1;
             padding: 20px;
-            font-family: 'Quicksand';
-            font-weight: 300;
             line-height: 24px;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
             color: #333;
+            @include withQuick(300);
 
             li {
                 display: block;
@@ -397,7 +392,7 @@
                 transition: .3s linear;
 
                 &:hover {
-                    color: #a76a00;
+                    color: darken($themeColor, 20);
                 }
 
             }
