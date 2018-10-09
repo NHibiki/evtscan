@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="$store.state.app.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
             <h2>Block <router-link :to="'/block/' + id" style="margin-left: 4px;">#{{ id }}</router-link></h2>
             <a class="sidebtn" href="javascript:history.back()">Back</a>
@@ -37,7 +37,7 @@
     }
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 
     @import "@/assets/components/detailPage.scss";
 

@@ -1,0 +1,124 @@
+.grid-light {
+
+    padding: 10px 0;
+    background: #F3F3F3;
+
+    .grid {
+        background: #FFF;
+        width: 100%;
+        margin: 10px 0;
+        margin-bottom: 18px;
+        overflow: hidden;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, .05);
+        position: relative;
+
+        .sidebtn {
+            display: none;
+        }
+
+        a {
+            transition: .1s linear;
+            text-decoration: none;
+            outline: none;
+            color: #999;
+
+            &:hover {
+                color: #e6a938;
+            }
+
+        }
+
+        h1, h2, h3, h4, h5, p, span {
+            font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h2 {
+            font-weight: 400;
+            font-size: 16px;
+            padding: 12px 18px;
+            width: calc(100% - 36px);
+            margin: 0;
+            overflow-x: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-family: 'Quicksand';
+            position: relative;
+            border-bottom: 1px solid #EEE;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, .05);
+
+            .fungibleIcon {
+                display: inline-block;
+                position: relative;
+                height: 22px;
+                width: auto;
+                vertical-align: bottom;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                background: blue;
+                width: 3px;
+                height: 16px;
+                top: 14px; left: 8px;
+            }
+
+            a {
+                display: none;
+            }
+
+        }
+
+        .table {
+
+            margin: 0;
+            padding: 0;
+            border-collapse: collapse;
+
+            tr {
+                border-bottom: 1px solid #EEE !important;
+            }
+
+            th span {
+                font-size: 12px !important;
+            }
+
+            th.mid {
+                font-size: 12px;
+                color: #666;
+            }
+
+        }
+
+    }
+
+    .modal-container {
+
+        max-width: 90% !important;
+        max-height: 90% !important;
+        padding: 20px 10px !important;
+        font-size: 11px !important;
+
+        .modal-body {
+            margin: 0 !important;
+        }
+
+    }
+
+    &::after {
+        content: 'evtScan Copyright ©️2018.';
+        width: 100%;
+        position: relative;
+        display: block;
+        margin: 32px 0 18px 0;
+        font-size: 12px !important;
+        font-weight: 300;
+        font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        text-align: center;
+        color: #666;
+    }
+}

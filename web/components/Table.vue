@@ -29,7 +29,7 @@
 
 <style lang='scss'>
 
-    .table {
+    table.table {
 
         width: 100%;
         margin: 24px 0;
@@ -55,14 +55,14 @@
             span {
                 display: inline-block;
                 white-space: normal;
-                min-width: 100px;
+                min-width: 90px;
 
             }
         }
 
         thead {
             th {
-                font-weight: 600;
+                font-weight: 600 !important;
             }
         }
 

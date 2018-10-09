@@ -1,6 +1,6 @@
 <template>
     <div id="evtscan">
-        <header class="header">
+        <header class="header" v-if="notInApp">
             <div class="content">
                 <router-link to="/" class="logo">evtScan</router-link>
                 <ul :class="{menu: true, open}" @click="switchOpen">
@@ -22,8 +22,8 @@
                 </a>
             </div>
         </header>
-        <nuxt/>
-        <footer class="footer">
+        <nuxt />
+        <footer class="footer" v-if="notInApp">
             <div class="footer-wrapper">
                 <div class="column">
                     <li><span>
@@ -61,8 +61,18 @@
 
     export default {
         name: 'App',
-        computed: mapState('app', ['open']),
-        methods: mapMutations('app', ['switchOpen'])
+        computed: {...mapState('app', ['open', 'theme']),
+            notInApp() {
+                return !['light'].includes(this.theme);
+            }
+        },
+        methods: mapMutations('app', ['switchOpen', 'setTheme']),
+        mounted () {
+            try {
+                let theme = this.$router.history.current.query.theme;
+                if (theme) this.setTheme(theme);
+            } catch(err) {}
+        }
     }
 
 </script>
