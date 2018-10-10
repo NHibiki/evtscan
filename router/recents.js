@@ -7,7 +7,7 @@ const getRecent = fn => async (ctx, next) => {
     let {since, page, size, from, block_num, trx_id, trx_name, creator, key} = ctx.query;
 
     // check params of input
-    if (!(since = Date.parse(since))) since = new Date().getTime();
+    if (!(since = Date.parse(since))) since = Date.now();
     if (!(from = Date.parse(from))) from = new Date(0).getTime();
     if (isNaN(page = parseInt(page, 0))) page = 0;
     else if (page < 0) page = 0;

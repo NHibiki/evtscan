@@ -6,22 +6,18 @@
             <span><i>Block ID:</i> <router-link :title="item.block_id" :to="'/block/' + item.block_num">{{ item.block_id }}</router-link></span>
             <span><i>Trxes:</i> <b>{{ item.trx_count }}</b> &nbsp;&nbsp; Pending: <b :style="`color:${item.pending ? 'green' : 'red'}`">{{ item.pending }}</b></span>
         </div>
-        <div class='timer'> &gt; {{ since(item.timestamp) }} </div>
+        <Timer :timestamp="new Date(item.timestamp).getTime()"/>
     </div>
 </template>
 
 <script>
-    import { msToTimeStr } from '~/lib/util';
+    import Timer from '~/components/Timer';
 
     export default {
         name: 'BlockView',
         props: ['item'],
         data () { return {} },
-        methods: {
-            since(time) {
-                return msToTimeStr(new Date().getTime() - new Date(time).getTime());
-            }
-        }
+        components: { Timer },
     }
 </script>
 
@@ -52,15 +48,6 @@
 
         * {
             @include withRoboto(400);
-        }
-
-        .timer {
-            position: absolute;
-            font-size: 14px;
-            right: 8px;
-            bottom: 8px;
-            font-weight: 300;
-            color: #666;
         }
 
         .blockspec {

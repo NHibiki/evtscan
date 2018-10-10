@@ -1,6 +1,6 @@
 const PackageConfig = require('../package.json');
 
-const StartTime = new Date().getTime();
+const StartTime = Date.now();
 
 // a simple test to see if the server is responding
 const sysInfo = async (ctx, next) => {
@@ -8,7 +8,7 @@ const sysInfo = async (ctx, next) => {
         name: "EvtScan Backend Server",
         version: PackageConfig.version,
         start: new Date(StartTime).toISOString(),
-        onTime: parseInt((new Date().getTime() - StartTime) / 1000, 10)
+        onTime: parseInt((Date.now() - StartTime) / 1000, 10)
     }
 }
 

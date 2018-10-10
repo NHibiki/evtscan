@@ -31,7 +31,7 @@
             }
         },
         computed: mapState(['items', 'loading', 'nomoreLoading']),
-        created() { return this.getDataList({endpoint:this.endpoint}); },
+        created() { return this.onRefresh(); },
         watch: {
             'endpoint' () { this.getDataList({endpoint:this.endpoint}); }
         },
@@ -46,8 +46,9 @@
                     this.getDataList({endpoint:this.endpoint, more:true});
                 }
             },
-            onRefresh() {
-                this.getDataList({endpoint:this.endpoint});
+            async onRefresh() {
+                await this.getDataList({endpoint:this.endpoint});
+                this.$store.commit('app/updateCurrentTime');
             }
         },
         components: { LineScalePulseOutRapidLoader, BallPulseLoader, Switcher }

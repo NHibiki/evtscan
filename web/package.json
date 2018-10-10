@@ -19,6 +19,7 @@
     "axios": "^0.18.0",
     "loaders.css": "^0.1.2",
     "nuxt": "^1.0.0",
+    "vue-js-toggle-button": "^1.3.0",
     "vue-loaders": "^2.0.0"
   },
   "devDependencies": {

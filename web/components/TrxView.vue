@@ -8,23 +8,18 @@
             <span v-if="endpoint === 'everipay'"><i>Pay:</i> <b>{{ item.data.number }}</b> &nbsp;<i>To</i> <span class="shortspan"><span :title="item.data.payee.toLocaleUpperCase()">{{ item.data.payee.toLocaleUpperCase() }}</span></span></span>
             <span v-if="endpoint === 'everipass'"><i>Domain:</i> <span class="shortspan"><span><b>{{ item.domain }}</b></span></span> &nbsp;<i>with Key</i> <span class="shortspan"><span :title="(item.data.key || 'NONE').toLocaleUpperCase()">{{ (item.data.key || 'NONE').toLocaleUpperCase() }}</span></span></span>
         </div>
-        <div class='timer'> &gt; {{ since(item.updated_at || item.created_at) }} </div>
+        <Timer :timestamp="new Date(item.updated_at || item.created_at).getTime()"/>
     </div>
 </template>
 
 <script>
-    import { msToTimeStr } from '~/lib/util';
+    import Timer from '~/components/Timer';
 
     export default {
         name: 'TrxView',
         props: ['item', 'endpoint'],
         data () { return {} },
-        methods: {
-            since(time) {
-                return msToTimeStr(new Date().getTime() - new Date(time).getTime());
-            }
-        },
-        created() {}
+        components: { Timer },
     }
 </script>
 
@@ -50,15 +45,6 @@
             font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
-        }
-
-        .timer {
-            position: absolute;
-            font-size: 14px;
-            right: 8px;
-            bottom: 8px;
-            font-weight: 300;
-            color: #666;
         }
 
         .blockspec {
