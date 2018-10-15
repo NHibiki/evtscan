@@ -33,6 +33,12 @@
 
         }
 
+        @media only screen and (max-width: 440px) {
+            
+            width: calc(100% - 80px);
+
+        }
+
         .container {
             font-weight: 400;
             padding: 12px 0;
