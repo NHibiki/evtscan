@@ -61,12 +61,12 @@
 
     export default {
         name: 'App',
-        computed: {...mapState('app', ['open', 'theme']),
+        computed: {...mapState('app', ['open']), ...mapState(['theme']),
             notInApp() {
                 return !['light'].includes(this.theme);
             }
         },
-        methods: mapMutations('app', ['switchOpen', 'setTheme']),
+        methods: { ...mapMutations('app', ['switchOpen']), ...mapMutations(['setTheme']) },
         mounted () {
             try {
                 let theme = this.$router.history.current.query.theme;
