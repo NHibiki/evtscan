@@ -106,8 +106,8 @@ export const tablizeFungible = function (data={}) {
 
     let detailedData = [];
     let detailedActions = [];
-    [data.issue || [], data.manage || []].forEach(d => {
-        if (!d.length) return;
+    [data.issue || null, data.manage || null].forEach(d => {
+        if (!d) return;
         detailedData.push([d.name, d.threshold, d.authorizers ? (d.authorizers.length || 0) : 0]);
         detailedActions.push(d);
     });
@@ -139,8 +139,8 @@ export const tablizeDomain = function (data={}) {
 
     let detailedData = [];
     let detailedActions = [];
-    [data.issue || [], data.transfer || [], data.manage || []].forEach(d => {
-        if (!d.length) return;
+    [data.issue || null, data.transfer || null, data.manage || null].forEach(d => {
+        if (!d) return;
         detailedData.push([d.name, d.threshold, d.authorizers ? (d.authorizers.length || 0) : 0]);
         detailedActions.push(d);
     });

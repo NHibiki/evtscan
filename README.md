@@ -1,4 +1,6 @@
 # EvtScan
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNHibiki%2Fevtscan.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FNHibiki%2Fevtscan?ref=badge_shield)
+
 
 A NG of [EveriToken](https://everitoken.io) Explorer.
 
@@ -45,3 +47,6 @@ curl http://{SERVER_ADDRESS}/api/transaction?since={SOMETIME}&page={PAGEOFFSET}&
 ```sh
 curl http://{SERVER_ADDRESS}/api/{ZONE}
 ```
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNHibiki%2Fevtscan.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FNHibiki%2Fevtscan?ref=badge_large)

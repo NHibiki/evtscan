@@ -2,11 +2,11 @@
     <section class="main-section">
         <Grid id="timeSync" :style="{'border-radius': '16px'}">
             <div class="container">
-                <b :style="{'margin-right': '12px'}" class='pill'>Last Updating Time</b>
+                <b :style="{'margin-right': '12px'}" class='pill'>Last Sync Time</b>
                 <b class='hidden'>Now:&nbsp;</b>
                 {{new Date($store.state.app.time).toLocaleTimeString()}}
                 <u>{{new Date($store.state.app.time).toDateString()}}</u>
-                <toggle-button :style="{'float': 'right'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked:'Sync On', unchecked:'Sync Off'}" />
+                <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked:'Sync On', unchecked:'Sync Off'}" />
             </div>
         </Grid>
         <div class='dualList' :style="{'min-height': minHeight + 'px'}">
