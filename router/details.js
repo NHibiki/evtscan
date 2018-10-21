@@ -50,7 +50,7 @@ const getTransaction = async id => {
 const getFungible = async id => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Fungibles`);
-        let fungible = await col.findOne({name: id || ""});
+        let fungible = await col.findOne({sym_id: parseInt(id || "")});
         if (fungible.metas) return fungible;
         try {
             let metas = (await Axios.post("https://mainnet1.everitoken.io/v1/evt/get_fungible", {id: fungible.sym_id})).data.metas || [];

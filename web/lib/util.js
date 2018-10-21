@@ -247,7 +247,7 @@ export const tablizeFungibles = function (data=[]) {
             
         }
         res.push([firstEle, d.sym_id, d.creator, d.created_at]);
-        resData.push('/fungible/' + d.name);
+        resData.push('/fungible/' + d.sym_id);
     });
 
     return [res, resData];
