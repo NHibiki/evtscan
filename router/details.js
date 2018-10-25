@@ -22,7 +22,7 @@ const getDetail = fn => async (ctx, next) => {
     
     let result = {
         state: 1,
-        data: await fn(id)
+        data: await fn(id, ctx.query || {})
     };
 
     if (!result.data || !Object.keys(result.data).length) result = { state: 0, error: "resource not found" }
@@ -77,10 +77,23 @@ const getGroup = async id => {
     return res[1] || [];
 }
 
+const getNonfungible = async (id, {page=0, size=15}) => {
+
+    page = parseInt(page, 10); if (!page || page < 0) page = 0;
+    size = parseInt(size, 10); if (!size || size < 5) size = 5;
+
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Tokens`);
+        return await col.find({domain: id}).sort({created_at: -1, name: -1}).skip(size * page).limit(size).toArray();
+    });
+    return res[1] || [];
+}
+
 module.exports = [
     ['get', '/block/:id', getDetail(getBlock)],
     ['get', '/transaction/:id', getDetail(getTransaction)],
     ['get', '/fungible/:id', getDetail(getFungible)],
     ['get', '/domain/:id', getDetail(getDomain)],
     ['get', '/group/:id', getDetail(getGroup)],
+    ['get', '/nonfungible/:id', getDetail(getNonfungible)],
 ];

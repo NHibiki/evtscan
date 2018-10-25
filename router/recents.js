@@ -125,6 +125,16 @@ const getGroups = async (since, page, size, from, key) => {
     return res[1] || [];
 }
 
+const getNonfungibles = async (since, page, size, from, key) => {
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Tokens`);
+        let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
+        return await col.aggregate([{$sort: {created_at: -1}}, {$group: {_id: '$domain', count: { $sum: 1 }}}, {$skip: size * page}, {$limit: size}]).toArray();
+        // col.distinct('domain', schema).skip(size * page).limit(size).toArray();
+    });
+    return res[1] || [];
+}
+
 module.exports = [
     ['get', '/block', getRecent(getBlocks)],
     ['get', '/transaction', getRecent(getTransactions)],
@@ -133,4 +143,5 @@ module.exports = [
     ['get', '/fungible', getRecent(getFungibles)],
     ['get', '/domain', getRecent(getDomains)],
     ['get', '/group', getRecent(getGroups)],
+    ['get', '/nonfungible', getRecent(getNonfungibles)],
 ];
