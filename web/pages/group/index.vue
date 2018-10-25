@@ -16,8 +16,8 @@
 
 <script>
     import { createNamespacedHelpers } from 'vuex';
+    import { showListNames } from '~/lib/util';
     const { mapState, mapMutations, mapActions } = createNamespacedHelpers('showlist');
-    const showListNames = ['Transactions', 'Blocks', 'Fungibles', 'Domains', 'Groups'];
 
     import Table from '~/components/Table';
     import Switcher from '~/components/Switcher';

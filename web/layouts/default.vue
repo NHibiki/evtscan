@@ -11,6 +11,7 @@
                         <a class="submenubtn" href="javascript:;">More<fa style="margin-left:8px;" icon="angle-down"/></a>
                         <div class="submenu"><ul>
                             <li><router-link to="/fungible">Fungibles</router-link></li>
+                            <li><router-link to="/nonfungible">Non-Fungibles</router-link></li>
                             <li><router-link to="/domain">Domains</router-link></li>
                             <li><router-link to="/group">Groups</router-link></li>
                         </ul></div>

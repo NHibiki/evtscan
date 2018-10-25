@@ -129,7 +129,7 @@ const getNonfungibles = async (since, page, size, from, key) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Tokens`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
-        return await col.aggregate([{$sort: {created_at: -1}}, {$group: {_id: '$domain', count: { $sum: 1 }}}, {$skip: size * page}, {$limit: size}]).toArray();
+        return await col.aggregate([{$sort: {created_at: -1}}, {$group: {_id: '$domain', count: { $sum: 1 }, updated_at: { $max: '$created_at' }}}, {$skip: size * page}, {$limit: size}, {$sort: {updated_at: -1}}]).toArray();
         // col.distinct('domain', schema).skip(size * page).limit(size).toArray();
     });
     return res[1] || [];

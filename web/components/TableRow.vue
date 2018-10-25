@@ -2,9 +2,10 @@
     <tr @click="$emit('click')" :class="{ clickable }">
         <th :key="items.indexOf(item) + Math.random()" v-for="item in items">
             <span class="tableClass" :style="{color: (item && item.color ? item.color : null)}">
-                {{ isNone((item && item.content) ? item.content : item) }}
+                {{ item && item.hide ? null : isNone((item && item.content) ? item.content : item) }}
                 <template v-if="item && item.type && item.data">
                     <img v-if="item.type === 'imageSrc'" :src="item.data" />
+                    <router-link v-if="item.type === 'innerLink'" :to="item.data">#{{ item.content }}</router-link>
                 </template>
             </span>
         </th>

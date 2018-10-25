@@ -1,3 +1,5 @@
+export const showListNames = ['Transactions', 'Blocks', 'Fungibles', 'Nonfungibles', 'Domains', 'Groups'];
+
 export const msToTimeStr = function (time=0, fix=true) {
 
     let timeStr = 's';
@@ -129,6 +131,48 @@ export const tablizeFungible = function (data={}) {
 
 }
 
+export const tablizeNonFungible = function (data={}) {
+
+    let res = [];
+    delete data._id;
+
+    if (data.data && data.data.name) data.name = data.data.name;
+    if (data.data && data.data.creator) data.creator = data.data.creator;
+    if (typeof data.seq_num !== "undefined") data.seq_num = `${data.seq_num} `;
+
+    let detailedData = [];
+    let detailedActions = [];
+    let iData = data.data || {};
+    [iData.issue || null, iData.transfer || null, iData.manage || null].forEach(d => {
+        if (!d) return;
+        detailedData.push([d.name, d.threshold, d.authorizers ? (d.authorizers.length || 0) : 0]);
+        detailedActions.push(d);
+    });
+    delete data.data;
+
+    let distributeData = data.distributes || null;
+    delete data.distributes;
+
+    data.created_by_trx = {
+        hide: true,
+        content: data.trx_id,
+        type: "innerLink",
+        data: `/trx/${data.trx_id}`
+    };
+    delete data.trx_id;
+
+    if (data.created_at) data.timestamp = data.created_at;
+    delete data.created_at;
+    delete data.key;
+
+    for (let key in data) {
+        res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
+    }
+
+    return [res, detailedData, detailedActions, distributeData];
+
+}
+
 export const tablizeDomain = function (data={}) {
 
     let res = [];
@@ -254,6 +298,21 @@ export const tablizeFungibles = function (data=[]) {
 
 }
 
+export const tablizeNonFungibles = function (data=[]) {
+
+    let res = [];
+    let resData = [];
+
+    data.forEach(d => {
+        if (!d._id || !d.updated_at || typeof d.count === "undefined") return;
+        res.push([d._id, d.count, d.updated_at]);
+        resData.push('/nonfungible/' + d._id);
+    });
+
+    return [res, resData];
+
+}
+
 export const tablizeDomains = function (data=[]) {
 
     let res = [];
@@ -284,6 +343,7 @@ export const tablizeGroups = function (data=[]) {
 }
 
 export default {
+    showListNames,
     msToTimeStr,
 
     tablizeBlock,
@@ -291,11 +351,13 @@ export default {
     tablizeTrx,
     tablizeTrxAction,
     tablizeFungible,
+    tablizeNonFungible,
     tablizeDomain,
     tablizeGroup,
     tablizeBlocks,
     tablizeTransactions,
     tablizeFungibles,
+    tablizeNonFungibles,
     tablizeDomains,
     tablizeGroups,
 }

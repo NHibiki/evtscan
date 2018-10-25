@@ -84,7 +84,12 @@ const getNonfungible = async (id, {page=0, size=15}) => {
 
     let res = await mongo.db(async db => {
         let col = db.collection(`Tokens`);
-        return await col.find({domain: id}).sort({created_at: -1, name: -1}).skip(size * page).limit(size).toArray();
+        let distributes = await col.find({domain: id}).sort({created_at: -1, name: -1}).skip(size * page).limit(size).toArray();
+
+        col = db.collection(`Actions`);
+        let returnData = await col.findOne({domain: id, name: "newdomain", key: ".create"});
+
+        return {...returnData, distributes};
     });
     return res[1] || [];
 }

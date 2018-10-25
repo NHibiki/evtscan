@@ -43,10 +43,13 @@ export const mutations = {
         } else if (path === 'group') {
             tableHeader = ['Name', 'Key', 'Threshold'];
             name = "Groups";
+        } else if (path == 'nonfungible') {
+            tableHeader = ['Domain', 'Count', 'Latest Issued'];
+            name = "Non-Fungibles";
         }
         state.tableHeader = tableHeader;
         state.name = name;
-        state.endpoint = "/" + name.substr(0, name.length - 1).toLocaleLowerCase();
+        state.endpoint = "/" + name.substr(0, name.length - 1).toLocaleLowerCase().replace(/-/g, "");
         state.data = null;
         state.page = 0;
         state.dataLink = [];
@@ -56,7 +59,7 @@ export const mutations = {
 export const actions = {
     async refreshData({ commit, state }) {
         let recvData = (await getRecent(state.endpoint, state.page, 20)).data.data;
-        commit('refreshDataMut', Util[`tablize${state.name}`](recvData));
+        commit('refreshDataMut', Util[`tablize${state.name.replace(/-/g, "")}`](recvData));
     }, 
     async more({ commit, dispatch, state }, adder) {
         if (!adder) return;
