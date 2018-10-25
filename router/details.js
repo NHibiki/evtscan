@@ -89,6 +89,27 @@ const getNonfungible = async (id, {page=0, size=15}) => {
     return res[1] || [];
 }
 
+const getAddress = async (id, {page=0, size=15, type="all", domain=null}) => {
+
+    page = parseInt(page, 10); if (!page || page < 0) page = 0;
+    size = parseInt(size, 10); if (!size || size < 5) size = 5;
+
+    let schema = {};
+    if (type === "from") schema["data.from"] = id;
+    else if (type === "to") schema["data.to"] = id;
+    else if (type === "issue") schema["data.owner"] = id;
+    else schema = {'$or': [{"data.from": id}, {"data.to": id}, {"data.owner": id}]};
+
+    if (domain) schema = {"$and": [schema, {"domain": domain}]};
+
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Actions`);
+        return await col.find(schema).sort({created_at: -1, name: -1}).skip(size * page).limit(size).toArray();
+    });
+    return res[1] || [];
+
+}
+
 module.exports = [
     ['get', '/block/:id', getDetail(getBlock)],
     ['get', '/transaction/:id', getDetail(getTransaction)],
@@ -96,4 +117,5 @@ module.exports = [
     ['get', '/domain/:id', getDetail(getDomain)],
     ['get', '/group/:id', getDetail(getGroup)],
     ['get', '/nonfungible/:id', getDetail(getNonfungible)],
+    ['get', '/address/:id', getDetail(getAddress)],
 ];
