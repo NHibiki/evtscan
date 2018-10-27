@@ -13,7 +13,12 @@
 
         <div class='grid'>
             <h2>Distributions</h2>
-            <Table :data="(distributeData || []).map(k => [k.name, k.owner && k.owner[0] ? k.owner[0] : 'None', k.created_at])" :head="distributeDataHeaders" :clickable="true" @click="openDistributeModal" />
+            <Table :data="distributeData ? distributeData.map(k => [k.name, k.owner && k.owner[0] ? k.owner[0] : 'None', k.created_at]) : null" :head="distributeDataHeaders" :clickable="true" @click="openDistributeModal" />
+            <div class="pager">
+                <a class="btn" href="javascript:;" @click="more(-1)"><fa icon="angle-left"/></a>
+                <span> Page {{ page + 1 }} </span>
+                <a class="btn" href="javascript:;" @click="more(1)"><fa icon="angle-right"/></a>
+            </div>
         </div>
 
         <Dialog v-if="showModal" @close="closeModal">
@@ -43,13 +48,13 @@
                 distributeDataHeaders: ['Name', 'To', 'Timestamp'],
             }
         },
-        computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'distributeData', 'showData', 'showModal']),
+        computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'distributeData', 'showData', 'showModal', 'page']),
         components: { Table, Dialog },
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
         asyncData({store, route, isServer}) { store.commit('nonfungible/resetData', route.params.id); let promise = store.dispatch('nonfungible/updateData'); if (isServer) return promise; },
         methods: {
             ...mapMutations(['resetData', 'closeModal', 'openDetailedModal', 'openDistributeModal']),
-            ...mapActions(['updateData']),
+            ...mapActions(['updateData', 'more']),
         }
     }
 </script>
@@ -57,5 +62,30 @@
 <style lang='scss'>
 
     @import "@/assets/components/detailPage.scss";
+
+    .grid {
+        .pager {
+            margin: 24px;
+            text-align: right;
+            span {
+                font-family: 'Quicksand';
+                font-weight: 400;
+                margin: 0 20px;
+            }
+        }
+        a.btn {
+            padding: 8px 20px;
+            display: inline-block;
+            color: #FFF;
+            background: #e6a938;
+            border-radius: 36px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .25);
+            &:hover {
+                color: white;
+                transform: translateY(1px);
+                box-shadow: 0 5px 5px rgba(0, 0, 0, .3);
+            }
+        }
+    }
 
 </style>
