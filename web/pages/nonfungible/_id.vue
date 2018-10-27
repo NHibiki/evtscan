@@ -88,4 +88,30 @@
         }
     }
 
+    .grid-light .grid {
+        .pager {
+            margin: 12px 0;
+            text-align: center;
+            font-size: 13px;
+        }
+        a.btn {
+            padding: 5px 25px;
+            line-height: 12px;
+            display: inline-block;
+            color: blue;
+            background: transparent;
+            border: 1px solid blue;
+            border-radius: 2px;
+            box-shadow: none;
+            &:hover {
+                color: blue;
+                transform: none;
+                box-shadow: none;
+            }
+        }
+        .loader > div {
+            background: blue !important;
+        }
+    }
+
 </style>
