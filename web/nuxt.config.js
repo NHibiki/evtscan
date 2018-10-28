@@ -12,6 +12,9 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,700|Quicksand:100,300,400,700&amp;lang=zh-CN', rel: 'stylesheet' }
+    ],
+    script: [ 
+      { src: "https://www.everitoken.io/js/update-prompt.js", async: true }
     ]
   },
   /*
