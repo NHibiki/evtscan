@@ -41,10 +41,15 @@ export const getActionOnTrx = async (id, page=0, size=30, since=null) => {
     return get(`/action`, {trx_id: id, page, size, since});
 }
 
+export const getChainInfo = async () => {
+    return get(`/chainInfo`);
+}
+
 export default {
     LOCALDEV,
     endPoint,
     get,
+    getChainInfo,
     getRecent,
     getTrxByName,
     getDetail,

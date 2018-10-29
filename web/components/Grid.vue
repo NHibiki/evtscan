@@ -134,6 +134,29 @@
             cursor: default;
             font-size: 14px;
             line-height: 16px;
+            transition: .3s linear;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .pill-btn {
+            font-weight: 700;
+            padding: 3px 10px;
+            color: #e5a637;
+            background: #FFF;
+            border-radius: 24px;
+            cursor: default;
+            font-size: 14px;
+            line-height: 16px;
+            cursor: pointer;
+            transition: .3s linear;
+            text-align: center;
+            display: inline-block;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, .2);
+
+            &:hover {
+                box-shadow: 0 2px 3px rgba(0, 0, 0, .2);
+            }
         }
 
         h1, h2, h3, h4, h5, p, span {

@@ -2,11 +2,17 @@
     <section class="main-section">
         <Grid id="timeSync" :style="{'border-radius': '16px'}">
             <div class="container">
-                <b :style="{'margin-right': '12px'}" class='pill'>Last Sync Time</b>
+                <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>LAST SYNC TIME</b>
                 <b class='hidden'>Now:&nbsp;</b>
-                {{new Date($store.state.app.time).toLocaleTimeString()}}
-                <u>{{new Date($store.state.app.time).toDateString()}}</u>
+                <span class="show-time">{{new Date($store.state.app.time).toLocaleTimeString()}}</span>
+                <u :style="{'margin-left': '8px'}">{{new Date($store.state.app.time).toDateString()}}</u>
                 <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked:'Sync On', unchecked:'Sync Off'}" />
+            </div>
+        </Grid>
+        <Grid id="tpsPanel" :style="{'border-radius': '16px', 'margin-top': '-16px'}">
+            <div class="container">
+                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS {{tps && tps.top && tps.top.value || "---"}}</b>
+                <router-link :style="{'float': 'right'}" :to="`/block/${tps && tps.top && tps.top.id || 'None'}`" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.id || "None"}}</router-link>
             </div>
         </Grid>
         <div class='dualList' :style="{'min-height': minHeight + 'px'}">
@@ -39,9 +45,13 @@
                 TrxView, BlockView, timeSync
             }
         },
-        computed: mapState(['minHeight', 'trxEndpoint', 'activeTab']),
+        computed: {
+            ...mapState(['minHeight', 'trxEndpoint', 'activeTab', 'chain']),
+            tps() { return this.chain && this.chain.tps || null; }
+        },
         components: { GridList, Grid },
         mounted () {
+            this.$store.dispatch("indexs/updateChainInfo")
             try {
                 if (!window) return;
             } catch(error) { return; }
@@ -77,6 +87,15 @@
         @media only screen and (max-width: 445px) {
             b.pill {display: none;}
             b.hidden {display: inline;}
+        }
+    }
+
+    #tpsPanel .container {
+
+        b.hidden {display: inline;}
+
+        @media only screen and (max-width: 445px) {
+            b.hidden {display: none;}
         }
     }
 

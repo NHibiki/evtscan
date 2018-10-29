@@ -111,6 +111,11 @@
                 background-color: #e6a938;
                 color: #FFF;
             }
+
+            & > svg {
+                /* Adjust for Firefox */
+                margin-top: 6px;
+            }
         }
 
         .switch {
