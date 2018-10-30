@@ -62,56 +62,6 @@
 <style lang='scss'>
 
     @import "@/assets/components/detailPage.scss";
-
-    .grid {
-        .pager {
-            margin: 24px;
-            text-align: right;
-            span {
-                font-family: 'Quicksand';
-                font-weight: 400;
-                margin: 0 20px;
-            }
-        }
-        a.btn {
-            padding: 8px 20px;
-            display: inline-block;
-            color: #FFF;
-            background: #e6a938;
-            border-radius: 36px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, .25);
-            &:hover {
-                color: white;
-                transform: translateY(1px);
-                box-shadow: 0 5px 5px rgba(0, 0, 0, .3);
-            }
-        }
-    }
-
-    .grid-light .grid {
-        .pager {
-            margin: 12px 0;
-            text-align: center;
-            font-size: 13px;
-        }
-        a.btn {
-            padding: 5px 25px;
-            line-height: 12px;
-            display: inline-block;
-            color: blue;
-            background: transparent;
-            border: 1px solid blue;
-            border-radius: 2px;
-            box-shadow: none;
-            &:hover {
-                color: blue;
-                transform: none;
-                box-shadow: none;
-            }
-        }
-        .loader > div {
-            background: blue !important;
-        }
-    }
+    @import "@/assets/components/tablePager.scss";
 
 </style>

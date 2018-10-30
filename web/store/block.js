@@ -3,6 +3,8 @@ import { tablizeBlock, tablizeBlockTrx } from '~/lib/util';
 
 export const state = () => ({
     id: "",
+    page: 0,
+    pagesize: 15,
     data: null,
     trxData: null,
     // ssr: false,
@@ -19,21 +21,31 @@ export const mutations = {
         Object.keys(thing).forEach(k => {
             state[k] = thing[k];
         });
+    },
+    updatePageMut: (state, page) => {
+        state.page = page;
+        state.data = null;
     }
 };
 
 export const actions = {
-    updateData: ({ commit, state }) => {
-        return Promise.all([getDetail("block", state.id)
-                .then(data => {
+    async updateData ({ commit, dispatch, state }) {
+        await Promise.all([
+                getDetail("block", state.id).then(data => {
                     commit('updateDataMut', {data: tablizeBlock(data.data.data)});
-                    return Promise.resolve(true);
                 }),
-            getTrxOnBlock(state.id)
-                .then(data => {
-                    commit('updateDataMut', {trxData: tablizeBlockTrx(data.data.data)});
-                    return Promise.resolve(true);
-                })])
-            .catch(err => { console.error(err); })
+                dispatch("updateTrx")
+            ]);
+    },
+    async more({ commit, dispatch, state }, adder) {
+        if (!adder) return;
+        if (state.data.length < state.pagesize && adder > 0) return;
+        if (state.page + adder < 0) return;  
+        commit('updatePageMut', state.page + adder);
+        await dispatch('updateTrx');
+    },
+    async updateTrx ({ commit, state }) {
+        let data = await getTrxOnBlock(state.id, state.page, state.pagesize);
+        commit('updateDataMut', {trxData: tablizeBlockTrx(data.data.data)});
     }
 };
