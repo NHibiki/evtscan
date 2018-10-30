@@ -39,7 +39,7 @@ export const actions = {
     },
     async more({ commit, dispatch, state }, adder) {
         if (!adder) return;
-        if (state.data.length < state.pagesize && adder > 0) return;
+        if (state.trxData && state.trxData.length < state.pagesize && adder > 0) return;
         if (state.page + adder < 0) return;  
         commit('updatePageMut', state.page + adder);
         await dispatch('updateTrx');
