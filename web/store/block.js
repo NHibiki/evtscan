@@ -24,7 +24,7 @@ export const mutations = {
     },
     updatePageMut: (state, page) => {
         state.page = page;
-        state.data = null;
+        state.trxData = null;
     }
 };
 
