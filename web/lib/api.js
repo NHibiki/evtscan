@@ -13,12 +13,14 @@ try {
                     ((window.location.protocol || "https:") + "//" + (window.location.host || "evtscan.io") + "/api");
 } catch (error) {}
 
+// endPoint = "https://evtscan.io/api";
+
 export const get = async (uri, params={}, headers={}) => Axios.get(endPoint + uri, { params, headers });
 
-export const getRecent = async (thing, page=0, size=15, since=null) => {
+export const getRecent = async (thing, page=0, size=15, since=null, filter=null) => {
     if (['everipay', 'everipass'].includes(thing)) return getTrxByName(thing, page, size, since);
     return get(thing.startsWith('/') ? thing : "/" + thing,
-        { page, size, since }, {});
+        { page, size, since, filter }, {});
 }
 
 export const getTrxByName = async (name, page=0, size=15, since=null) => {

@@ -2,7 +2,10 @@
     <div>
         <div class='grid'>
             <h2 style="margin-right: 120px;">{{ name }} </h2>
-            <div class="switch"><Switcher v-if="name === 'Transactions'" :tabs="trxTabs" :active="activeTab" /></div>
+            <div class="switch">
+                <FilterSearch v-if="name === 'Fungibles'" @submit="refreshData" />
+                <Switcher v-if="name === 'Transactions'" :tabs="trxTabs" :active="activeTab" />
+            </div>
             <a class="sidebtn" href="javascript:history.back()">Back</a>
             <Table :head="tableHeader" :data="data" :clickable="true" @click="click"/>
             <div class="pager">
@@ -20,6 +23,7 @@
     const { mapState, mapMutations, mapActions } = createNamespacedHelpers('showlist');
 
     import Table from '~/components/Table';
+    import FilterSearch from '~/components/FilterSearch';
     import Switcher from '~/components/Switcher';
 
     export default {
@@ -35,7 +39,7 @@
             }
         },
         created() { this.resetData(this.$route.name); return this.refreshData(); },
-        components: { Table, Switcher },
+        components: { Table, Switcher, FilterSearch },
         computed: mapState(['tableHeader', 'name', 'endpoint', 'data', 'page', 'activeTab', 'dataLink']),
         methods: {
             click(i) { this.$router.push(this.dataLink[i]); },

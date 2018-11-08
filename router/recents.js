@@ -1,15 +1,18 @@
 const mongo = require('../lib/mongo.js');
 const Axios = require('axios');
 
+// lower priority of Test Fungibles
+// const lowerTest = true;
+
 // get most recent transactions from mongo
 const getRecent = fn => async (ctx, next) => {
 
-    let {since, page, size, from, block_num, trx_id, trx_name, creator, key} = ctx.query;
+    let {since, page, size, from, block_num, trx_id, trx_name, creator, key, name, sym_id, filter} = ctx.query;
 
     // check params of input
     if (!(since = Date.parse(since))) since = Date.now();
     if (!(from = Date.parse(from))) from = new Date(0).getTime();
-    if (isNaN(page = parseInt(page, 0))) page = 0;
+    if (isNaN(page = parseInt(page, 10))) page = 0;
     else if (page < 0) page = 0;
     if (!(size = parseInt(size, 10))) size = 10;
     else if (size < 10) size = 10;
@@ -18,6 +21,9 @@ const getRecent = fn => async (ctx, next) => {
     if (!trx_name) trx_name = null;
     if (!creator) creator = null;
     if (!key) key = null;
+    if (!name) name = null;
+    if (isNaN(sym_id = parseInt(sym_id, 10))) sym_id = -1;
+    if (!filter) filter = null;
 
     // set return content of query
     ctx.type = 'application/json';
@@ -27,7 +33,7 @@ const getRecent = fn => async (ctx, next) => {
     let result = {
         state: 1,
         since, page, size, from,
-        data: await fn(since, page, size, from, block_num || trx_id || trx_name || creator || key)
+        data: await fn(since, page, size, from, {block_num, trx_id, trx_name, creator, key, name, sym_id, filter})
     };
 
     if (!result.data) result = { state: 0, error: "resource not found" }
@@ -35,7 +41,7 @@ const getRecent = fn => async (ctx, next) => {
     
 }
 
-const getBlocks = async (since, page, size, from, trx_id) => {
+const getBlocks = async (since, page, size, from, {trx_id}) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Blocks`);
             return await col.find({created_at: {'$lte': new Date(since), '$gte': new Date(from)}}).sort({block_num: -1}).skip(size * page).limit(size).toArray();
@@ -45,7 +51,7 @@ const getBlocks = async (since, page, size, from, trx_id) => {
     
 }
 
-const getTransactions = async (since, page, size, from, block_num) => {
+const getTransactions = async (since, page, size, from, {block_num}) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Transactions`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
@@ -55,7 +61,7 @@ const getTransactions = async (since, page, size, from, block_num) => {
     return res[1] || [];
 }
 
-const getActions = async (since, page, size, from, trx_id) => {
+const getActions = async (since, page, size, from, {trx_id}) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Actions`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
@@ -65,7 +71,7 @@ const getActions = async (since, page, size, from, trx_id) => {
     return res[1] || [];
 }
 
-const getTrxByName = async (since, page, size, from, trx_name="everipay") => {
+const getTrxByName = async (since, page, size, from, {trx_name="everipay"}) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Actions`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
@@ -88,13 +94,22 @@ const getTrxByName = async (since, page, size, from, trx_name="everipay") => {
     return res[1] || [];
 }
 
-const getFungibles = async (since, page, size, from, creator) => {
+const getFungibles = async (since, page, size, from, {creator, filter}) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Fungibles`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
         if (creator) schema.creator = creator;
+        if (filter) {
+            let regp = RegExp(filter);
+            schema['$or'] = [
+                {name: regp},
+                {sym_id: regp},
+                {sym_name: regp}
+            ];
+        }
         // return await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray();
-        return await Promise.all((await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray()).map(async d => {
+        let schemaResult = await col.find(schema).sort({created_at: -1}).skip(size * page).limit(size).toArray();
+        return await Promise.all(schemaResult.map(async d => {
             try {
                 let metas = (await Axios.post("https://mainnet1.everitoken.io/v1/evt/get_fungible", {id: d.sym_id})).data.metas || [];
                 d.metas = metas;
@@ -105,7 +120,7 @@ const getFungibles = async (since, page, size, from, creator) => {
     return res[1] || [];
 }
 
-const getDomains = async (since, page, size, from, creator) => {
+const getDomains = async (since, page, size, from, {creator}) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Domains`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
@@ -115,7 +130,7 @@ const getDomains = async (since, page, size, from, creator) => {
     return res[1] || [];
 }
 
-const getGroups = async (since, page, size, from, key) => {
+const getGroups = async (since, page, size, from, {key}) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Groups`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
@@ -125,7 +140,7 @@ const getGroups = async (since, page, size, from, key) => {
     return res[1] || [];
 }
 
-const getNonfungibles = async (since, page, size, from, key) => {
+const getNonfungibles = async (since, page, size, from, {key}) => {
     let res = await mongo.db(async db => {
         let col = db.collection(`Tokens`);
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};

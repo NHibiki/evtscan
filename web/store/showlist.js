@@ -57,8 +57,9 @@ export const mutations = {
 };
 
 export const actions = {
-    async refreshData({ commit, state }) {
-        let recvData = (await getRecent(state.endpoint, state.page, 20)).data.data;
+    async refreshData({ commit, state }, { filter=null, page=null } = {}) {
+        if (page !== null) commit('updatePageMut', page);
+        let recvData = (await getRecent(state.endpoint, page || state.page, 20, null, filter)).data.data;
         commit('refreshDataMut', Util[`tablize${state.name.replace(/-/g, "")}`](recvData));
     }, 
     async more({ commit, dispatch, state }, adder) {

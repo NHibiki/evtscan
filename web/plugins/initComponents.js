@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import VueJsonPretty from '~/components/JsonPretty';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes, faAngleLeft, faAngleRight, faBars, faHeart, faAngleDown, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTimes, faAngleLeft, faAngleRight, faBars, faHeart, faAngleDown, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Button from 'vue-js-toggle-button/dist/ssr.index'
 
+library.add(faSearch);
 library.add(faTimes);
 library.add(faAngleLeft);
 library.add(faAngleRight);

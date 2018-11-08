@@ -29,7 +29,7 @@ const dev         = serverPort !== 80;
 if (ssr) {
     console.log('[Info] Running in SSR Mode.');
 }
-if (dev) {
+if (dev) {``
     console.log('[Info] Running in DEV Mode.');
 }
 if (!serverPort || !serverAddr) {

@@ -11,7 +11,7 @@
         </Grid>
         <Grid id="tpsPanel" :style="{'border-radius': '16px', 'margin-top': '-16px'}">
             <div class="container">
-                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS {{tps && tps.top && tps.top.value || "---"}}</b>
+                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
                 <router-link :style="{'float': 'right'}" :to="`/block/${tps && tps.top && tps.top.id || 'None'}`" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.id || "None"}}</router-link>
             </div>
         </Grid>
