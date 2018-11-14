@@ -6,6 +6,7 @@ export const state = () => ({
     name: "Transactions",
     endpoint: "/transaction",
     data: null,
+    filter: null,
     page: 0,
     activeTab: 'all',
     dataLink: [],
@@ -21,10 +22,14 @@ export const mutations = {
         state.data = null;
         state.dataLink = null;
     },
+    updateFilterMut: (state, filter) => {
+        state.filter = filter;
+    },
     changeEndpointMut: (state, {id, tab}) => {
         state.activeTab = id;
         state.endpoint = tab.endpoint;
         state.page = 0;
+        state.filter = null;
         state.data = null;
         state.dataLink = null;
     },
@@ -51,6 +56,7 @@ export const mutations = {
         state.name = name;
         state.endpoint = "/" + name.substr(0, name.length - 1).toLocaleLowerCase().replace(/-/g, "");
         state.data = null;
+        state.filter = null;
         state.page = 0;
         state.dataLink = [];
     },
@@ -59,6 +65,7 @@ export const mutations = {
 export const actions = {
     async refreshData({ commit, state }, { filter=null, page=null } = {}) {
         if (page !== null) commit('updatePageMut', page);
+        if (filter !== state.filter) commit('updateFilterMut', filter);
         let recvData = (await getRecent(state.endpoint, page || state.page, 20, null, filter)).data.data;
         commit('refreshDataMut', Util[`tablize${state.name.replace(/-/g, "")}`](recvData));
     }, 
@@ -67,7 +74,7 @@ export const actions = {
         if (state.data.length < 20 && adder > 0) return;
         if (state.page + adder < 0) return;  
         commit('updatePageMut', state.page + adder);
-        await dispatch('refreshData');
+        await dispatch('refreshData', { filter: state.filter });
     },
     async changeEndpoint({ commit, dispatch }, updateInfo) {
         commit('changeEndpointMut', updateInfo);
