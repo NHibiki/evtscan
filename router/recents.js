@@ -100,10 +100,10 @@ const getFungibles = async (since, page, size, from, {creator, filter}) => {
         let schema = {created_at: {'$lte': new Date(since), '$gte': new Date(from)}};
         if (creator) schema.creator = creator;
         if (filter) {
-            let regp = RegExp(filter);
+            let regp = RegExp(filter, "i");
             schema['$or'] = [
                 {name: regp},
-                {sym_id: regp},
+                {sym_id: parseInt("1234", 10).toString() === filter ? parseInt(filter, 10) : regp },
                 {sym_name: regp}
             ];
         }
