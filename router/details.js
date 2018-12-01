@@ -1,6 +1,10 @@
 const mongo = require('../lib/mongo.js');
 const Axios = require('axios');
 
+Array.prototype.forEachAsync = async function (fn) {
+    for (let i in this) Number.isInteger(parseInt(i, 10)) && await fn(this[i], i);
+}
+
 // get details of blocks or transactions
 const getDetail = fn => async (ctx, next) => {
 
@@ -94,7 +98,30 @@ const getNonfungible = async (id, {page=0, size=15}) => {
     return res[1] || [];
 }
 
-const getAddress = async (id, {page=0, size=15, type="all", domain=null}) => {
+const getAddress = async (id) => {
+
+    let schemas = {
+        "send": {"data.from": id}, //transferft
+        "receive": {"data.to": id}, //transferft
+        "domain": {"data.creator": id}, //newdomain
+        "issue-token": {"data.owner": id}, //issuetoken
+        "issue-fungible": {"data.address": id, "name": "issuefungible"}, //issuefungible
+        "pay-charge": {"paycharge": id} //paycharge
+    };
+
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Actions`);
+        await Object.keys(schemas).forEachAsync(async key => {
+            schemas[key] = await col.find(schemas[key]).count();
+        });
+        
+        return schemas;
+    });
+    return res[1] || [];
+
+}
+
+const getAddressHistory = async (id, {page=0, size=15, type="all", domain=null}) => {
 
     page = parseInt(page, 10); if (!page || page < 0) page = 0;
     size = parseInt(size, 10); if (!size || size < 5) size = 5;
@@ -123,4 +150,5 @@ module.exports = [
     ['get', '/group/:id', getDetail(getGroup)],
     ['get', '/nonfungible/:id', getDetail(getNonfungible)],
     ['get', '/address/:id', getDetail(getAddress)],
+    ['get', '/addressHistory/:id', getDetail(getAddressHistory)],
 ];

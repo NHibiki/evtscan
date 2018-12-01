@@ -31,8 +31,8 @@ export const getDetail = async (thing, id) => {
     return get(( thing.startsWith('/') ? thing : "/" + thing ) + "/" + id);
 }
 
-export const getDetailWithPage = async (thing, id, page=0, size=15) => {
-    return get(( thing.startsWith('/') ? thing : "/" + thing ) + "/" + id, {page, size});
+export const getDetailWithPage = async (thing, id, page=0, size=15, since=null) => {
+    return get(( thing.startsWith('/') ? thing : "/" + thing ) + "/" + id, {page, size, since});
 }
 
 export const getTrxOnBlock = async (id, page=0, size=15, since=null) => {
@@ -41,6 +41,10 @@ export const getTrxOnBlock = async (id, page=0, size=15, since=null) => {
 
 export const getActionOnTrx = async (id, page=0, size=15, since=null) => {
     return get(`/action`, {trx_id: id, page, size, since});
+}
+
+export const getHistoryOnAddress = async (id, page=0, size=15, since=null) => {
+    return getDetailWithPage(`addressHistory`, id, page, size, since);
 }
 
 export const getChainInfo = async () => {
@@ -58,4 +62,5 @@ export default {
     getDetailWithPage,
     getTrxOnBlock,
     getActionOnTrx,
+    getHistoryOnAddress,
 }

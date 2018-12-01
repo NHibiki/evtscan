@@ -243,6 +243,30 @@ export const tablizeGroup = function (data={}) {
 
 }
 
+export const tablizeAddress = function (data={}) {
+
+    return Object.keys(data).map(key => {
+        if (Number.isInteger(data[key])) {
+            return [key.split("-").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]];
+        }
+        return null;
+    }).filter(Boolean);
+
+}
+
+export const tablizeHistory = function (data=[]) {
+
+    let res = [];
+
+    res = data.map(d => {
+        delete d._id;
+        return [d.name, d.domain, d.key, d.trx_id, d.created_at];
+    });
+
+    return [res, data];
+
+}
+
 export const tablizeBlocks = function (data=[]) {
 
     let res = [];
@@ -354,6 +378,8 @@ export default {
     tablizeNonFungible,
     tablizeDomain,
     tablizeGroup,
+    tablizeAddress,
+    tablizeHistory,
     tablizeBlocks,
     tablizeTransactions,
     tablizeFungibles,

@@ -17,7 +17,7 @@
         name: 'TableRow',
         props: ['items', 'clickable'],
         data () { return {} },
-        methods: { isNone(str) {return str === false ? str : (str || "None")} }
+        methods: { isNone(str) {return str === false || str === 0 ? str : (str || "None")} }
     }
 </script>
 
