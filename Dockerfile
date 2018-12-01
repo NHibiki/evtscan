@@ -6,8 +6,7 @@ COPY . .
 
 # Build Server Side
 # sed -i 's/v3.8/edge/g' /etc/apk/repositories \
-RUN apk add --no-cache python nodejs=8.11.4-r0 \
-    && apk add --no-cache npm=8.11.4-r0 \
+RUN apk add --no-cache python nodejs npm \
     && rm -rf ./node_modules \
     && npm i -g yarn \
     && yarn \
