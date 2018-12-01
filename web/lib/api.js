@@ -47,6 +47,10 @@ export const getHistoryOnAddress = async (id, page=0, size=15, since=null) => {
     return getDetailWithPage(`addressHistory`, id, page, size, since);
 }
 
+export const searchAddress = async (keyword=null) => {
+    return get(`/searchAddress`,{keyword});
+}
+
 export const getChainInfo = async () => {
     return get(`/chainInfo`);
 }
@@ -54,6 +58,7 @@ export const getChainInfo = async () => {
 export default {
     LOCALDEV,
     endPoint,
+    searchAddress,
     get,
     getChainInfo,
     getRecent,

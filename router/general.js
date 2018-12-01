@@ -31,6 +31,30 @@ const getChainInfo = async () => {
 
 }
 
+const searchAddress = async ctx => {
+
+    let {keyword} = (ctx.query || {});
+    if (!keyword) return null;
+
+    let res = await mongo.db(async db => {
+        let col = db.collection(`Transactions`);
+        let regp = RegExp(keyword, "i");
+        return (await col.aggregate([
+            {'$match': {payer: regp}},
+            {'$group': {_id: "$payer",payer: {$first: "$payer"}}},
+            {'$project': {_id: 0}},
+        ]).toArray()).map(d => d.payer).sort((a, b) => {
+            try {
+                return regp.exec(a).index < regp.exec(b).index ? -1 : 1;
+            } catch(err) {return 0}
+        });
+    });
+
+    return res[1] || [];
+
+}
+
 module.exports = [
     ['get', '/chainInfo', getInfoWrapper(getChainInfo)],
+    ['get', '/searchAddress', getInfoWrapper(searchAddress)]
 ];

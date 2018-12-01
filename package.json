@@ -1,6 +1,6 @@
 {
   "name": "evtscan",
-  "version": "1.3.3",
+  "version": "1.4.1",
   "description": "evtscan - an explorer for everiToken.",
   "main": "index.js",
   "scripts": {

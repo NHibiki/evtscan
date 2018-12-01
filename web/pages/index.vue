@@ -1,18 +1,25 @@
 <template>
     <section class="main-section">
-        <Grid id="timeSync" :style="{'border-radius': '16px'}">
-            <div class="container">
+        <Grid :style="{'border-radius': '16px'}">
+            <div id="timeSync" class="container">
                 <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>LAST SYNC TIME</b>
                 <b class='hidden'>Now:&nbsp;</b>
                 <span class="show-time">{{new Date($store.state.app.time).toLocaleTimeString()}}</span>
                 <u :style="{'margin-left': '8px'}">{{new Date($store.state.app.time).toDateString()}}</u>
                 <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked:'Sync On', unchecked:'Sync Off'}" />
             </div>
-        </Grid>
-        <Grid id="tpsPanel" :style="{'border-radius': '16px', 'margin-top': '-16px'}">
-            <div class="container">
+            <div id="tpsPanel" class="container" :style="{'margin-top': '-12px'}">
                 <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
                 <router-link :style="{'float': 'right'}" :to="`/block/${tps && tps.top && tps.top.id || 'None'}`" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.id || "None"}}</router-link>
+            </div>
+        </Grid>
+        <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
+            <div class="container">
+                <input v-model="search" @input="searchAddress" @keyup.enter="goAddress" placeholder="Search Address Here" />
+                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="goAddress" class="pill-btn">Go</a>
+                <div :class='{"search-result": true, "show": searchData && searchData.length}' :style="{'height': searchHeight + 'px'}">
+                    <a class="small-btn" @click="searchClick(i)" :key="d" v-for="(d, i) in searchData">{{d}}</a>
+                </div>
             </div>
         </Grid>
         <div class='dualList' :style="{'min-height': minHeight + 'px'}">
@@ -31,12 +38,17 @@
     import TrxView from '~/components/TrxView';
     import BlockView from '~/components/BlockView';
 
+    import _ from 'lodash';
+    import { searchAddress as searchAddressAPI } from '~/lib/api';
+
     export default {
         name: 'Index',
         data () {
             let cb = this.changeEndpoint.bind(this);
             let timeSync = true;
             return {
+                search: "",
+                searchData: [],
                 trxTabs: {
                     all: { name: "All", endpoint: "transaction", callback: cb },
                     everipay: { name: "Pay", endpoint: "everipay", callback: cb },
@@ -47,7 +59,8 @@
         },
         computed: {
             ...mapState(['minHeight', 'trxEndpoint', 'activeTab', 'chain']),
-            tps() { return this.chain && this.chain.tps || null; }
+            tps() { return this.chain && this.chain.tps || null; },
+            searchHeight() { return Math.min(this.searchData.length * 28, 140 + 14); }
         },
         components: { GridList, Grid },
         mounted () {
@@ -70,13 +83,55 @@
             if (this.updatingTimer) clearInterval(this.updatingTimer);
             this.updatingTimer = null;
         },
-        methods: mapMutations(['changeEndpoint', 'changeMinHeight'])
+        methods: {
+            ...mapMutations(['changeEndpoint', 'changeMinHeight']),
+            searchAddress: _.debounce(async function () {
+                let data = (await searchAddressAPI(this.search)).data;
+                if (data.data && data.data.length) this.searchData = data.data;
+                else this.searchData = [];
+            }, 100),
+            goAddress() { this.$router.push(`/address/` + this.search); },
+            searchClick(i) { this.search = this.searchData[i] || ""; this.searchData = []; }
+        }
     }
 </script>
 
 <style lang='scss' scoped>
 
-    #timeSync .container {
+    .container {
+        
+        input +a {
+            box-shadow: none;
+        }
+
+        input:focus +a {
+            color: #666;
+        }
+
+        .search-result {
+
+            &.show{
+                height: 124px;
+                margin-top: 8px;
+            }
+
+            height: 0px;
+            overflow-y: auto;
+            transition: .3s linear;
+
+            a.small-btn {
+                display: block;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+                margin: 0 auto;
+                margin-top: 4px;
+            }
+
+        }
+
+    }
+
+    #timeSync.container {
 
         b.hidden {display: none;}
 
@@ -90,7 +145,7 @@
         }
     }
 
-    #tpsPanel .container {
+    #tpsPanel.container {
 
         b.hidden {display: inline;}
 

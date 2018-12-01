@@ -43,6 +43,34 @@
             font-weight: 400;
             padding: 12px 0;
             line-height: 20px;
+
+            input {
+                width: calc(100% - 20px);
+                font-size: 14px;
+                line-height: 16px;
+                border: none;
+                outline: none;
+                border: 2px solid #EAEAEA;
+                background: #FFFFFF;
+                padding: 4px 10px;
+                height: 16px;
+                border-radius: 24px;
+                color: #AAA;
+                font-weight: 500;
+                transition: .3s ease;
+
+                &:focus {
+                    background: #EEE;
+                    border-color: #EEE;
+                    color: #333;
+                }
+
+                &::placeholder {
+                    color: #CCC;
+                }
+
+            }
+
         }
 
         .pager {
@@ -93,6 +121,7 @@
             transition: .2s linear;
             text-decoration: none;
             outline: none;
+            cursor: pointer;
             color: #999;
 
             &:hover {
@@ -110,6 +139,26 @@
                 &:hover {
                     transform: translateY(1px);
                     box-shadow: 0 5px 5px rgba(0, 0, 0, .3);
+                }
+            }
+
+            &.small-btn {
+                font-size: 14px;
+                line-height: 16px;
+                background: #F3F3F3;
+                padding: 4px 10px;
+                height: 16px;
+                border-radius: 24px;
+                color: #888;
+                font-weight: 500;
+                transition: .3s ease;
+                text-align: center;
+                display: inline-block;
+
+                &:hover {
+                    background: #AAA;
+                    color: #FFF;
+                    box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
                 }
             }
 
