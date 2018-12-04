@@ -7,6 +7,7 @@
         </div>
         <div class='grid'>
             <h2>History</h2>
+            <Switcher :tabs="filterTabs" :active="activeTab" />
             <Table :head="historyHead" :data="historyData" :clickable="true" @click="click"/>
             <div class="pager">
                 <a class="btn" href="javascript:;" @click="more(-1)"><fa icon="angle-left"/></a>
@@ -26,17 +27,24 @@
     export default {
         name: 'Address',
         data () {
+            let cb = this.changeFilter.bind(this);
             return {
+                filterTabs: {
+                    all: { name: "All", filter: "", callback: cb },
+                    send: { name: "Send", filter: "send", callback: cb },
+                    receive: { name: "Recv", filter: "receive", callback: cb },
+                    issue: { name: "Issue", filter: "issue", callback: cb },
+                },
                 historyHead: ["Type", "Domain", "Key", "Trx ID", "Timestamp"],
             }
         },
-        computed: mapState(['id', 'data', 'historyData', ,'historyDataDetail', 'page']),
+        computed: mapState(['id', 'data', 'historyData', 'historyDataDetail', 'page', 'activeTab']),
         components: { Table },
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
         asyncData({store, route, isServer}) { store.commit('address/resetData', route.params.id); let promise = store.dispatch('address/updateData'); if (isServer) return promise; },
         methods: {
             click(i) { this.$router.push("/trx/" + this.historyDataDetail[i].trx_id) },
-            ...mapMutations(['resetData']),
+            ...mapMutations(['resetData', 'changeFilter']),
             ...mapActions(['updateData', 'more']),
         }
     }

@@ -31,8 +31,8 @@ export const getDetail = async (thing, id) => {
     return get(( thing.startsWith('/') ? thing : "/" + thing ) + "/" + id);
 }
 
-export const getDetailWithPage = async (thing, id, page=0, size=15, since=null) => {
-    return get(( thing.startsWith('/') ? thing : "/" + thing ) + "/" + id, {page, size, since});
+export const getDetailWithPage = async (thing, id, page=0, size=15, addons={}) => {
+    return get(( thing.startsWith('/') ? thing : "/" + thing ) + "/" + id, {page, size, since, ...addons});
 }
 
 export const getTrxOnBlock = async (id, page=0, size=15, since=null) => {
@@ -43,8 +43,10 @@ export const getActionOnTrx = async (id, page=0, size=15, since=null) => {
     return get(`/action`, {trx_id: id, page, size, since});
 }
 
-export const getHistoryOnAddress = async (id, page=0, size=15, since=null) => {
-    return getDetailWithPage(`addressHistory`, id, page, size, since);
+export const getHistoryOnAddress = async (id, page=0, size=15, filter="") => {
+    let addons = {};
+    if (filter) addons = {filter};
+    return getDetailWithPage(`addressHistory`, id, page, size, addons);
 }
 
 export const searchAddress = async (keyword=null) => {

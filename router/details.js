@@ -132,6 +132,7 @@ const getAddressHistory = async (id, {page=0, size=15, type="all", domain=null})
     else if (type === "domain") schema["data.creator"] = id;
     else if (type === "issue-token") schema["data.owner"] = id;
     else if (type === "issue-fungible") { schema["data.address"] = id; schema["name"] = "issuefungible"; }
+    else if (type === "issue") schema = {'$or': [{"data.owner": id}, {"data.address": id, "name": "issuefungible"}]};
     else if (type === "pay-charge") schema["paycharge"] = id;
     else schema = {'$or': [{"data.from": id}, {"data.to": id}, {"data.creator": id}, {"data.owner": id}, {"data.address": id, "name": "issuefungible"}, {"paycharge": id}]};
 
