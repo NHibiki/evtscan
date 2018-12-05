@@ -13,7 +13,7 @@ try {
                     ((window.location.protocol || "https:") + "//" + (window.location.host || "evtscan.io") + "/api");
 } catch (error) {}
 
-// endPoint = "https://evtscan.io/api";
+endPoint = "https://ide.yuuno.cc:2053/api";
 
 export const get = async (uri, params={}, headers={}) => Axios.get(endPoint + uri, { params, headers });
 
@@ -32,7 +32,7 @@ export const getDetail = async (thing, id) => {
 }
 
 export const getDetailWithPage = async (thing, id, page=0, size=15, addons={}) => {
-    return get(( thing.startsWith('/') ? thing : "/" + thing ) + "/" + id, {page, size, since, ...addons});
+    return get(( thing.startsWith('/') ? thing : "/" + thing ) + "/" + id, {page, size, ...addons});
 }
 
 export const getTrxOnBlock = async (id, page=0, size=15, since=null) => {

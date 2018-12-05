@@ -121,19 +121,19 @@ const getAddress = async (id) => {
 
 }
 
-const getAddressHistory = async (id, {page=0, size=15, type="all", domain=null}) => {
+const getAddressHistory = async (id, {page=0, size=15, filter="all", domain=null}) => {
 
     page = parseInt(page, 10); if (!page || page < 0) page = 0;
     size = parseInt(size, 10); if (!size || size < 5) size = 5;
 
     let schema = {};
-    if (type === "send") schema["data.from"] = id;
-    else if (type === "receive") schema["data.to"] = id;
-    else if (type === "domain") schema["data.creator"] = id;
-    else if (type === "issue-token") schema["data.owner"] = id;
-    else if (type === "issue-fungible") { schema["data.address"] = id; schema["name"] = "issuefungible"; }
-    else if (type === "issue") schema = {'$or': [{"data.owner": id}, {"data.address": id, "name": "issuefungible"}]};
-    else if (type === "pay-charge") schema["paycharge"] = id;
+    if (filter === "send") schema["data.from"] = id;
+    else if (filter === "receive") schema["data.to"] = id;
+    else if (filter === "domain") schema["data.creator"] = id;
+    else if (filter === "issue-token") schema["data.owner"] = id;
+    else if (filter === "issue-fungible") { schema["data.address"] = id; schema["name"] = "issuefungible"; }
+    else if (filter === "issue") schema = {'$or': [{"data.owner": id}, {"data.address": id, "name": "issuefungible"}]};
+    else if (filter === "pay-charge") schema["paycharge"] = id;
     else schema = {'$or': [{"data.from": id}, {"data.to": id}, {"data.creator": id}, {"data.owner": id}, {"data.address": id, "name": "issuefungible"}, {"paycharge": id}]};
 
     if (domain) schema = {"$and": [schema, {"domain": domain}]};
