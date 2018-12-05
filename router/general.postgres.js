@@ -1,4 +1,4 @@
-const mongo = require('../lib/mongo.js');
+const postgres = require('../lib/postgres.js');
 
 const getInfoWrapper = fn => async (ctx, next) => {
 
@@ -34,20 +34,15 @@ const getChainInfo = async () => {
 const searchAddress = async ctx => {
 
     let {keyword} = (ctx.query || {});
-    if (!keyword) return null;
+    if (!keyword) return [];
 
-    let res = await mongo.db(async db => {
-        let col = db.collection(`Transactions`);
-        let regp = RegExp(keyword, "i");
-        return (await col.aggregate([
-            {'$match': {payer: regp}},
-            {'$group': {_id: "$payer",payer: {$first: "$payer"}}},
-            {'$project': {_id: 0}},
-        ]).toArray()).map(d => d.payer).sort((a, b) => {
-            try {
-                return regp.exec(a).index < regp.exec(b).index ? -1 : 1;
-            } catch(err) {return 0}
-        });
+    let res = await postgres.db(async db => {
+        return (await db.query(`SELECT payer FROM transactions WHERE LOWER(payer) LIKE $1 LIMIT 20`, [`%${keyword.toLocaleLowerCase()}%`])).rows
+            .map(d => d.payer).sort((a, b) => {
+                try {
+                    return regp.exec(a).index < regp.exec(b).index ? -1 : 1;
+                } catch(err) {return 0}
+            });
     });
 
     return res[1] || [];

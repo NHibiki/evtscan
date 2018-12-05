@@ -24,7 +24,7 @@ const inject = function (app, config) {
 
     // search current directory for all route files.
     fs.readdirSync(__dirname).forEach(rt => {
-        if (rt !== 'router.js' && rt.endsWith('.js') && !rt.startsWith('.')) {
+        if (rt !== 'router.js' && (rt.endsWith(`.all.js`) || rt.endsWith(`.${config.db}.js`)) && !rt.startsWith('.')) {
             require(`./${rt}`).forEach(([method, uri, fn]) => {
 
                 // register routes to /api
@@ -32,11 +32,12 @@ const inject = function (app, config) {
                 if (['get', 'post', 'put', 'del', 'all'].includes(method)) router[method](`/api${uri}`, fn);
             
             });
-            console.log(`[Route] Load Route Module ${rt}`);
+            console.log(`[Route] Load Route Module ${rt.replace(`.${config.db}.js`, ``).replace(`.all.js`, ``)}`);
         }
     });
 
-    app.use(router.routes())
+    app.use(async (ctx, next) => { ctx.state.config = config; await next(); })
+       .use(router.routes())
        .use(router.allowedMethods())
        .use(KoaStatic(path.join(__dirname, "../web/static")))
        .use(KoaMount("/_nuxt", KoaStatic(path.join(__dirname, "../.nuxt/dist"))))

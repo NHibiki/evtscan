@@ -7,6 +7,7 @@ const sysInfo = async (ctx, next) => {
     ctx.body = {
         name: "EvtScan Backend Server",
         version: PackageConfig.version,
+        db: ctx.state.config.db,
         start: new Date(StartTime).toISOString(),
         onTime: parseInt((Date.now() - StartTime) / 1000, 10)
     }
