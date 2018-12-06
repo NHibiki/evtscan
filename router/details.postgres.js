@@ -1,7 +1,15 @@
 const postgres = require('../lib/postgres.js');
+const evtnet   = require('../lib/evtnet.js');
+const Axios = require('axios');
 
 Array.prototype.forEachAsync = async function (fn) {
     for (let i in this) Number.isInteger(parseInt(i, 10)) && await fn(this[i], i);
+}
+
+Array.prototype.mapAsync = async function (fn) {
+    let newArr = [];
+    for (let i in this) Number.isInteger(parseInt(i, 10)) && (newArr.push(await fn(this[i], i)));
+    return newArr;
 }
 
 // get details of blocks or transactions
@@ -50,8 +58,11 @@ const getTransaction = async id => {
 const getFungible = async id => {
     let res = await postgres.db(async db => {
         let fungible = (await db.query(`SELECT * FROM fungibles WHERE sym_id=$1 LIMIT 1`, [parseInt(id, 10) || 0])).rows[0] || null;
-        let metas = (await db.query(`SELECT * FROM metas WHERE id=$1`, [parseInt(id, 10) || 0])).rows || [];
-        fungible.metas = metas;
+        if (fungible && fungible.metas && fungible.metas.length) {
+            let params = fungible.metas.map((_, i) => `$${i+1}`);
+            let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, fungible.metas)).rows || [];
+            fungible.metas = metas;
+        }
         return fungible;
     });
     return res[1] || [];
@@ -100,6 +111,25 @@ const getAddress = async (id) => {
     return res[1] || [];
 }
 
+const getAssets = async (id) => {
+    let node = evtnet.getRandomNode('AP');    
+    let ans = [];
+    try {
+        ans = (await Axios.post(node.addr + `/v1/evt/get_fungible_balance`, {address: id})).data;
+    } catch(err) { return null; }
+    
+    if (ans.code || !ans.length) return null;
+    let assets = ans.map(a => ({
+        sym_id: parseInt(a.split(" S#")[1], 10) || 0,
+        amount: parseFloat(a.split(" S#")[0]) || 0,
+    })).filter(a => a.sym_id && a.amount);
+    
+    return await assets.mapAsync(async a => ({
+        ...(await getFungible(a.sym_id)),
+        ...a,
+    }));
+}
+
 const getAddressHistory = async (id, {page=0, size=15, filter="all", domain=null}) => {
     page = parseInt(page, 10); if (!page || page < 0) page = 0;
     size = parseInt(size, 10); if (!size || size < 5) size = 5;
@@ -130,5 +160,6 @@ module.exports = [
     ['get', '/group/:id', getDetail(getGroup)],
     ['get', '/nonfungible/:id', getDetail(getNonfungible)],
     ['get', '/address/:id', getDetail(getAddress)],
+    ['get', '/addressAssets/:id', getDetail(getAssets)],
     ['get', '/addressHistory/:id', getDetail(getAddressHistory)],
 ];

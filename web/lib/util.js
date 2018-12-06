@@ -67,6 +67,9 @@ export const tablizeTrx = function (data={}) {
     if (trace) {
         data["Trace.Elapsed"] = trace.elapsed + " us";
         data["Trace.Charge"]  = trace.charge / 10e4 + " EVT/PEVT";
+    } else if ('change' in data && 'elapsed' in data) {
+        data["Trace.Elapsed"] = data.elapsed + " us";
+        data["Trace.Charge"]  = data.charge / 10e4 + " EVT/PEVT";
     }
 
     let { keys, signatures } = data;
@@ -216,17 +219,18 @@ export const tablizeGroup = function (data={}) {
     delete data.created_at;
 
     data = {...data, ...data.def};
-    data.threshold = (data.root || {}).threshold || 0;
+    data.threshold = data.threshold || (data.root || {}).threshold || 0;
     delete data.def;
 
     let detailedData = [];
     let detailedActions = [];
-    ((data.root || {}).nodes || []).forEach(d => {
+    ((data.root || data).nodes || []).forEach(d => {
         if (!d || !d.weight) return;
         detailedData.push([d.weight, d.key || "Group"]);
         detailedActions.push(d);
     });
     delete data.root;
+    data.nodes = detailedData.length;
 
     let metaData = {};
     if (!data.metas || !data.metas.length) metaData = null;

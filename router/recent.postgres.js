@@ -107,8 +107,11 @@ const getFungibles = async (since, page, size, from, {creator, filter}) => {
         }
         let schemaResult = (await db.query(`SELECT * FROM fungibles WHERE created_at<=$1 AND created_at>=$2 ${addons} ORDER BY created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
         return await schemaResult.mapAsync(async d => {
-            let metas = (await db.query(`SELECT * FROM metas WHERE id=$1`, [parseInt(d.sym_id, 10) || 0])).rows || [];
-            d.metas = metas;
+            if (d && d.metas && d.metas.length) {
+                let params = d.metas.map((_, i) => `$${i+1}`);
+                let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, d.metas)).rows || [];
+                d.metas = metas;
+            }
             return d;
         });
     });
