@@ -37,7 +37,7 @@ const searchAddress = async ctx => {
     if (!keyword) return [];
 
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT payer FROM transactions WHERE LOWER(payer) LIKE $1 LIMIT 20`, [`%${keyword.toLocaleLowerCase()}%`])).rows
+        return (await db.query(`SELECT DISTINCT payer FROM transactions WHERE LOWER(payer) LIKE $1 LIMIT 20`, [`%${keyword.toLocaleLowerCase()}%`])).rows
             .map(d => d.payer).sort((a, b) => {
                 try {
                     return regp.exec(a).index < regp.exec(b).index ? -1 : 1;
