@@ -1,9 +1,9 @@
 <template>
     <div class='item'>
-        <router-link class='blocknum' :to="'/block/' + item.block_num"><span>Block</span> <span>#{{ item.block_num }}</span></router-link>
+        <router-link class='blocknum' :to="'/block/' + item.block_id"><span>Block</span> <span>#{{ item.block_num }}</span></router-link>
         <div class='blockspec'>
             <span><i>Produced By:</i> <b>#{{ item.producer }}</b></span>
-            <span><i>Block ID:</i> <router-link :title="item.block_id" :to="'/block/' + item.block_num">{{ item.block_id }}</router-link></span>
+            <span><i>Block ID:</i> <router-link :title="item.block_id" :to="'/block/' + item.block_id">{{ item.block_id }}</router-link></span>
             <span><i>Trxes:</i> <b>{{ item.trx_count }}</b> &nbsp;&nbsp; Pending: <b :style="`color:${item.pending ? 'green' : 'red'}`">{{ item.pending }}</b></span>
         </div>
         <Timer :timestamp="new Date(item.timestamp).getTime()"/>

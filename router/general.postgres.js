@@ -23,7 +23,8 @@ const getChainInfo = async () => {
     return {
         tps: {
             top: {
-                id: 14925824,
+                id: "00e3c000d678c34f471128520da20a9ef58134a9bb11d6812ce9f1e795baca14",
+                num: 14925824,
                 value: 7976
             }
         }

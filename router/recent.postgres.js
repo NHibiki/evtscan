@@ -12,7 +12,7 @@ Array.prototype.mapAsync = async function (fn) {
 // get most recent transactions from mongo
 const getRecent = fn => async (ctx, next) => {
 
-    let {since, page, size, from, block_num, trx_id, trx_name, creator, key, name, sym_id, filter} = ctx.query;
+    let {since, page, size, from, block_id, trx_id, trx_name, creator, key, name, sym_id, filter} = ctx.query;
 
     // check params of input
     if (!(since = Date.parse(since))) since = Date.now();
@@ -21,7 +21,7 @@ const getRecent = fn => async (ctx, next) => {
     else if (page < 0) page = 0;
     if (!(size = parseInt(size, 10))) size = 10;
     else if (size < 10) size = 10;
-    if (!(block_num = parseInt(block_num, 10))) block_num = 0;
+    if (!block_id) block_id = null;
     if (!trx_id) trx_id = null;
     if (!trx_name) trx_name = null;
     if (!creator) creator = null;
@@ -38,7 +38,7 @@ const getRecent = fn => async (ctx, next) => {
     let result = {
         state: 1,
         since, page, size, from,
-        data: await fn(since, page, size, from, {block_num, trx_id, trx_name, creator, key, name, sym_id, filter})
+        data: await fn(since, page, size, from, {block_id, trx_id, trx_name, creator, key, name, sym_id, filter})
     };
 
     if (!result.data) result = { state: 0, error: "resource not found" }
@@ -53,11 +53,11 @@ const getBlocks = async (since, page, size, from, {trx_id}) => {
     return res[1] || [];
 }
 
-const getTransactions = async (since, page, size, from, {block_num}) => {
+const getTransactions = async (since, page, size, from, {block_id}) => {
     let res = await postgres.db(async db => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
-        if (block_num) { addons = `AND block_num=$5`; queries.push(block_num); }
+        if (block_id) { addons = `AND block_id=$5`; queries.push(block_id); }
         return (await db.query(`SELECT * FROM transactions WHERE created_at<=$1 AND created_at>=$2 ${addons} ORDER BY created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];

@@ -43,7 +43,7 @@ const getDetail = fn => async (ctx, next) => {
 
 const getBlock = async id => {
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT * FROM blocks WHERE block_num=$1 LIMIT 1`, [parseInt(id, 10) || 0])).rows[0] || null;
+        return (await db.query(`SELECT * FROM blocks WHERE block_id=$1 LIMIT 1`, [id || ""])).rows[0] || null;
     });
     return res[1] || [];
 }

@@ -10,7 +10,7 @@
             </div>
             <div id="tpsPanel" class="container" :style="{'margin-top': '-12px'}">
                 <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
-                <router-link :style="{'float': 'right'}" :to="`/block/${tps && tps.top && tps.top.id || 'None'}`" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.id || "None"}}</router-link>
+                <router-link :style="{'float': 'right'}" :to="`/block/${tps && tps.top && tps.top.id || 'None'}`" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.num || "None"}}</router-link>
             </div>
         </Grid>
         <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
