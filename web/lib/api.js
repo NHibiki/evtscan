@@ -13,7 +13,7 @@ try {
                     ((window.location.protocol || "https:") + "//" + (window.location.host || "evtscan.io") + "/api");
 } catch (error) {}
 
-endPoint = "https://ide.yuuno.cc:2053/api";
+// endPoint = "https://ide.yuuno.cc:2053/api";
 
 export const get = async (uri, params={}, headers={}) => Axios.get(endPoint + uri, { params, headers });
 
