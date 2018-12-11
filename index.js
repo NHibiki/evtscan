@@ -46,12 +46,11 @@ if (!serverPort || !serverAddr) {
 }
 
 var usingDB = "mongo";
-if (!postgresAddr && !postgresPass) {
+if (!postgresAddr) {
     console.log('[Info] Connecting Mongodb.');
     usingDB = "mongo";
     Mongo.init(mongoServer, databaseDB);
 } else {
-    if (!postgresAddr || !postgresPass) { console.error(`[Error] Missing arguments when using postgres`); process.exit(1); }
     console.log('[Info] Connecting Postgres.');
     usingDB = "postgres";
     Postgres.init(postgresAddr, postgresUser, postgresPass, databaseDB);
