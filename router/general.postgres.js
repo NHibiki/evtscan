@@ -23,9 +23,9 @@ const getChainInfo = async () => {
     return {
         tps: {
             top: {
-                id: "00e3c000d678c34f471128520da20a9ef58134a9bb11d6812ce9f1e795baca14",
-                num: 14925824,
-                value: 7976
+                id: "0152b436040b9ec7025f7c53cbf9e3ee1ffb78891482b323caef6616cf95cab1",
+                num: 22197302,
+                value: 10018
             }
         }
     }
