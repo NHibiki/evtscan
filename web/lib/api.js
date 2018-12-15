@@ -17,14 +17,14 @@ try {
 
 export const get = async (uri, params={}, headers={}) => Axios.get(endPoint + uri, { params, headers });
 
-export const getRecent = async (thing, page=0, size=15, since=null, filter=null) => {
-    if (['everipay', 'everipass'].includes(thing)) return getTrxByName(thing, page, size, since);
+export const getRecent = async (thing, page=0, size=15, since=null, filter=null, from=null) => {
+    if (['everipay', 'everipass'].includes(thing)) return getTrxByName(thing, page, size, since, from);
     return get(thing.startsWith('/') ? thing : "/" + thing,
-        { page, size, since, filter }, {});
+        { page, size, since, from, filter }, {});
 }
 
-export const getTrxByName = async (name, page=0, size=15, since=null) => {
-    return get(`/trxByName`, { trx_name: name, page, size, since });
+export const getTrxByName = async (name, page=0, size=15, since=null, from=null) => {
+    return get(`/trxByName`, { trx_name: name, page, size, since, from });
 }
 
 export const getDetail = async (thing, id) => {

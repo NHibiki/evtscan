@@ -23,8 +23,8 @@
             </div>
         </Grid>
         <div class='dualList' :style="{'min-height': minHeight + 'px'}">
-            <GridList title="Blocks" endpoint="block" :for="BlockView" />
-            <GridList title="Transactions" :endpoint="trxEndpoint" :activeTab="activeTab" :tabs="trxTabs" :for="TrxView" />
+            <GridList title="Blocks" :sync="timeSync" endpoint="block" :for="BlockView" />
+            <GridList title="Transactions" :sync="timeSync" :endpoint="trxEndpoint" :activeTab="activeTab" :tabs="trxTabs" :for="TrxView" />
         </div>
     </section>
 </template>
@@ -74,15 +74,15 @@
             window.onresize();
 
             // Update Sync Timer
-            let updateInterval = 1000;
-            this.updatingTimer = setInterval(() => {
-                if (this.timeSync) this.$store.commit('app/updateCurrentTime');
-            }, updateInterval);
+            // let updateInterval = 1000;
+            // this.updatingTimer = setInterval(() => {
+            //     if (this.timeSync) this.$store.commit('app/syncData');
+            // }, updateInterval);
         },
-        beforeDestroy() {
-            if (this.updatingTimer) clearInterval(this.updatingTimer);
-            this.updatingTimer = null;
-        },
+        // beforeDestroy() {
+        //     if (this.updatingTimer) clearInterval(this.updatingTimer);
+        //     this.updatingTimer = null;
+        // },
         methods: {
             ...mapMutations(['changeEndpoint', 'changeMinHeight']),
             searchAddress: _.debounce(async function () {

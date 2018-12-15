@@ -12,8 +12,9 @@ export const mutations = {
         state.nomoreLoading[endpoint] = null;
         state.items = Object.assign({}, state.items);
     },
-    getDataListMut: (state, {endpoint, items}) => {
-        state.items[endpoint] = state.items[endpoint] ? [...state.items[endpoint], ...items] : items;
+    getDataListMut: (state, {endpoint, items, start=false}) => {
+        if (!start) state.items[endpoint] = state.items[endpoint] ? [...state.items[endpoint], ...items] : items;
+        else state.items[endpoint] = state.items[endpoint] ? [...items, ...state.items[endpoint]] : items;
         state.items = Object.assign({}, state.items);
     },
     setLoadingState: (state, {endpoint, isOrNot, noMore}) => {
@@ -36,5 +37,16 @@ export const actions = {
         let noMore = items ? (items.length < 15) : true;
         commit('getDataListMut', {endpoint, items});
         commit('setLoadingState', {endpoint, isOrNot:false, noMore});
+    },
+    async syncDataList({ commit, state }, {endpoint}) {
+        commit('setLoadingState', {endpoint, isOrNot:true});
+        let from = null;
+        if (state.items[endpoint] && state.items[endpoint].length) {
+            from = state.items[endpoint][0].created_at || null;
+            if (from) from = new Date(new Date(from).getTime() + 1).toISOString();
+        }
+        let items = (await getRecent(endpoint, 0, 15, null, null, from)).data.data;
+        commit('getDataListMut', {endpoint, items, start: true});
+        commit('setLoadingState', {endpoint, isOrNot:false});
     }
 };

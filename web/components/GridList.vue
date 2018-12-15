@@ -23,20 +23,22 @@
 
     export default {
         name: 'GridList',
-        props: ['title', 'endpoint', 'for', 'tabs', 'activeTab'],
+        props: ['title', 'endpoint', 'sync', 'for', 'tabs', 'activeTab'],
         data () {
             return {
                 hasTab: this.tabs && Object.keys(this.tabs).length,
-                SubView: this.for
+                SubView: this.for,
+                needSync: this.sync,
             }
         },
         computed: mapState(['items', 'loading', 'nomoreLoading']),
         created() { return this.onRefresh(); },
         watch: {
-            'endpoint' () { this.getDataList({endpoint:this.endpoint}); }
+            'endpoint' () { this.getDataList({endpoint:this.endpoint}); },
+            'sync' () { this.needSync = this.sync; },
         },
         methods: {
-            ...mapActions(['getDataList']),
+            ...mapActions(['getDataList', 'syncDataList']),
             onScroll(event) {
                 try { window } catch(err) {return;}
                 let trdM = this.$store.state.indexs.minHeight < 580 ? 580 : this.$store.state.indexs.minHeight;
@@ -48,10 +50,23 @@
             },
             async onRefresh() {
                 await this.getDataList({endpoint:this.endpoint});
-                this.$store.commit('app/updateCurrentTime');
             }
         },
-        components: { LineScalePulseOutRapidLoader, BallPulseLoader, Switcher }
+        components: { LineScalePulseOutRapidLoader, BallPulseLoader, Switcher },
+        mounted() {
+            // Update Sync Timer
+            let updateInterval = 3000;
+            this.updatingTimer = setInterval(async () => {
+                if (this.isUpdating || !this.needSync) return;
+                this.isUpdating = true;
+                await this.syncDataList({endpoint: this.endpoint});
+                this.isUpdating = false;
+            }, updateInterval);
+        },
+        beforeDestroy() {
+            if (this.updatingTimer) clearInterval(this.updatingTimer);
+            this.updatingTimer = null;
+        },
     }
 </script>
 

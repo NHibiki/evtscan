@@ -9,9 +9,6 @@ export const state = () => ({
 export const mutations = {
     switchOpen: (state) => {
         state.open = !state.open;
-    },
-    updateCurrentTime: (state) => {
-        state.time = Date.now();
     }
 };
 
