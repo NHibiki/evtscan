@@ -1,5 +1,5 @@
 import { getDetail, getHistoryOnAddress } from '~/lib/api';
-import { tablizeAddress, tablizeHistory } from '~/lib/util';
+import { tablizeAddress, tablizeHistory, tablizeAddressAssets } from '~/lib/util';
 
 export const state = () => ({
     id: "",
@@ -8,6 +8,7 @@ export const state = () => ({
     page: 0,
     pagesize: 15,
     data: null,
+    assets: null,
     historyData: null,
     historyDataDetail: null
 });
@@ -43,6 +44,9 @@ export const actions = {
         await Promise.all([
                 getDetail("address", state.id).then(data => {
                     commit('updateDataMut', {data: tablizeAddress(data.data.data)});
+                }),
+                getDetail("addressAssets", state.id).then(data => {
+                    commit('updateDataMut', {assets: tablizeAddressAssets(data.data.data)});
                 }),
                 dispatch("updateHistory")
             ]);

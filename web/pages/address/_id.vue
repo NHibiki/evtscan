@@ -6,6 +6,10 @@
             <Table :data="data"/>
         </div>
         <div class='grid'>
+            <h2>Assets</h2>
+            <Table :head="assetsHead" :data="assets" :clickable="true" @click="clickAssets"/>
+        </div>
+        <div class='grid'>
             <h2>History</h2>
             <div class="switch-container"><Switcher :tabs="filterTabs" :active="activeTab" /></div>
             <Table :head="historyHead" :data="historyData" :clickable="true" @click="click"/>
@@ -37,14 +41,16 @@
                     issue: { name: "Issue", filter: "issue", callback: cb },
                 },
                 historyHead: ["Type", "Domain", "Key", "Trx ID", "Timestamp"],
+                assetsHead: ["Name", "Sym ID", "Amount"],
             }
         },
-        computed: mapState(['id', 'data', 'historyData', 'historyDataDetail', 'page', 'activeTab']),
+        computed: mapState(['id', 'data', 'assets', 'historyData', 'historyDataDetail', 'page', 'activeTab']),
         components: { Table, Switcher },
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
         asyncData({store, route, isServer}) { store.commit('address/resetData', route.params.id); let promise = store.dispatch('address/updateData'); if (isServer) return promise; },
         methods: {
             click(i) { this.$router.push("/trx/" + this.historyDataDetail[i].trx_id) },
+            clickAssets(i) { this.$router.push("/fungible/" + this.assets[i][1]) },
             ...mapMutations(['resetData']),
             ...mapActions(['updateData', 'more', 'changeFilter']),
         }

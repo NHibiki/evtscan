@@ -45,7 +45,7 @@
         name: 'Index',
         data () {
             let cb = this.changeEndpoint.bind(this);
-            let timeSync = true;
+            let timeSync = false;
             return {
                 search: "",
                 searchData: [],

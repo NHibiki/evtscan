@@ -258,6 +258,12 @@ export const tablizeAddress = function (data={}) {
 
 }
 
+export const tablizeAddressAssets = function (data=[]) {
+
+    return data.map(d => ([d.name, d.sym_id, d.amount])).filter(Boolean);
+
+}
+
 export const tablizeHistory = function (data=[]) {
 
     let res = [];
@@ -383,6 +389,7 @@ export default {
     tablizeDomain,
     tablizeGroup,
     tablizeAddress,
+    tablizeAddressAssets,
     tablizeHistory,
     tablizeBlocks,
     tablizeTransactions,
