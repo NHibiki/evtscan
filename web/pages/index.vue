@@ -2,10 +2,10 @@
     <section class="main-section">
         <Grid :style="{'border-radius': '16px'}">
             <div id="timeSync" class="container">
-                <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>LAST SYNC TIME</b>
-                <b class='hidden'>Now:&nbsp;</b>
+                <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>AUTO SYNC</b>
+                <!--<b class='hidden'>Now:&nbsp;</b>
                 <span class="show-time">{{new Date($store.state.app.time).toLocaleTimeString()}}</span>
-                <u :style="{'margin-left': '8px'}">{{new Date($store.state.app.time).toDateString()}}</u>
+                <u :style="{'margin-left': '8px'}">{{new Date($store.state.app.time).toDateString()}}</u>-->
                 <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked:'Sync On', unchecked:'Sync Off'}" />
             </div>
             <div id="tpsPanel" class="container" :style="{'margin-top': '-12px'}">
@@ -133,6 +133,7 @@
 
     #timeSync.container {
 
+        /*
         b.hidden {display: none;}
 
         @media only screen and (max-width: 540px) {
@@ -142,7 +143,7 @@
         @media only screen and (max-width: 445px) {
             b.pill {display: none;}
             b.hidden {display: inline;}
-        }
+        }*/
     }
 
     #tpsPanel.container {
