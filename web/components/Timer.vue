@@ -12,7 +12,7 @@
         props: ['timestamp'],
         computed: {
             ...mapState(['time']),
-            currentTime() { return msToTimeStr(this.time - this.timestamp); },
+            currentTime() { return msToTimeStr(Date.now() - this.timestamp); },
         },
     }
 </script>

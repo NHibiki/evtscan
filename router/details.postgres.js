@@ -86,7 +86,7 @@ const getNonfungible = async (id, {page=0, size=15}) => {
     page = parseInt(page, 10); if (!page || page < 0) page = 0;
     size = parseInt(size, 10); if (!size || size < 5) size = 5;
     let res = await postgres.db(async db => {
-        let distributes = (await db.query(`SELECT * FROM tokens WHERE domain=$1 ORDER BY created_at DESC, name ASC LIMIT $2 OFFSET $3`, [id || "", size, size * page])).rows || [];
+        let distributes = (await db.query(`SELECT tk.*, t.timestamp AS timestamp FROM tokens tk INNER JOIN transactions t ON tk.trx_id = t.trx_id WHERE domain=$1 ORDER BY t.timestamp DESC, name ASC LIMIT $2 OFFSET $3`, [id || "", size, size * page])).rows || [];
         let returnData = (await db.query(`SELECT * FROM actions WHERE domain=$1 AND name='newdomain' AND key='.create' LIMIT 1`, [id || ""])).rows[0] || null;
         return {...returnData, distributes};
     });
@@ -147,7 +147,7 @@ const getAddressHistory = async (id, {page=0, size=15, filter="all", domain=null
     if (domain) { schema = `(${schema}) AND domain=$4`; queries.push(domain); }
 
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT * FROM actions WHERE ${schema} ORDER BY created_at DESC, name ASC LIMIT $2 OFFSET $3`, queries)).rows || [];
+        return (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE ${schema} ORDER BY t.timestamp DESC, name ASC LIMIT $2 OFFSET $3`, queries)).rows || [];
     });
     return res[1] || [];
 }

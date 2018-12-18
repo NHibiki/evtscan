@@ -126,6 +126,7 @@ export const tablizeFungible = function (data={}) {
     });
     delete data.metas;
 
+    if (data.total_supply) data.total_supply = (parseInt(data.total_supply, 10) || "N/A").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     for (let key in data) {
         res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
     }
@@ -365,10 +366,9 @@ export const tablizeGroups = function (data=[]) {
 
     let res = [];
     let resData = [];
-
     data.forEach(d => {
         let def = d.def || {};
-        res.push([d.name, def.key || "None", (def.root || {}).threshold || 0]);
+        res.push([d.name, d.key || "None", def.threshold || 0]);
         resData.push('/group/' + d.name);
     });
 

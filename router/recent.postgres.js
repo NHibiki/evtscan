@@ -48,7 +48,7 @@ const getRecent = fn => async (ctx, next) => {
 
 const getBlocks = async (since, page, size, from, {trx_id}) => {
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT * FROM blocks WHERE created_at<=$1 AND created_at>=$2 ORDER BY block_num DESC LIMIT $3 OFFSET $4`, [new Date(since), new Date(from), size, size * page])).rows || [];
+        return (await db.query(`SELECT * FROM blocks WHERE timestamp<=$1 AND timestamp>=$2 ORDER BY block_num DESC LIMIT $3 OFFSET $4`, [new Date(since), new Date(from), size, size * page])).rows || [];
     });
     return res[1] || [];
 }
@@ -58,7 +58,7 @@ const getTransactions = async (since, page, size, from, {block_id}) => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
         if (block_id) { addons = `AND block_id=$5`; queries.push(block_id); }
-        return (await db.query(`SELECT * FROM transactions WHERE created_at<=$1 AND created_at>=$2 ${addons} ORDER BY created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        return (await db.query(`SELECT * FROM transactions WHERE timestamp<=$1 AND timestamp>=$2 ${addons} ORDER BY timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];
 }
@@ -68,7 +68,7 @@ const getActions = async (since, page, size, from, {trx_id}) => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
         if (trx_id) { addons = `AND trx_id=$5`; queries.push(trx_id); }
-        return (await db.query(`SELECT * FROM actions WHERE created_at<=$1 AND created_at>=$2 ${addons} ORDER BY created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        return (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];
 }
@@ -78,7 +78,7 @@ const getTrxByName = async (since, page, size, from, {trx_name="everipay"}) => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
         if (trx_name) { addons = `AND name=$5`; queries.push(trx_name); }
-        let actionsData = (await db.query(`SELECT * FROM actions WHERE created_at<=$1 AND created_at>=$2 ${addons} ORDER BY created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        let actionsData = (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
 
         let trxMap = {};
         actionsData.forEach(a => {
@@ -88,7 +88,7 @@ const getTrxByName = async (since, page, size, from, {trx_name="everipay"}) => {
         });
         let trxs = actionsData.map(a => a.trx_id);
         let params = trxs.map((_, i) => `$${i+1}`);
-        let ans = (await db.query(`SELECT * FROM transactions WHERE trx_id IN (${params.join(",")}) ORDER BY created_at DESC`, trxs)).rows || [];
+        let ans = (await db.query(`SELECT * FROM transactions WHERE trx_id IN (${params.join(",")}) ORDER BY timestamp DESC`, trxs)).rows || [];
         return ans.map(a => ({...a, data: trxMap[a.trx_id].data, domain: trxMap[a.trx_id].domain}));
     });
     return res[1] || [];
@@ -105,7 +105,7 @@ const getFungibles = async (since, page, size, from, {creator, filter}) => {
             queries.push(`%${filter.trim().toLocaleLowerCase()}%`);
             queries.push(parseInt(filter, 10) || -1);
         }
-        let schemaResult = (await db.query(`SELECT * FROM fungibles WHERE created_at<=$1 AND created_at>=$2 ${addons} ORDER BY created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        let schemaResult = (await db.query(`SELECT f.*, t.timestamp AS timestamp FROM fungibles f INNER JOIN transactions t ON f.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
         return await schemaResult.mapAsync(async d => {
             if (d && d.metas && d.metas.length) {
                 let params = d.metas.map((_, i) => `$${i+1}`);
@@ -123,7 +123,7 @@ const getDomains = async (since, page, size, from, {creator}) => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
         if (creator) { addons = `AND creator=$5`; queries.push(creator); }
-        return (await db.query(`SELECT * FROM domains WHERE created_at<=$1 AND created_at>=$2 ${addons} ORDER BY created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        return (await db.query(`SELECT d.*, t.timestamp AS timestamp FROM domains d INNER JOIN transactions t ON d.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];
 }
@@ -133,14 +133,14 @@ const getGroups = async (since, page, size, from, {key}) => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
         if (key) { addons = `AND def=$5`; queries.push(key); }
-        return (await db.query(`SELECT * FROM groups WHERE created_at<=$1 AND created_at>=$2 ${addons} ORDER BY created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        return (await db.query(`SELECT g.*, t.timestamp AS timestamp FROM groups g INNER JOIN transactions t ON g.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];
 }
 
 const getNonfungibles = async (since, page, size, from) => {
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT domain AS _id, COUNT(*) AS count, MAX(created_at) AS updated_at FROM tokens WHERE created_at<=$1 AND created_at>=$2 GROUP BY _id ORDER BY updated_at DESC LIMIT $3 OFFSET $4`, [new Date(since), new Date(from), size, size * page])).rows || [];
+        return (await db.query(`SELECT tk.domain AS _id, COUNT(*) AS count, MAX(t.timestamp) AS updated_at FROM tokens tk INNER JOIN transactions t ON tk.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 GROUP BY _id ORDER BY updated_at DESC LIMIT $3 OFFSET $4`, [new Date(since), new Date(from), size, size * page])).rows || [];
     });
     return res[1] || [];
 }

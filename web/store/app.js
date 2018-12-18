@@ -1,9 +1,5 @@
-// initialize system time
-let time = Date.now();
-
 export const state = () => ({
     open: false,
-    time,
 });
 
 export const mutations = {
