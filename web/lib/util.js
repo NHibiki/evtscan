@@ -31,7 +31,7 @@ export const tablizeBlock = function (data={}) {
 
     let res = [];
     delete data._id;
-    delete data.timestamp;
+    delete data.created_at;
 
     for (let key in data) {
         res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
@@ -280,7 +280,7 @@ export const tablizeBlocks = function (data=[]) {
 
     data.forEach(d => {
         res.push([d.block_num, d.block_id, d.producer, d.timestamp]);
-        resData.push('/block/' + d.block_num);
+        resData.push('/block/' + d.block_id);
     });
 
     return [res, resData];
