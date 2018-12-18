@@ -250,12 +250,7 @@ export const tablizeGroup = function (data={}) {
 
 export const tablizeAddress = function (data={}) {
 
-    return Object.keys(data).map(key => {
-        if (Number.isInteger(data[key])) {
-            return [key.split("-").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]];
-        }
-        return null;
-    }).filter(Boolean);
+    return Object.keys(data).map(key => ([key.split("-").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]));
 
 }
 

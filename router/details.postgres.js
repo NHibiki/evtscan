@@ -95,12 +95,12 @@ const getNonfungible = async (id, {page=0, size=15}) => {
 
 const getAddress = async (id) => {
     let schemas = {
-        "send": "data->from=$1", //transferft
-        "receive": "data->to=$1", //transferft
-        "domain": "data->creator=$1", //newdomain
-        "issue-token": "data->owner=$1", //issuetoken
-        "issue-fungible": "name='issuefungible' AND data->address=$1", //issuefungible
-        "pay-charge": "paycharge=$1", //paycharge
+        "send": "data->>'from'=$1", //transferft
+        "receive": "data->>'to'=$1", //transferft
+        "domain": "data->>'creator'=$1", //newdomain
+        "issue-token": "data->>'owner'=$1", //issuetoken
+        "issue-fungible": "name='issuefungible' AND data->>'address'=$1", //issuefungible
+        "pay-charge": "data->>'payer'=$1", //pay-charge
     };
     let res = await postgres.db(async db => {
         await Object.keys(schemas).forEachAsync(async key => {
@@ -136,14 +136,14 @@ const getAddressHistory = async (id, {page=0, size=15, filter="all", domain=null
 
     let queries = [id || "", size, size * page];
     let schema = "";
-    if (filter === "send") schema = "data->from=$1";
-    else if (filter === "receive") schema = "data->to=$1";
-    else if (filter === "domain") schema = "data->creator=$1";
-    else if (filter === "issue-token") schema = "data->owner=$1";
-    else if (filter === "issue-fungible") schema = "name='issuefungible' AND data->address=$1";
-    else if (filter === "issue") schema = "data->owner=$1 OR (name='issuefungible' AND data->address=$1)";
-    else if (filter === "pay-charge") schema = "paycharge=$1";
-    else schema = "data->from=$1 OR data->to=$1 OR data->creator=$1 OR data->owner=$1 OR (name='issuefungible' AND data->address=$1) OR paycharge=$1";
+    if (filter === "send") schema = "data->>'from'=$1";
+    else if (filter === "receive") schema = "data->>'to'=$1";
+    else if (filter === "domain") schema = "data->>'creator'=$1";
+    else if (filter === "issue-token") schema = "data->>'owner'=$1";
+    else if (filter === "issue-fungible") schema = "name='issuefungible' AND data->>'address'=$1";
+    else if (filter === "issue") schema = "data->>'owner'=$1 OR (name='issuefungible' AND data->>'address'=$1)";
+    else if (filter === "pay-charge") schema = "data->>'payer'=$1";
+    else schema = "data->>'from'=$1 OR data->>'to'=$1 OR data->>'creator'=$1 OR data->>'owner'=$1 OR (name='issuefungible' AND data->>'address'=$1) OR data->>'payer'=$1";
     if (domain) { schema = `(${schema}) AND domain=$4`; queries.push(domain); }
 
     let res = await postgres.db(async db => {
