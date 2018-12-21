@@ -30,7 +30,7 @@ export const actions = {
         commit('setLoadingState', {endpoint, isOrNot:true});
         let since = null;
         if (more && state.items[endpoint] && state.items[endpoint].length) {
-            since = state.items[endpoint][state.items[endpoint].length-1].created_at || null;
+            since = state.items[endpoint][state.items[endpoint].length-1].timestamp || null;
             if (since) since = new Date(new Date(since).getTime() - 1).toISOString();
         }
         let items = (await getRecent(endpoint, 0, 15, since)).data.data;
@@ -42,7 +42,7 @@ export const actions = {
         commit('setLoadingState', {endpoint, isOrNot:true});
         let from = null;
         if (state.items[endpoint] && state.items[endpoint].length) {
-            from = state.items[endpoint][0].created_at || null;
+            from = state.items[endpoint][0].timestamp || null;
             if (from) from = new Date(new Date(from).getTime() + 1).toISOString();
         }
         let items = (await getRecent(endpoint, 0, 15, null, null, from)).data.data;

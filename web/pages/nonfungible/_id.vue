@@ -13,7 +13,7 @@
 
         <div class='grid'>
             <h2>Distributions</h2>
-            <Table :data="distributeData ? distributeData.map(k => [k.name, k.owner && k.owner[0] ? k.owner[0] : 'None', k.created_at]) : null" :head="distributeDataHeaders" :clickable="true" @click="openDistributeModal" />
+            <Table :data="distributeData ? distributeData.map(k => [k.name, k.owner && k.owner[0] ? k.owner[0] : 'None', k.timestamp]) : null" :head="distributeDataHeaders" :clickable="true" @click="openDistributeModal" />
             <div class="pager">
                 <a class="btn" href="javascript:;" @click="more(-1)"><fa icon="angle-left"/></a>
                 <span> Page {{ page + 1 }} </span>

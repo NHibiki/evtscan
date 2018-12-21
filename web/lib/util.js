@@ -46,7 +46,7 @@ export const tablizeBlockTrx = function (data=[]) {
     let res = [];
 
     data.forEach(d => {
-        res.push([d.trx_id, d.pending, d.created_at]);
+        res.push([d.trx_id, d.pending, d.timestamp]);
     });
 
     return  res;
@@ -105,8 +105,6 @@ export const tablizeFungible = function (data={}) {
 
     let res = [];
     delete data._id;
-
-    if (data.created_at) data.timestamp = data.created_at;
     delete data.created_at;
 
     let detailedData = [];
@@ -164,8 +162,6 @@ export const tablizeNonFungible = function (data={}) {
         data: `/trx/${data.trx_id}`
     };
     delete data.trx_id;
-
-    if (data.created_at) data.timestamp = data.created_at;
     delete data.created_at;
     delete data.key;
 
@@ -181,8 +177,6 @@ export const tablizeDomain = function (data={}) {
 
     let res = [];
     delete data._id;
-
-    if (data.created_at) data.timestamp = data.created_at;
     delete data.created_at;
 
     let detailedData = [];
@@ -215,8 +209,6 @@ export const tablizeGroup = function (data={}) {
 
     let res = [];
     delete data._id;
-
-    if (data.created_at) data.timestamp = data.created_at;
     delete data.created_at;
 
     data = {...data, ...data.def};
@@ -266,7 +258,7 @@ export const tablizeHistory = function (data=[]) {
 
     res = data.map(d => {
         delete d._id;
-        return [d.name, d.domain, d.key, d.trx_id, d.created_at];
+        return [d.name, d.domain, d.key, d.trx_id, d.timestamp];
     });
 
     return [res, data];
@@ -293,7 +285,7 @@ export const tablizeTransactions = function (data=[]) {
     let resData = [];
 
     data.forEach(d => {
-        res.push([d.trx_id, d.block_num, {content: `${d.pending}`, color:d.pending ? "green" : "red"}, d.created_at]);
+        res.push([d.trx_id, d.block_num, {content: `${d.pending}`, color:d.pending ? "green" : "red"}, d.timestamp]);
         resData.push('/trx/' + d.trx_id);
     });
 
@@ -320,7 +312,7 @@ export const tablizeFungibles = function (data=[]) {
             })
             
         }
-        res.push([firstEle, d.sym_id, d.creator, d.created_at]);
+        res.push([firstEle, d.sym_id, d.creator, d.timestamp]);
         resData.push('/fungible/' + d.sym_id);
     });
 
@@ -349,7 +341,7 @@ export const tablizeDomains = function (data=[]) {
     let resData = [];
 
     data.forEach(d => {
-        res.push([d.name, d.creator, d.created_at]);
+        res.push([d.name, d.creator, d.timestamp]);
         resData.push('/domain/' + d.name);
     });
 

@@ -8,7 +8,7 @@
             <span v-if="endpoint === 'everipay'"><i>Pay:</i> <b>{{ item.data.number }}</b> &nbsp;<i>To</i> <span class="shortspan"><span :title="item.data.payee.toLocaleUpperCase()">{{ item.data.payee.toLocaleUpperCase() }}</span></span></span>
             <span v-if="endpoint === 'everipass'"><i>Domain:</i> <span class="shortspan"><span><b>{{ item.domain }}</b></span></span> &nbsp;<i>with Key</i> <span class="shortspan"><span :title="(item.data.key || 'NONE').toLocaleUpperCase()">{{ (item.data.key || 'NONE').toLocaleUpperCase() }}</span></span></span>
         </div>
-        <Timer :timestamp="new Date(item.updated_at || item.created_at).getTime()"/>
+        <Timer :timestamp="new Date(item.timestamp || item.updated_at).getTime()"/>
     </div>
 </template>
 
