@@ -67,7 +67,7 @@ const getActions = async (since, page, size, from, {trx_id}) => {
     let res = await postgres.db(async db => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
-        if (trx_id) { addons = `AND trx_id=$5`; queries.push(trx_id); }
+        if (trx_id) { addons = `AND a.trx_id=$5`; queries.push(trx_id); }
         return (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];
