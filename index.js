@@ -3,6 +3,7 @@ const Koa           = require('koa'),
       Router        = require('./router/router'),
       Postgres      = require('./lib/postgres'),
       Mongo         = require('./lib/mongo'),
+      EvtNet        = require('./lib/evtnet'),
       ArgParser     = require('argparse').ArgumentParser,
       PackageConfig = require('./package.json');
 
@@ -17,6 +18,7 @@ argParse.addArgument(['-p', '--port'    ], { help: "Port for listening, default 
 argParse.addArgument(['-a', '--addr'    ], { help: "Address for listening, default localhost.", defaultValue: "localhost" });
 argParse.addArgument(['-m', '--mgdb'    ], { help: "Mongo Server for connecting, default mongodb://localhost:27017.", defaultValue: "mongodb://localhost:27017" });
 argParse.addArgument(['-b', '--db'      ], { help: "Specify Database for Mongo, default EVT", defaultValue: "EVT" });
+argParse.addArgument(['-c', '--chain'   ], { help: "Specify Chaininfo, default empty to choose a random chain", defaultValue: "" });
 argParse.addArgument(['-g', '--postgres'], { help: "Postgres Server for connection, example localhost:5432", defaultValue: "" });
 argParse.addArgument(['-u', '--postuser'], { help: "Postgres Server username, default evtscan", defaultValue: "evtscan" });
 argParse.addArgument(['-s', '--postpass'], { help: "Postgres Server password, must be specified if using --postgres", defaultValue: "" });
@@ -28,6 +30,7 @@ const serverAddr   = args.addr;
 const serverPort   = parseInt(args.port, 10);
 const mongoServer  = args.mgdb;
 const databaseDB   = args.db;
+const chainNet     = args.chain;
 const postgresAddr = args.postgres;
 const postgresUser = args.postuser;
 const postgresPass = args.postpass;
@@ -43,6 +46,10 @@ if (dev) {
 if (!serverPort || !serverAddr) {
     console.error(`[Error] Fail to listen on ${serverAddr}:${serverPort}`);
     process.exit(1);
+}
+
+if (chainNet) {
+     EvtNet.setRandomNode(chainNet);
 }
 
 var usingDB = "mongo";
