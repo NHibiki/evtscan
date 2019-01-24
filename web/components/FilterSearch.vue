@@ -61,7 +61,7 @@
             font-weight: bolder;
             font-size: 11px;
             line-height: 32px;
-
+            outline: none;
         }
 
         .search-btn {
