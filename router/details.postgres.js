@@ -115,7 +115,7 @@ const getAssets = async (id) => {
     let node = evtnet.getRandomNode('AP');    
     let ans = [];
     try {
-        ans = (await Axios.post(node.addr + `/v1/evt/get_fungible_balance`, {address: id})).data;
+        ans = (await Axios.post(node.addr + `/v1/history/get_fungibles_balance`, {addr: id})).data;
     } catch(err) { return null; }
     
     if (ans.code || !ans.length) return null;
