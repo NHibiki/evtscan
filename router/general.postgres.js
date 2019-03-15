@@ -1,5 +1,10 @@
 const postgres = require('../lib/postgres.js');
 
+const fungiblesInfo = {
+    value: 0,
+    updated: 0,
+}
+
 const getInfoWrapper = fn => async (ctx, next) => {
 
     // set return content of query
@@ -20,8 +25,17 @@ const getInfoWrapper = fn => async (ctx, next) => {
 // get current chainInfo
 const getChainInfo = async () => {
 
+    if (fungiblesInfo.updated + 300 * 1000 < Date.now()) {
+        const res = await postgres.db(async db => {
+            return (await db.query(`SELECT COUNT(*) FROM fungibles`)).rows[0];
+        });
+        fungiblesInfo.updated = Date.now();
+        fungiblesInfo.value = res[1] || 0;
+    }
+
     return {
         tps: {
+            fungibles: fungiblesInfo,
             top: {
                 id: "0152b436040b9ec7025f7c53cbf9e3ee1ffb78891482b323caef6616cf95cab1",
                 num: 22197302,
