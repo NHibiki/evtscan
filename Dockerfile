@@ -19,7 +19,8 @@ FROM alpine:3.8
 WORKDIR /evtscan
 COPY --from=0 /evtscan /evtscan
 
-RUN ln -s /evtscan/web/.nuxt /evtscan/.nuxt
+RUN apk add --no-cache nodejs \
+    && ln -s /evtscan/web/.nuxt /evtscan/.nuxt
 
 EXPOSE 80
 

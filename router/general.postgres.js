@@ -30,7 +30,7 @@ const getChainInfo = async () => {
             return (await db.query(`SELECT COUNT(*) FROM fungibles`)).rows[0];
         });
         fungiblesInfo.updated = Date.now();
-        fungiblesInfo.value = res[1] || 0;
+        fungiblesInfo.value = parseInt((res[1] || {}).count, 10) || 0;
     }
 
     return {
