@@ -63,6 +63,13 @@ const getFungible = async id => {
             let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, fungible.metas)).rows || [];
             fungible.metas = metas;
         }
+        /* current supply */
+        try {
+            const chainData = (await Axios.post(node.addr + `/v1/evt/get_fungible`, {id})).data;
+            if (chainData.current_supply) {
+                fungible.current_supply = chainData.current_supply;
+            }
+        } catch(err) {}
         return fungible;
     });
     return res[1] || [];
