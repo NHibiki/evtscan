@@ -43,6 +43,10 @@ export const getActionOnTrx = async (id, page=0, size=15, since=null) => {
     return get(`/action`, {trx_id: id, page, size, since});
 }
 
+export const getActionOnFungible = async (id, page=0, size=15, since=null) => {
+    return get(`/action`, {sym_id: id, page, size, since});
+}
+
 export const getHistoryOnAddress = async (id, page=0, size=15, filter="") => {
     let addons = {};
     if (filter) addons = {filter};
