@@ -1,5 +1,5 @@
-import { getDetail, getActionOnFungible, tablizeTrxAction } from '~/lib/api';
-import { tablizeFungible } from '~/lib/util';
+import { getDetail, getActionOnFungible } from '~/lib/api';
+import { tablizeFungible, tablizeTrxAction } from '~/lib/util';
 
 export const state = () => ({
     id: "",
@@ -49,10 +49,11 @@ export const mutations = {
 };
 
 export const actions = {
-    async updateData({ commit, state }) {
+    async updateData({ commit, state, dispatch }) {
         let recvData = (await getDetail("fungible", state.id)).data.data;
         let [data, detailedData, detailedActions, metaData] = tablizeFungible(recvData);
         commit('updateDataMut', {data, detailedData, detailedActions, metaData});
+        return dispatch('updateActionData');
     },
     async moreActions({ commit, dispatch, state }, adder) {
         if (!adder) return;
@@ -61,9 +62,9 @@ export const actions = {
         commit('updateActionsMut', {page: state.page + adder});
         await dispatch('updateActionData');
     },
-    async updateTrx ({ commit, state }) {
+    async updateActionData ({ commit, state }) {
         let data = await getActionOnFungible(state.id, state.page, state.pagesize);
-        let [actions, actionsData] = tablizeTrxAction(recvData.data.data);
+        let [actions, actionsData] = tablizeTrxAction(data.data.data);
         commit('updateActionsMut', {page: state.page, actions, actionsData});
     }
 };

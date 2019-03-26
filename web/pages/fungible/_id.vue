@@ -54,13 +54,13 @@
                 actionHeaders: ['Name', 'Domain', 'Key'],
             }
         },
-        computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'metaData', 'showData', 'showModal', 'actions']),
+        computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'metaData', 'showData', 'showModal', 'actions', 'page']),
         components: { Table, Dialog },
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
         asyncData({store, route, isServer}) { store.commit('fungible/resetData', route.params.id); let promise = store.dispatch('fungible/updateData'); if (isServer) return promise; },
         methods: {
-            ...mapMutations(['resetData', 'closeModal', 'openDetailedModal', 'openMetaModal', 'openActionModal', 'moreActions']),
-            ...mapActions(['updateData']),
+            ...mapMutations(['resetData', 'closeModal', 'openDetailedModal', 'openMetaModal', 'openActionModal']),
+            ...mapActions(['updateData', 'moreActions']),
         }
     }
 </script>
@@ -68,5 +68,6 @@
 <style lang='scss'>
 
     @import "@/assets/components/detailPage.scss";
+    @import "@/assets/components/tablePager.scss";
 
 </style>
