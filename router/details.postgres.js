@@ -67,7 +67,11 @@ const getFungible = async id => {
         try {
             const chainData = (await Axios.post(node.addr + `/v1/evt/get_fungible`, {id})).data;
             if (chainData.current_supply) {
-                fungible.current_supply = chainData.current_supply;
+                fungible.current_supply = chainData.current_supply; 
+            }
+            /* in case of the meta data is not saved in db */
+            if (chainData.metas && !fungible.metas) {
+                fungible.metas = chainData.metas;
             }
         } catch(err) {}
         return fungible;
