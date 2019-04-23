@@ -109,13 +109,14 @@ export const tablizeFungible = function (data={}) {
 
     let detailedData = [];
     let detailedActions = [];
-    [data.issue || null, data.manage || null].forEach(d => {
+    [data.issue || null, data.manage || null, data.transfer || null].forEach(d => {
         if (!d) return;
         detailedData.push([d.name, d.threshold, d.authorizers ? (d.authorizers.length || 0) : 0]);
         detailedActions.push(d);
     });
     delete data.issue;
     delete data.manage;
+    delete data.transfer;
 
     let metaData = {};
     if (!data.metas || !data.metas.length) metaData = null;
