@@ -1,3 +1,5 @@
+@import "variable.scss";
+
 .grid {
     background: #FFF;
     width: calc(100% - 40px);
@@ -35,14 +37,14 @@
         position: absolute;
         right: 20px;
         top: 22px;
-        color: #e6a938;
+        color: $gridBtnBackground;
         /* border: 1px solid #e6a938; */
         box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
         border-radius: 40px;
 
         &:hover {
-            background: #e6a938;
-            color: #FFF;
+            background: $gridBtnBackground;
+            color: $gridBtnColor;
             box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
         }
 
@@ -65,8 +67,8 @@
         &.btn {
             padding: 8px 20px;
             display: inline-block;
-            color: #FFF;
-            background: #e6a938;
+            color: $gridBtnColor;
+            background: $gridBtnBackground;
             border-radius: 36px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, .25);
 

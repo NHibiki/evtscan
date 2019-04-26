@@ -1,22 +1,24 @@
+@import "variable.scss";
+
 @mixin withRoboto($size) {
     font-weight: $size;
-    font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    font-family: $paragraphFont;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
 
 @mixin withQuick($size) {
     font-weight: $size;
-    font-family: "Quicksand", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    font-family: $titleFont;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
 
 @mixin outlineShadow($radis) {
-    box-shadow: 0 5px 25px rgba(0, 0, 0, .07);
+    box-shadow: $defaultShadow;
     border-radius: $radis;
 }
 
 @mixin outlineShadowFocus() {
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .25);
+    box-shadow: $defaultFocusShadow;
 }
