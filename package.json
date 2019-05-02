@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node index.js",
+    "plugin-build": "node plugins/build.js",
     "push": "docker build . -t nhibiki/evtscan:dev && docker push nhibiki/evtscan:dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

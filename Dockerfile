@@ -10,6 +10,7 @@ COPY . .
 RUN apk add python nodejs npm \
     && npm i -g yarn \
     && yarn \
+    && yarn plugin-build \
     && cd web && yarn && yarn build \
     && cp ./static/favicon.ico ./.nuxt/dist/favicon.ico \
     && rm -rf ./node_modules
