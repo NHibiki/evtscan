@@ -81,7 +81,13 @@ const getFungible = async id => {
 
 const getDomain = async id => {
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT * FROM domains WHERE name=$1 LIMIT 1`, [id || ""])).rows[0] || null;
+        let domain = (await db.query(`SELECT * FROM domains WHERE name=$1 LIMIT 1`, [id || ""])).rows[0] || null;
+        if (domain && domain.metas && domain.metas.length) {
+            let params = domain.metas.map((_, i) => `$${i+1}`);
+            let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, domain.metas)).rows || [];
+            domain.metas = metas;
+        }
+        return domain;
     });
     return res[1] || [];
 }
