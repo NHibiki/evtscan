@@ -105,6 +105,13 @@ const getNonfungible = async (id, {page=0, size=15}) => {
     let res = await postgres.db(async db => {
         let distributes = (await db.query(`SELECT tk.*, t.timestamp AS timestamp FROM tokens tk INNER JOIN transactions t ON tk.trx_id = t.trx_id WHERE domain=$1 ORDER BY t.timestamp DESC, name ASC LIMIT $2 OFFSET $3`, [id || "", size, size * page])).rows || [];
         let returnData = (await db.query(`SELECT * FROM actions WHERE domain=$1 AND name='newdomain' AND key='.create' LIMIT 1`, [id || ""])).rows[0] || null;
+        await distributes.forEachAsync(async dis => {
+            if (dis && dis.metas && dis.metas.length) {
+                let params = dis.metas.map((_, i) => `$${i+1}`);
+                let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, dis.metas)).rows || [];
+                dis.metas = metas;
+            }
+        });
         return {...returnData, distributes};
     });
     return res[1] || [];
