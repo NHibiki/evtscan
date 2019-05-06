@@ -16,7 +16,7 @@
             <Table :data="Object.keys(metaData || {}).map(k => [k, metaData[k].creator])" :head="metaDataHeaders" :clickable="true" @click="openMetaModal" />
         </div>
 
-        <div class='grid'>
+        <div v-if="showActions" class='grid'>
             <h2>Actions in this Fungible</h2>
             <Table :data="actions" :head="actionHeaders" :clickable="true" @click="openActionModal" />
             <div class="pager">
@@ -54,10 +54,10 @@
                 actionHeaders: ['Name', 'Domain', 'Key'],
             }
         },
-        computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'metaData', 'showData', 'showModal', 'actions', 'page']),
+        computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'metaData', 'showData', 'showModal', 'actions', 'page', 'showActions']),
         components: { Table, Dialog },
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
-        asyncData({store, route, isServer}) { store.commit('fungible/resetData', route.params.id); let promise = store.dispatch('fungible/updateData'); if (isServer) return promise; },
+        asyncData({store, route, isServer, env}) { store.commit('fungible/allowActions', env.showFungibleActions); store.commit('fungible/resetData', route.params.id); let promise = store.dispatch('fungible/updateData'); if (isServer) return promise; },
         methods: {
             ...mapMutations(['resetData', 'closeModal', 'openDetailedModal', 'openMetaModal', 'openActionModal']),
             ...mapActions(['updateData', 'moreActions']),

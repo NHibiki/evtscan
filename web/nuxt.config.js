@@ -15,6 +15,14 @@ if (addons.additionalScripts && addons.additionalScripts.length) {
 
 module.exports = {
   /*
+  ** Environment Variables
+  */
+  env: {
+    localDEV: (process.env.NUXT_START_ENV || "").toLocaleUpperCase() === "DEV" || false,
+    remoteDEV: (process.env.REMOTE_DEV || "").toLocaleUpperCase() === "DEV" || false,
+    showFungibleActions: addons.showFungibleActions || false,
+  },
+  /*
   ** Headers of the page
   */
   head: {

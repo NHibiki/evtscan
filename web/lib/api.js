@@ -1,10 +1,14 @@
 import Axios from 'axios';
+import Vue from 'vue';
 
 let LOCALDEV = false;
+let REMOTEDEV = false;
 let endPoint = "http://localhost/api";
 try {
-    LOCALDEV = process.env.NUXT_START_ENV === "dev" ? true : false;
+    LOCALDEV = process.env.localDEV;
+    REMOTEDEV = process.env.remoteDEV;
     endPoint = LOCALDEV ? "http://localhost:8080/api" : "http://localhost/api";
+    endPoint = REMOTEDEV ? "https://evtscan.io/api" : endPoint;
 } catch (error) {}
 try {
     LOCALDEV = window.location.host.startsWith("localhost");

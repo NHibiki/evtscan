@@ -12,10 +12,14 @@ export const state = () => ({
     detailedActions: [],
     metaData: null,
     showData: {},
-    showModal: false
+    showModal: false,
+    showActions: false,
 });
 
 export const mutations = {
+    allowActions: (state, allow=false) => {
+        state.showActions = allow;
+    },
     resetData: (state, id) => {
         state.id = id;
         state.data = null;

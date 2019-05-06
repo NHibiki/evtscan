@@ -9,5 +9,7 @@ module.exports = {
     additionalCss: [],
     
     additionalScripts: [],
+
+    showFungibleActions: false
     
 };
