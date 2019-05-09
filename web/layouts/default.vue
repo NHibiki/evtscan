@@ -35,7 +35,7 @@
                     </span></li>
                 </div>
                 <div class="column">
-                    <li><b>Friendly Links</b></li>
+                    <li><b>Links</b></li>
                     <li><a href="https://everitoken.io">everiToken</a></li>
                     <li><a href="https://everitoken.io/everipay">everiPay</a></li>
                     <li><a href="http://myevt.io">MyEVT Wallet</a></li>
