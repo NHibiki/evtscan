@@ -4,7 +4,7 @@
             <span><i>TX#:</i> <router-link :to="'/trx/' + item.trx_id">{{ "0x" + item.trx_id.toLocaleUpperCase() }}</router-link></span>
             <span><i>Payer:</i> <span class="shortspan"><span :title="item.payer.toLocaleUpperCase()">{{ item.payer.toLocaleUpperCase() }}</span></span>
                   &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp; <router-link :to="'/block/' + item.block_id"><span class="shortspan"><span :title="'0x' + item.block_id.toLocaleUpperCase()">{{ "0x" + item.block_id.toLocaleUpperCase() }}</span></span></router-link></span>
-            <span v-if="endpoint === 'transaction'"><i>Trace:</i> <b>{{ (item.trace || item).charge / 100000.0 }} EVT</b> charged &nbsp;<b>{{ (item.trace || item).elapsed }} us</b> elapsed</span>
+            <span v-if="endpoint === 'transaction'"><i>Trace:</i> <b>{{ (item.trace || item).charge / 100000.0 }} EVT</b> charged <!-- &nbsp;<b>{{ (item.trace || item).elapsed }} us</b> elapsed --> </span>
             <span v-if="endpoint === 'everipay'"><i>Pay:</i> <b>{{ item.data.number }}</b> &nbsp;<i>To</i> <span class="shortspan"><span :title="item.data.payee.toLocaleUpperCase()">{{ item.data.payee.toLocaleUpperCase() }}</span></span></span>
             <span v-if="endpoint === 'everipass'"><i>Domain:</i> <span class="shortspan"><span><b>{{ item.domain }}</b></span></span> &nbsp;<i>with Key</i> <span class="shortspan"><span :title="(item.data.key || 'NONE').toLocaleUpperCase()">{{ (item.data.key || 'NONE').toLocaleUpperCase() }}</span></span></span>
         </div>
