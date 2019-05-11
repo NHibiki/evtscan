@@ -1,16 +1,19 @@
 <template>
     <section class="main-section">
         <Grid :style="{'border-radius': '16px'}">
-            <div id="timeSync" class="container">
+            <div id="trxCount" class="container">
+                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>DAILY TRX <b :style="{'color': '#d80000'}">{{trx && trx.value || "0"}}</b></b>
+            </div>
+            <div id="tpsPanel" class="container" :style="{'margin-top': '-12px'}">
+                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
+                <router-link :style="{'float': 'right'}" :to="`/block/${tps && tps.top && tps.top.id || 'None'}`" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.num || "None"}}</router-link>
+            </div>
+            <div id="timeSync" class="container" :style="{'margin-top': '-12px'}">
                 <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>AUTO SYNC</b>
                 <!--<b class='hidden'>Now:&nbsp;</b>
                 <span class="show-time">{{new Date($store.state.app.time).toLocaleTimeString()}}</span>
                 <u :style="{'margin-left': '8px'}">{{new Date($store.state.app.time).toDateString()}}</u>-->
                 <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked:'Sync On', unchecked:'Sync Off'}" />
-            </div>
-            <div id="tpsPanel" class="container" :style="{'margin-top': '-12px'}">
-                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
-                <router-link :style="{'float': 'right'}" :to="`/block/${tps && tps.top && tps.top.id || 'None'}`" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.num || "None"}}</router-link>
             </div>
         </Grid>
         <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
@@ -60,6 +63,7 @@
         computed: {
             ...mapState(['minHeight', 'trxEndpoint', 'activeTab', 'chain']),
             tps() { return this.chain && this.chain.tps || null; },
+            trx() { return this.chain && this.chain.trx || null; },
             searchHeight() { return Math.min(this.searchData.length * 28, 140 + 14); }
         },
         components: { GridList, Grid },
@@ -131,9 +135,18 @@
 
     }
 
+    #tpsPanel.container {
+
+        b.hidden {display: inline;}
+
+        @media only screen and (max-width: 445px) {
+            b.hidden {display: none;}
+        }
+    }
+
+    /*
     #timeSync.container {
 
-        /*
         b.hidden {display: none;}
 
         @media only screen and (max-width: 540px) {
@@ -143,17 +156,8 @@
         @media only screen and (max-width: 445px) {
             b.pill {display: none;}
             b.hidden {display: inline;}
-        }*/
-    }
-
-    #tpsPanel.container {
-
-        b.hidden {display: inline;}
-
-        @media only screen and (max-width: 445px) {
-            b.hidden {display: none;}
         }
-    }
+    }*/
 
     .dualList {
         display: flex;
