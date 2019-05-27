@@ -2,8 +2,8 @@ import { getRecent } from '~/lib/api';
 import Util from '~/lib/util';
 
 export const state = () => ({
-    tableHeader: ['Transaction ID', 'Block Num', 'Pending', 'Timestamp'],
-    name: "Transactions",
+    tableHeader: ['transactionid', 'blocknum', 'pending', 'timestamp'],
+    name: "transactions",
     tid: "trx",
     endpoint: "/transaction",
     data: null,
@@ -35,24 +35,24 @@ export const mutations = {
         state.dataLink = null;
     },
     resetData: (state, path) => {
-        let tableHeader = ['Transaction ID', 'Block Num', 'Pending', 'Timestamp'];
-        let name = "Transactions";
+        let tableHeader = ['transactionid', 'blocknum', 'pending', 'timestamp'];
+        let name = "transactions";
         let id = path;
         if (path === 'block') {
-            tableHeader = ['Block Num', 'Block ID', 'Producer', 'Timestamp'];
-            name = "Blocks";
+            tableHeader = ['blocknum', 'blockid', 'producer', 'timestamp'];
+            name = "blocks";
         } else if (path === 'fungible') {
-            tableHeader = ['Name', 'Sym ID', 'Creator', 'Timestamp'];
-            name = "Fungibles";
+            tableHeader = ['name', 'symbolid', 'creator', 'timestamp'];
+            name = "fungibles";
         } else if (path === 'domain') {
-            tableHeader = ['Name', 'Creator', 'Timestamp'];
-            name = "Domains";
+            tableHeader = ['name', 'creator', 'timestamp'];
+            name = "domains";
         } else if (path === 'group') {
-            tableHeader = ['Name', 'Key', 'Threshold'];
-            name = "Groups";
+            tableHeader = ['name', 'key', 'threshold'];
+            name = "groups";
         } else if (path == 'nonfungible') {
-            tableHeader = ['Domain', 'Count', 'Latest Issued'];
-            name = "Non-Fungibles";
+            tableHeader = ['domain', 'count', 'latestissued'];
+            name = "nonfungibles";
         } else {
             id = "trx";
         }
@@ -77,7 +77,7 @@ export const actions = {
         if (page !== null) commit('updatePageMut', page);
         if (filter !== state.filter) commit('updateFilterMut', filter);
         let recvData = (await getRecent(state.endpoint, page || state.page, 20, null, filter)).data.data;
-        commit('refreshDataMut', Util[`tablize${state.name.replace(/-/g, "")}`](recvData));
+        commit('refreshDataMut', Util[`tablize${state.name[0].toLocaleUpperCase()}${state.name.substr(1)}`](recvData));
     }, 
     async more({ commit, dispatch, state }, adder) {
         if (!adder) return;

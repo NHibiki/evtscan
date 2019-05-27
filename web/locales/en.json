@@ -84,7 +84,11 @@
             "weight": "Weight",
             "to": "To",
             "publickey": "Public Key",
-            "signature": "Signature"
+            "signature": "Signature",
+            "blocknum": "Block Num",
+            "blockid": "Block ID",
+            "producer": "Producer",
+            "latestissued": "Latest Issued"
         }
     },
     "page": {

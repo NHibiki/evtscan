@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class='grid'>
-            <h2 style="margin-right: 120px;">{{ $t(`navigator.${name.toLocaleLowerCase()}`) }} </h2>
+            <h2 style="margin-right: 120px;">{{ $t(`navigator.${name}`) }} </h2>
             <div class="switch">
-                <FilterSearch v-if="name === 'Fungibles'" @submit="refreshData" />
-                <Switcher v-if="name === 'Transactions'" :tabs="trxTabs" :active="activeTab" />
+                <FilterSearch v-if="name === 'fungibles'" @submit="refreshData" />
+                <Switcher v-if="name === 'transactions'" :tabs="trxTabs" :active="activeTab" />
             </div>
             <a class="sidebtn" href="javascript:history.back()">{{ $t('system.info.back') }}</a>
-            <Table :head="tableHeader" :data="data" :clickable="true" @click="click"/>
+            <Table :head="tableHeader.map(i => $t(`evt.datatable.${i}`))" :data="data" :clickable="true" @click="click"/>
             <div class="pager">
                 <a class="btn" href="javascript:;" @click="more(-1)"><fa icon="angle-left"/></a>
                 <span> {{ $t('page.before') }} Page {{ page + 1 }} {{ $t('page.after') }} </span>
