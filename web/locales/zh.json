@@ -89,7 +89,8 @@
             "blocknum": "区块编号",
             "blockid": "区块 ID",
             "producer": "发行者",
-            "latestissued": "最近颁发"
+            "latestissued": "最近颁发",
+            "sequencenum": "序号"
         }
     },
     "page": {

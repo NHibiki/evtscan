@@ -44,9 +44,9 @@
         name: 'Trx',
         data () {
             return {
+                actionHeaders: [this.$t('evt.datatable.sequencenum'), this.$t('evt.datatable.name'), this.$t('evt.datatable.domain'), this.$t('evt.datatable.key')],
                 keyHeaders: [this.$t('evt.datatable.publickey')],
                 sigHeaders: [this.$t('evt.datatable.signature')],
-                actionHeaders: [this.$t('evt.datatable.name'), this.$t('evt.datatable.domain'), this.$t('evt.datatable.key')],
             }
         },
         computed: mapState(['id', 'data', 'keys', 'sigs', 'actions', 'trxData', 'actionsData', 'showData', 'showModal']),

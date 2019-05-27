@@ -93,8 +93,10 @@ export const tablizeTrxAction = function (data=[]) {
     let res = [];
     let resData = [];
 
+    data.sort((a, b) => a.seq_num > b.seq_num ? 1 : -1);
+
     data.forEach(d => {
-        res.push([d.name, d.domain, d.key]);
+        res.push([d.seq_num, d.name, d.domain, d.key]);
         resData.push(d.data);
     });
 

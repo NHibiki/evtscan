@@ -89,7 +89,8 @@
             "blocknum": "Block Num",
             "blockid": "Block ID",
             "producer": "Producer",
-            "latestissued": "Latest Issued"
+            "latestissued": "Latest Issued",
+            "sequencenum": "Sequence"
         }
     },
     "page": {
