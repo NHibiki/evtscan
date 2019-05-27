@@ -6,7 +6,7 @@
             </div>
             <div id="tpsPanel" class="container" :style="{'margin-top': '-12px'}">
                 <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
-                <router-link :style="{'float': 'right'}" :to="`/block/${tps && tps.top && tps.top.id || 'None'}`" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.num || "None"}}</router-link>
+                <nuxt-link :style="{'float': 'right'}" :to="$i18n.path(`/block/${tps && tps.top && tps.top.id || ''}`)" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.num || "None"}}</nuxt-link>
             </div>
             <div id="timeSync" class="container" :style="{'margin-top': '-12px'}">
                 <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>AUTO SYNC</b>

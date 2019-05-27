@@ -1,7 +1,7 @@
 <template>
     <div :class="$store.state.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
-            <h2 style="margin-right: 120px;">Non-Fungible <router-link :to="'/nonfungible/' + id" style="margin-left: 4px;">#{{ id }}</router-link></h2>
+            <h2 style="margin-right: 120px;">Non-Fungible <nuxt-link :to="$i18n.path('/nonfungible/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
             <a class="sidebtn" href="javascript:history.back()">Back</a>
             <Table :data="data"/>
         </div>

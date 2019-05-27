@@ -1,4 +1,5 @@
 export const showListNames = ['Transactions', 'Blocks', 'Fungibles', 'Nonfungibles', 'Domains', 'Groups'];
+export const showListIds = ['trx', 'block', 'fungible', 'nonfungible', 'domain', 'group'];
 
 export const msToTimeStr = function (time=0, fix=true) {
 
@@ -366,6 +367,7 @@ export const tablizeGroups = function (data=[]) {
 
 export default {
     showListNames,
+    showListIds,
     msToTimeStr,
 
     tablizeBlock,

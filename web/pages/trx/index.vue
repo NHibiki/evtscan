@@ -16,14 +16,14 @@
 
 <script>
     import { createNamespacedHelpers } from 'vuex';
-    import { showListNames } from '~/lib/util';
+    import { showListIds } from '~/lib/util';
     const { mapState, mapMutations, mapActions } = createNamespacedHelpers('showlist');
 
     import Table from '~/components/Table';
     import Switcher from '~/components/Switcher';
 
     export default {
-        name: "List",
+        name: "TrxList",
         data () {
             let cb = this.changeEndpoint.bind(this);
             return {
@@ -34,29 +34,29 @@
                 },
             }
         },
-        created() { this.resetData(this.$route.path); return this.refreshData(); },
+        created() { return this.softRefresh(this.$route.path); },
         components: { Table, Switcher },
         computed: mapState(['tableHeader', 'name', 'endpoint', 'data', 'page', 'activeTab', 'dataLink']),
         methods: {
-            click(i) { this.$router.push(this.dataLink[i]); },
-            ...mapMutations(['resetData']),
-            ...mapActions(['refreshData', 'more', 'changeEndpoint']),
+            click(i) { this.$router.push(this.$i18n.path(this.dataLink[i])); },
+            //...mapMutations(['resetData']),
+            ...mapActions(['softRefresh', 'more', 'changeEndpoint']),
         },
         beforeRouteEnter (to, from, next) {
-            if (from.name && showListNames.includes(to.name)) {
+            const name = (to.name || '').replace('lang-', '');
+            if (from.name && showListIds.includes(name)) {
                 next(vm => {
-                    vm.resetData(to.name);
-                    vm.refreshData();
+                    vm.softRefresh(name);
                 });
             } else {
                 next();
             }
         },
         beforeRouteLeave(to, from, next) {
-            if (showListNames.includes(to.name)) {
+            const name = (to.name || '').replace('lang-', '');
+            if (showListIds.includes(name)) {
                 next();
-                this.resetData(to.name);
-                this.refreshData();
+                this.softRefresh(name);
             } else {
                 next();
             }

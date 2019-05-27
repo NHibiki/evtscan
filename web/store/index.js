@@ -4,12 +4,19 @@ try { theme = window.location.search.substr(1).split("&").reduce((p, c) => {retu
 
 export const state = () => ({
     theme,
+    locales: ['en', 'zh'],
+    locale: 'en'
 });
 
 export const mutations = {
     setTheme: (state, theme) => {
         if (["light"].includes(theme)) state.theme = theme;
         else state.theme = null;
+    },
+    setLang: (state, locale) => {
+        if (state.locales.indexOf(locale) !== -1) {
+          state.locale = locale;
+        }
     }
 };
 

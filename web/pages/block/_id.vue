@@ -1,7 +1,7 @@
 <template>
     <div :class="$store.state.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
-            <h2>Block <router-link :to="'/block/' + id" style="margin-left: 4px;">#{{ id }}</router-link></h2>
+            <h2>Block <nuxt-link :to="$i18n.path('/block/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
             <a class="sidebtn" href="javascript:history.back()">Back</a>
             <Table :data="data"/>
         </div>
@@ -35,7 +35,7 @@
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
         asyncData({store, route, isServer}) { store.commit('block/resetData', route.params.id); let promise = store.dispatch('block/updateData'); if (isServer) return promise; },
         methods: {
-            click(i) { this.$router.push("/trx/" + this.trxData[i][0]) },
+            click(i) { this.$router.push(this.$i18n.path("/trx/" + this.trxData[i][0])) },
             ...mapMutations(['resetData']),
             ...mapActions(['updateData', 'more']),
         }

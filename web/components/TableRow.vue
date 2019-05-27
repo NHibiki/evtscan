@@ -5,7 +5,7 @@
                 {{ item && item.hide ? null : isNone((item && item.content) ? item.content : item) }}
                 <template v-if="item && item.type && item.data">
                     <img v-if="item.type === 'imageSrc'" :src="item.data" />
-                    <router-link v-if="item.type === 'innerLink'" :to="item.data">#{{ item.content }}</router-link>
+                    <nuxt-link v-if="item.type === 'innerLink'" :to="$i18n.path(item.data)">#{{ item.content }}</nuxt-link>
                 </template>
             </span>
         </th>

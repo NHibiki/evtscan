@@ -4,6 +4,7 @@ import Util from '~/lib/util';
 export const state = () => ({
     tableHeader: ['Transaction ID', 'Block Num', 'Pending', 'Timestamp'],
     name: "Transactions",
+    tid: "trx",
     endpoint: "/transaction",
     data: null,
     filter: null,
@@ -36,6 +37,7 @@ export const mutations = {
     resetData: (state, path) => {
         let tableHeader = ['Transaction ID', 'Block Num', 'Pending', 'Timestamp'];
         let name = "Transactions";
+        let id = path;
         if (path === 'block') {
             tableHeader = ['Block Num', 'Block ID', 'Producer', 'Timestamp'];
             name = "Blocks";
@@ -51,9 +53,12 @@ export const mutations = {
         } else if (path == 'nonfungible') {
             tableHeader = ['Domain', 'Count', 'Latest Issued'];
             name = "Non-Fungibles";
+        } else {
+            id = "trx";
         }
         state.tableHeader = tableHeader;
         state.name = name;
+        state.tid = id;
         state.endpoint = "/" + name.substr(0, name.length - 1).toLocaleLowerCase().replace(/-/g, "");
         state.data = null;
         state.filter = null;
@@ -63,6 +68,11 @@ export const mutations = {
 };
 
 export const actions = {
+    async softRefresh({ commit, dispatch, state }, path) {
+        if (path === state.tid) return;
+        commit('resetData', path);
+        await dispatch('refreshData');
+    },
     async refreshData({ commit, state }, { filter=null, page=null } = {}) {
         if (page !== null) commit('updatePageMut', page);
         if (filter !== state.filter) commit('updateFilterMut', filter);

@@ -19,7 +19,7 @@
 
 <script>
     import { createNamespacedHelpers } from 'vuex';
-    import { showListNames } from '~/lib/util';
+    import { showListIds } from '~/lib/util';
     const { mapState, mapMutations, mapActions } = createNamespacedHelpers('showlist');
 
     import Table from '~/components/Table';
@@ -38,29 +38,29 @@
                 },
             }
         },
-        created() { this.resetData(this.$route.name); return this.refreshData(); },
+        created() { return this.softRefresh(this.$route.name.replace('lang-', '')); },
         components: { Table, Switcher, FilterSearch },
         computed: mapState(['tableHeader', 'name', 'endpoint', 'data', 'page', 'activeTab', 'dataLink']),
         methods: {
-            click(i) { this.$router.push(this.dataLink[i]); },
-            ...mapMutations(['resetData']),
-            ...mapActions(['refreshData', 'more', 'changeEndpoint']),
+            click(i) { this.$router.push(this.$i18n.path(this.dataLink[i])); },
+            //...mapMutations(['resetData']),
+            ...mapActions(['softRefresh', 'refreshData', 'more', 'changeEndpoint']),
         },
         beforeRouteEnter (to, from, next) {
-            if (from.name && showListNames.includes(to.name)) {
+            const name = (to.name || '').replace('lang-', '');
+            if (from.name && showListIds.includes(name)) {
                 next(vm => {
-                    vm.resetData(to.name);
-                    vm.refreshData();
+                    vm.softRefresh(name);
                 });
             } else {
                 next();
             }
         },
         beforeRouteLeave(to, from, next) {
-            if (showListNames.includes(to.name)) {
+            const name = (to.name || '').replace('lang-', '');
+            if (showListIds.includes(name)) {
                 next();
-                this.resetData(to.name);
-                this.refreshData();
+                this.softRefresh(name);
             } else {
                 next();
             }

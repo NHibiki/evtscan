@@ -3,7 +3,7 @@
         <h1 v-if="error.statusCode === 404">Page not found</h1>
         <h1 v-else>Server internal error</h1>
         <div class="rest">
-            <nuxt-link to="/">⬅&nbsp;&nbsp;&nbsp;Back to Homepage</nuxt-link>
+            <nuxt-link :to="$i18n.path('/')">⬅&nbsp;&nbsp;&nbsp;Back to Homepage</nuxt-link>
         </div>
     </div>
 </template>

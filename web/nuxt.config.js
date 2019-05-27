@@ -44,10 +44,13 @@ module.exports = {
   ** Customize the progress bar color
   */
   loading: { color: addons.appLoading || '#e6a938' },
+  router: {
+    middleware: 'i18n'
+  },
   /*
   ** Plugins
   */
-  plugins: ['~/plugins/initComponents'],
+  plugins: ['~/plugins/initComponents', '~/plugins/i18n.js'],
   /*
   ** Build configuration
   */

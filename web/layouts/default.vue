@@ -2,18 +2,18 @@
     <div id="evtscan">
         <header class="header" v-if="notInApp">
             <div class="content">
-                <router-link to="/" class="logo">evtScan</router-link>
+                <nuxt-link :to="$i18n.path('/')" class="logo">evtScan</nuxt-link>
                 <ul :class="{menu: true, open}" @click="switchOpen">
-                    <li><router-link to="/">Home</router-link></li>
-                    <li><router-link to="/block">Blocks</router-link></li>
-                    <li><router-link to="/trx">Transactions</router-link></li>
+                    <li><nuxt-link :to="$i18n.path('/')">Home</nuxt-link></li>
+                    <li><nuxt-link :to="$i18n.path('/block')">Blocks</nuxt-link></li>
+                    <li><nuxt-link :to="$i18n.path('/trx')">Transactions</nuxt-link></li>
                     <li>
                         <a class="submenubtn" href="javascript:;">More<fa style="margin-left:8px;" icon="angle-down"/></a>
                         <div class="submenu"><ul>
-                            <li><router-link to="/fungible">Fungibles</router-link></li>
-                            <li><router-link to="/nonfungible">Non-Fungibles</router-link></li>
-                            <li><router-link to="/domain">Domains</router-link></li>
-                            <li><router-link to="/group">Groups</router-link></li>
+                            <li><nuxt-link :to="$i18n.path('/fungible')">Fungibles</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/nonfungible')">Non-Fungibles</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/domain')">Domains</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/group')">Groups</nuxt-link></li>
                         </ul></div>
                     </li>
                 </ul>
