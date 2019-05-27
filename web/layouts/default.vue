@@ -16,6 +16,13 @@
                             <li><nuxt-link :to="$i18n.path('/group')">{{ $t('navigator.groups') }}</nuxt-link></li>
                         </ul></div>
                     </li>
+                    <li>
+                        <a class="submenubtn fixed" href="javascript:;" v-on:click.stop>{{ $t('navigator.language') }}<fa style="margin-left:8px;" icon="angle-down"/></a>
+                        <div class="submenu fixed"><ul>
+                            <li><nuxt-link :to="$i18n.switch('en')">English</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.switch('zh')">简体中文</nuxt-link></li>
+                        </ul></div>
+                    </li>
                 </ul>
                 <a @click="switchOpen" class="menuSwitch">
                     <fa v-if="!open" icon="bars"/>
@@ -190,10 +197,6 @@
 
                 }
 
-                .submenubtn {
-                    display: none;
-                }
-
                 .submenu ul {
                     padding: 0;
                 }
@@ -260,6 +263,29 @@
                 }
 
                 @media screen and (max-width: 768px) {
+
+                    .submenubtn {
+                        display: block;
+                        &:not(.fixed) {
+                            display: none;
+                        }
+                        &:hover +.submenu, &:focus +.submenu, &:active +.submenu {
+                            opacity: 1;
+                            pointer-events: all;
+                            max-height: 1000px;
+                        }
+                    }
+
+                    .submenu.fixed {
+                        opacity: 0;
+                        pointer-events: none;
+                        max-height: 0;
+                        &:hover, &:focus, &:active {
+                            opacity: 1;
+                            pointer-events: all;
+                            max-height: 1000px;
+                        }
+                    }
 
                     & {
                         display: block;

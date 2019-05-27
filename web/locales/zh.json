@@ -16,6 +16,7 @@
         }
     },
     "navigator": {
+        "language": "语言",
         "more": "更多",
         "home": "主页",
         "transaction": "转账",

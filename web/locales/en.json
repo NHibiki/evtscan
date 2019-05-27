@@ -16,6 +16,7 @@
         }
     },
     "navigator": {
+        "language": "Language",
         "more": "More",
         "home": "Home",
         "transaction": "Transaction",

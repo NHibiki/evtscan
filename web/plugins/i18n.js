@@ -31,5 +31,16 @@ export default ({ app, store }) => {
         return `/${app.i18n.locale}${link}`;
     }
 
+    app.i18n.switch = (lang) => {
+        let l = lang;
+        if (!(l in langs)) l = 'en';
+        let fullPath = app.router.history.current.fullPath;
+        const firstSlot = fullPath.split('/')[1];
+        if (firstSlot in langs) {
+            fullPath = fullPath.substr(1 + firstSlot.length);
+        }
+        return '/' + lang + fullPath;
+    }
+
     app.i18n.translate = langs;
 }
