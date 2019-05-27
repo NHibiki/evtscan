@@ -1,18 +1,18 @@
 <template>
     <div :class="$store.state.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
-            <h2 style="margin-right: 120px;">Group <nuxt-link :to="$i18n.path('/domain/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
-            <a class="sidebtn" href="javascript:history.back()">Back</a>
+            <h2 style="margin-right: 120px;">{{ $t('navigator.group') }} <nuxt-link :to="$i18n.path('/domain/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
+            <a class="sidebtn" href="javascript:history.back()">{{ $t('system.info.back') }}</a>
             <Table :data="data"/>
         </div>
 
         <div class='grid'>
-            <h2>Nodes</h2>
+            <h2>{{ $t('evt.nodes') }}</h2>
             <Table :data="detailedData" :head="detailedHeaders" :clickable="true" @click="openDetailedModal"/>
         </div>
 
         <div class='grid'>
-            <h2>MetaData</h2>
+            <h2>{{ $t('evt.metadata') }}</h2>
             <Table :data="Object.keys(metaData || {}).map(k => [k, metaData[k].creator])" :head="metaDataHeaders" :clickable="true" @click="openMetaModal" />
         </div>
 
@@ -36,11 +36,11 @@
     import Dialog from '~/components/Dialog';
 
     export default {
-        name: 'Fungible',
+        name: 'Group',
         data () {
             return {
-                detailedHeaders: ['Weight', 'Key'],
-                metaDataHeaders: ['Key', 'Creator'],
+                detailedHeaders: [this.$t('evt.datatable.weight'), this.$t('evt.datatable.key')],
+                metaDataHeaders: [this.$t('evt.datatable.key'), this.$t('evt.datatable.creator')],
             }
         },
         computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'metaData', 'showData', 'showModal']),

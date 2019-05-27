@@ -1,15 +1,16 @@
 <template>
     <div class="container err">
-        <h1 v-if="error.statusCode === 404">Page not found</h1>
-        <h1 v-else>Server internal error</h1>
+        <h1 v-if="error.statusCode === 404">{{ $t('system.error.notfound') }} </h1>
+        <h1 v-else>{{ $t('system.error.servererror') }}</h1>
         <div class="rest">
-            <nuxt-link :to="$i18n.path('/')">⬅&nbsp;&nbsp;&nbsp;Back to Homepage</nuxt-link>
+            <nuxt-link :to="$i18n.path('/')">⬅&nbsp;&nbsp;&nbsp;{{ $t('system.info.tohome') }}</nuxt-link>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    head() { return { title: this.$t('sitename') } },
     props: ['error']
 }
 </script>

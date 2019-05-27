@@ -4,16 +4,16 @@
             <div class="content">
                 <nuxt-link :to="$i18n.path('/')" class="logo">evtScan</nuxt-link>
                 <ul :class="{menu: true, open}" @click="switchOpen">
-                    <li><nuxt-link :to="$i18n.path('/')">Home</nuxt-link></li>
-                    <li><nuxt-link :to="$i18n.path('/block')">Blocks</nuxt-link></li>
-                    <li><nuxt-link :to="$i18n.path('/trx')">Transactions</nuxt-link></li>
+                    <li><nuxt-link :to="$i18n.path('/')">{{ $t('navigator.home') }}</nuxt-link></li>
+                    <li><nuxt-link :to="$i18n.path('/block')">{{ $t('navigator.blocks') }}</nuxt-link></li>
+                    <li><nuxt-link :to="$i18n.path('/trx')">{{ $t('navigator.transactions') }}</nuxt-link></li>
                     <li>
-                        <a class="submenubtn" href="javascript:;">More<fa style="margin-left:8px;" icon="angle-down"/></a>
+                        <a class="submenubtn" href="javascript:;">{{ $t('navigator.more') }}<fa style="margin-left:8px;" icon="angle-down"/></a>
                         <div class="submenu"><ul>
-                            <li><nuxt-link :to="$i18n.path('/fungible')">Fungibles</nuxt-link></li>
-                            <li><nuxt-link :to="$i18n.path('/nonfungible')">Non-Fungibles</nuxt-link></li>
-                            <li><nuxt-link :to="$i18n.path('/domain')">Domains</nuxt-link></li>
-                            <li><nuxt-link :to="$i18n.path('/group')">Groups</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/fungible')">{{ $t('navigator.fungibles') }}</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/nonfungible')">{{ $t('navigator.nonfungibles') }}</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/domain')">{{ $t('navigator.domains') }}</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/group')">{{ $t('navigator.groups') }}</nuxt-link></li>
                         </ul></div>
                     </li>
                 </ul>
@@ -28,25 +28,25 @@
             <div class="footer-wrapper">
                 <div class="column">
                     <li><span>
-                        evtScan Copyright ©️2018 <br /><br />
-                        By <a href="https://github.com/NHibiki">@NHibiki</a> with <a class="heart"><fa icon="heart"/></a>. <br />
-                        Distributed By Vue.js <br />
-                        All Rights Reserved.
+                        {{ $t('system.info.copyright') }} <br /><br />
+                        <a href="https://github.com/NHibiki">{{ $t('system.info.producedby') }}</a> {{ $t('system.info.producedwith') }} <a class="heart"><fa icon="heart"/></a>. <br />
+                        {{ $t('system.info.distributedbyvue') }} <br />
+                        {{ $t('system.info.rightsclaim') }}
                     </span></li>
                 </div>
                 <div class="column">
-                    <li><b>Links</b></li>
-                    <li><a href="https://everitoken.io">everiToken</a></li>
-                    <li><a href="https://everitoken.io/everipay">everiPay</a></li>
-                    <li><a href="http://myevt.io">MyEVT Wallet</a></li>
+                    <li><b>{{ $t('navigator.link') }}</b></li>
+                    <li><a href="https://everitoken.io">{{ $t('navigator.everitoken') }}</a></li>
+                    <li><a href="https://everitoken.io/everipay">{{ $t('navigator.everipay') }}</a></li>
+                    <li><a href="http://myevt.io">{{ $t('navigator.myevtwallet') }}</a></li>
                     <!--<li class="divider"></li>-->
-                    <!--<li><a href="https://everitoken.io/docs/whitepaper.pdf">White Papper</a></li>-->
+                    <!--<li><a href="https://everitoken.io/docs/whitepaper.pdf">{{ $t('navigator.whitepaper') }}</a></li>-->
                 </div>
                 <div class="column">
-                    <li><b>Open Source</b></li>
-                    <li><a href="https://github.com/NHibiki/evtscan">evtScan</a></li>
+                    <li><b>{{ $t('navigator.opensource') }}</b></li>
+                    <li><a href="https://github.com/NHibiki/evtscan">{{ $t('navigator.evtscan') }}</a></li>
                     <!--<li class="divider"></li>-->
-                    <li><a href="https://github.com/everitoken">everiToken</a></li>
+                    <li><a href="https://github.com/everitoken">{{ $t('navigator.everitoken') }}</a></li>
                 </div>
             </div>
         </footer>
@@ -62,6 +62,7 @@
 
     export default {
         name: 'App',
+        head() { return { title: this.$t('sitename') } },
         computed: {...mapState('app', ['open']), ...mapState(['theme']),
             notInApp() {
                 return !['light'].includes(this.theme);

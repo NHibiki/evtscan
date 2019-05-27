@@ -1,22 +1,22 @@
 <template>
     <div :class="$store.state.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
-            <h2 style="margin-right: 120px;">Non-Fungible <nuxt-link :to="$i18n.path('/nonfungible/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
-            <a class="sidebtn" href="javascript:history.back()">Back</a>
+            <h2 style="margin-right: 120px;">{{ $t('navigator.nonfungible') }} <nuxt-link :to="$i18n.path('/nonfungible/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
+            <a class="sidebtn" href="javascript:history.back()">{{ $t('system.info.back') }}</a>
             <Table :data="data"/>
         </div>
 
         <div class='grid'>
-            <h2>Detailed Info</h2>
+            <h2>{{ $t('evt.detailedinfo') }}</h2>
             <Table :data="detailedData" :head="detailedHeaders" :clickable="true" @click="openDetailedModal" />
         </div>
 
         <div class='grid'>
-            <h2>Distributions</h2>
+            <h2>{{ $t('evt.distributions') }}</h2>
             <Table :data="distributeData ? distributeData.map(k => [k.name, k.owner && k.owner[0] ? k.owner[0] : 'None', k.timestamp]) : null" :head="distributeDataHeaders" :clickable="true" @click="openDistributeModal" />
             <div class="pager">
                 <a class="btn" href="javascript:;" @click="more(-1)"><fa icon="angle-left"/></a>
-                <span> Page {{ page + 1 }} </span>
+                <span> {{ $t('page.before') }} {{ page + 1 }} {{ $t('page.after') }} </span>
                 <a class="btn" href="javascript:;" @click="more(1)"><fa icon="angle-right"/></a>
             </div>
         </div>
@@ -44,8 +44,8 @@
         name: 'NonFungible',
         data () {
             return {
-                detailedHeaders: ['Name', 'Threshold', 'Count'],
-                distributeDataHeaders: ['Name', 'To', 'Timestamp'],
+                detailedHeaders: [this.$t('evt.datatable.name'), this.$t('evt.datatable.threshold'), this.$t('evt.datatable.count')],
+                distributeDataHeaders: [this.$t('evt.datatable.name'), this.$t('evt.datatable.to'), this.$t('evt.datatable.timestamp')],
             }
         },
         computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'distributeData', 'showData', 'showModal', 'page']),

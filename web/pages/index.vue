@@ -2,32 +2,32 @@
     <section class="main-section">
         <Grid :style="{'border-radius': '16px'}">
             <div id="trxCount" class="container">
-                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>DAILY TRX <b :style="{'color': '#d80000'}">{{trx && trx.value || "0"}}</b></b>
+                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>{{ $t('index.dailytransaction') }} <b :style="{'color': '#d80000'}">{{trx && trx.value || "0"}}</b></b>
             </div>
             <div id="tpsPanel" class="container" :style="{'margin-top': '-12px'}">
-                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>PEAK TPS <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
-                <nuxt-link :style="{'float': 'right'}" :to="$i18n.path(`/block/${tps && tps.top && tps.top.id || ''}`)" class="pill-btn"><b class='hidden'>Block</b>#{{tps && tps.top && tps.top.num || "None"}}</nuxt-link>
+                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>{{ $t('index.peaktps') }} <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
+                <nuxt-link :style="{'float': 'right'}" :to="$i18n.path(`/block/${tps && tps.top && tps.top.id || ''}`)" class="pill-btn"><b class='hidden'>{{ $t('navigator.block') }}</b>#{{tps && tps.top && tps.top.num || "None"}}</nuxt-link>
             </div>
             <div id="timeSync" class="container" :style="{'margin-top': '-12px'}">
-                <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>AUTO SYNC</b>
+                <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>{{ $t('index.autosync') }}</b>
                 <!--<b class='hidden'>Now:&nbsp;</b>
                 <span class="show-time">{{new Date($store.state.app.time).toLocaleTimeString()}}</span>
                 <u :style="{'margin-left': '8px'}">{{new Date($store.state.app.time).toDateString()}}</u>-->
-                <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked:'Sync On', unchecked:'Sync Off'}" />
+                <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked: $t('index.syncon'), unchecked: $t('index.syncoff')}" />
             </div>
         </Grid>
         <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
             <div class="container">
-                <input v-model="search" @input="searchAddress" @keyup.enter="goAddress" placeholder="Search Address Here" />
-                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="goAddress" class="pill-btn">Go</a>
+                <input v-model="search" @input="searchAddress" @keyup.enter="goAddress" :placeholder="$t('index.search')" />
+                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="goAddress" class="pill-btn">{{$t('index.searchsumbit')}}</a>
                 <div :class='{"search-result": true, "show": searchData && searchData.length}' :style="{'height': searchHeight + 'px'}">
                     <a class="small-btn" @click="searchClick(i)" :key="d" v-for="(d, i) in searchData">{{d}}</a>
                 </div>
             </div>
         </Grid>
         <div class='dualList' :style="{'min-height': minHeight + 'px'}">
-            <GridList title="Blocks" :sync="timeSync" endpoint="block" :for="BlockView" />
-            <GridList title="Transactions" :sync="timeSync" :endpoint="trxEndpoint" :activeTab="activeTab" :tabs="trxTabs" :for="TrxView" />
+            <GridList :title="$t('navigator.blocks')" :sync="timeSync" endpoint="block" :for="BlockView" />
+            <GridList :title="$t('navigator.transactions')" :sync="timeSync" :endpoint="trxEndpoint" :activeTab="activeTab" :tabs="trxTabs" :for="TrxView" />
         </div>
     </section>
 </template>
@@ -53,9 +53,9 @@
                 search: "",
                 searchData: [],
                 trxTabs: {
-                    all: { name: "All", endpoint: "transaction", callback: cb },
-                    everipay: { name: "Pay", endpoint: "everipay", callback: cb },
-                    everipass: { name: "Pass", endpoint: "everipass", callback: cb },
+                    all: { name: this.$t('evt.filter.all'), endpoint: "transaction", callback: cb },
+                    everipay: { name: this.$t('evt.filter.everipay'), endpoint: "everipay", callback: cb },
+                    everipass: { name: this.$t('evt.filter.everipass'), endpoint: "everipass", callback: cb },
                 },
                 TrxView, BlockView, timeSync
             }

@@ -1,27 +1,27 @@
 <template>
     <div :class="$store.state.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
-            <h2 style="margin-right: 120px;">Fungible <img v-if="metaData && metaData['symbol-icon']" class="fungibleIcon" :src="metaData['symbol-icon'].value"/> <nuxt-link :to="$i18n.path('/fungible/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
-            <a class="sidebtn" href="javascript:history.back()">Back</a>
+            <h2 style="margin-right: 120px;">{{ $t('navigator.fungible') }} <img v-if="metaData && metaData['symbol-icon']" class="fungibleIcon" :src="metaData['symbol-icon'].value"/> <nuxt-link :to="$i18n.path('/fungible/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
+            <a class="sidebtn" href="javascript:history.back()">{{ $t('system.info.back') }}</a>
             <Table :data="data"/>
         </div>
 
         <div class='grid'>
-            <h2>Detailed Info</h2>
+            <h2>{{ $t('evt.detailedinfo') }}</h2>
             <Table :data="detailedData" :head="detailedHeaders" :clickable="true" @click="openDetailedModal" />
         </div>
 
         <div class='grid'>
-            <h2>MetaData</h2>
+            <h2>{{ $t('evt.metadata') }}</h2>
             <Table :data="Object.keys(metaData || {}).map(k => [k, metaData[k].creator])" :head="metaDataHeaders" :clickable="true" @click="openMetaModal" />
         </div>
 
         <div v-if="showActions" class='grid'>
-            <h2>Actions in this Fungible</h2>
+            <h2>{{ $t('evt.actions') }}</h2>
             <Table :data="actions" :head="actionHeaders" :clickable="true" @click="openActionModal" />
             <div class="pager">
                 <a class="btn" href="javascript:;" @click="moreActions(-1)"><fa icon="angle-left"/></a>
-                <span> Page {{ page + 1 }} </span>
+                <span> {{ $t('page.before') }} {{ page + 1 }} {{ $t('page.after') }} </span>
                 <a class="btn" href="javascript:;" @click="moreActions(1)"><fa icon="angle-right"/></a>
             </div>
         </div>
@@ -49,9 +49,9 @@
         name: 'Fungible',
         data () {
             return {
-                detailedHeaders: ['Name', 'Threshold', 'Count'],
-                metaDataHeaders: ['Key', 'Creator'],
-                actionHeaders: ['Name', 'Domain', 'Key'],
+                detailedHeaders: [this.$t('evt.datatable.name'), this.$t('evt.datatable.threshold'), this.$t('evt.datatable.count')],
+                metaDataHeaders: [this.$t('evt.datatable.key'), this.$t('evt.datatable.creator')],
+                actionHeaders: [this.$t('evt.datatable.name'), this.$t('evt.datatable.domain'), this.$t('evt.datatable.key')],
             }
         },
         computed: mapState(['id', 'data', 'detailedData', 'detailedActions', 'metaData', 'showData', 'showModal', 'actions', 'page', 'showActions']),

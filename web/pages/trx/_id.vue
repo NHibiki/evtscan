@@ -1,23 +1,23 @@
 <template>
     <div :class="$store.state.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
-            <h2 style="margin-right: 120px;">Transaction <nuxt-link :to="$i18n.path('/trx/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
-            <a class="sidebtn" href="javascript:history.back()">Back</a>
+            <h2 style="margin-right: 120px;">{{ $t('navigator.transaction') }} <nuxt-link :to="$i18n.path('/trx/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
+            <a class="sidebtn" href="javascript:history.back()">{{ $t('system.info.back') }}</a>
             <Table :data="data"/>
         </div>
 
         <div class='grid'>
-            <h2>Actions in this Transaction</h2>
+            <h2>{{ $t('evt.actions') }}</h2>
             <Table :data="actions" :head="actionHeaders" :clickable="true" @click="openModal" />
         </div>
 
         <div class='grid'>
-            <h2>Public Keys signed this Transaction</h2>
+            <h2>{{ $t('evt.publickeys') }}</h2>
             <Table :data="keys" :head="keyHeaders"/>
         </div>
 
         <div class='grid'>
-            <h2>Signatures in this Transaction</h2>
+            <h2>{{ $t('evt.signatures') }}</h2>
             <Table :data="sigs" :head="sigHeaders"/>
         </div>
 
@@ -41,12 +41,12 @@
     import Dialog from '~/components/Dialog';
 
     export default {
-        name: 'Block',
+        name: 'Trx',
         data () {
             return {
-                keyHeaders: ['Public Key'],
-                sigHeaders: ['Signature'],
-                actionHeaders: ['Name', 'Domain', 'Key'],
+                keyHeaders: [this.$t('evt.datatable.publickey')],
+                sigHeaders: [this.$t('evt.datatable.signature')],
+                actionHeaders: [this.$t('evt.datatable.name'), this.$t('evt.datatable.domain'), this.$t('evt.datatable.key')],
             }
         },
         computed: mapState(['id', 'data', 'keys', 'sigs', 'actions', 'trxData', 'actionsData', 'showData', 'showModal']),

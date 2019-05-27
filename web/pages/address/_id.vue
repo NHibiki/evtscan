@@ -1,21 +1,21 @@
 <template>
     <div :class="$store.state.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
-            <h2 style="margin-right: 120px;">Address <nuxt-link :to="$i18n.path('/address/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
-            <a class="sidebtn" href="javascript:history.back()">Back</a>
+            <h2 style="margin-right: 120px;">{{ $t('navigator.address') }} <nuxt-link :to="$i18n.path('/address/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
+            <a class="sidebtn" href="javascript:history.back()">{{ $t('system.info.back') }}</a>
             <Table :data="data"/>
         </div>
         <div class='grid'>
-            <h2>Assets</h2>
+            <h2>{{ $t('evt.assets') }}</h2>
             <Table :head="assetsHead" :data="assets" :clickable="true" @click="clickAssets"/>
         </div>
         <div class='grid'>
-            <h2>History</h2>
+            <h2>{{ $t('evt.history') }}</h2>
             <div class="switch-container"><Switcher :tabs="filterTabs" :active="activeTab" /></div>
             <Table :head="historyHead" :data="historyData" :clickable="true" @click="click"/>
             <div class="pager">
                 <a class="btn" href="javascript:;" @click="more(-1)"><fa icon="angle-left"/></a>
-                <span> Page {{ page + 1 }} </span>
+                <span> {{ $t('page.before') }} {{ page + 1 }} {{ $t('page.after') }} </span>
                 <a class="btn" href="javascript:;" @click="more(1)"><fa icon="angle-right"/></a>
             </div>
         </div>
@@ -35,13 +35,13 @@
             let cb = this.changeFilter.bind(this);
             return {
                 filterTabs: {
-                    all: { name: "All", filter: "", callback: cb },
-                    send: { name: "Send", filter: "send", callback: cb },
-                    receive: { name: "Recv", filter: "receive", callback: cb },
-                    issue: { name: "Issue", filter: "issue", callback: cb },
+                    all: { name: this.$t('evt.filter.all'), filter: "", callback: cb },
+                    send: { name: this.$t('evt.filter.send'), filter: "send", callback: cb },
+                    receive: { name: this.$t('evt.filter.receive'), filter: "receive", callback: cb },
+                    issue: { name: this.$t('evt.filter.issue'), filter: "issue", callback: cb },
                 },
-                historyHead: ["Type", "Domain", "Key", "Trx ID", "Timestamp"],
-                assetsHead: ["Name", "Sym ID", "Amount"],
+                historyHead: [this.$t('evt.datatable.type'), this.$t('evt.datatable.domain'), this.$t('evt.datatable.key'), this.$t('evt.datatable.transactionid'), this.$t('evt.datatable.timestamp')],
+                assetsHead: [this.$t('evt.datatable.name'), this.$t('evt.datatable.symbolid'), this.$t('evt.datatable.amount')],
             }
         },
         computed: mapState(['id', 'data', 'assets', 'historyData', 'historyDataDetail', 'page', 'activeTab']),

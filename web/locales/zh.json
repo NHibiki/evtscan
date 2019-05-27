@@ -1,1 +1,33 @@
-{}
+{
+    "system": {
+        "error": {
+            "notfound": "页面不存在",
+            "servererror": "服务器错误"
+        },
+        "info": {
+            "tohome": "回到主页",
+            "copyright": "evtScan 版权于 ©️2019",
+            "rightsclaim": "保留所有权利。",
+            "producedby": "由 @NHibiki 维护",
+            "producedwith": "",
+            "distributedbyvue": "由 Vue.js 强力驱动"
+        }
+    },
+    "navigator": {
+        "more": "更多",
+        "home": "主页",
+        "transaction": "转账",
+        "block": "块",
+        "fungible": "Fungible",
+        "nonfungible": "Non-Fungible",
+        "domain": "域",
+        "group": "组",
+        "link": "友情链接",
+        "opensource": "开源链接",
+        "everitoken": "everiToken",
+        "evtscan": "evtScan",
+        "everipay": "everiPay",
+        "myevtwallet": "myEVT 钱包",
+        "whitepaper": "白皮书"
+    }
+}

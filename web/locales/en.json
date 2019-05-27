@@ -1,1 +1,94 @@
-{}
+{
+    "sitename": "everiToken (EVT) Blockchain Explorer",
+    "system": {
+        "error": {
+            "notfound": "Page not found",
+            "servererror": "Server internal error"
+        },
+        "info": {
+            "back": "Back",
+            "tohome": "Back to Homepage",
+            "copyright": "evtScan Copyright ©️2019",
+            "rightsclaim": "All Rights Reserved.",
+            "producedby": "By @NHibiki",
+            "producedwith": "With",
+            "distributedbyvue": "Distributed By Vue.js"
+        }
+    },
+    "navigator": {
+        "more": "More",
+        "home": "Home",
+        "transaction": "Transaction",
+        "transactions": "Transactions",
+        "block": "Block",
+        "blocks": "Blocks",
+        "fungible": "Fungible",
+        "fungibles": "Fungibles",
+        "nonfungible": "Non-Fungible",
+        "nonfungibles": "Non-Fungibles",
+        "domain": "Domain",
+        "domains": "Domains",
+        "group": "Group",
+        "groups": "Groups",
+        "address": "Address",
+        "addresses": "Addresses",
+        "link": "Link",
+        "opensource": "Open Source",
+        "everitoken": "everiToken",
+        "evtscan": "evtScan",
+        "everipay": "everiPay",
+        "myevtwallet": "myEVT Wallet",
+        "whitepaper": "White Paper"
+    },
+    "index": {
+        "dailytransaction": "DAILY TRX",
+        "peaktps": "PEAK TPS",
+        "autosync": "AUTO SYNC",
+        "syncon": "Sync On",
+        "syncoff": "Sync Off",
+        "search": "Search Address Here",
+        "searchsumbit": "GO"
+    },
+    "evt": {
+        "assets": "Assets",
+        "history": "History",
+        "detailedinfo": "Detailed Info",
+        "metadata": "Metadata",
+        "transactions": "Transactions",
+        "actions": "Actions",
+        "nodes": "Nodes",
+        "distributions": "Distributions",
+        "publickeys": "Public Keys signed this Transaction",
+        "signatures": "Signatures in this Transaction",
+        "filter": {
+            "all": "All",
+            "send": "Send",
+            "receive": "Recv",
+            "issue": "Issue",
+            "everipay": "Pay",
+            "everipass": "Pass"
+        },
+        "datatable": {
+            "type": "Type",
+            "domain": "Domain",
+            "key": "Key",
+            "transactionid": "Trx ID",
+            "timestamp": "Timestamp",
+            "name": "Name",
+            "symbolid": "Sym ID",
+            "amount": "Amount",
+            "pending": "Pending",
+            "threshold": "Threshold",
+            "creator": "Creator",
+            "count": "Count",
+            "weight": "Weight",
+            "to": "To",
+            "publickey": "Public Key",
+            "signature": "Signature"
+        }
+    },
+    "page": {
+        "before": "Page",
+        "after": ""
+    }
+}
