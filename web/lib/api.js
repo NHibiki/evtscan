@@ -18,7 +18,7 @@ try {
 } catch (error) {}
 
 // endPoint = "https://ide.yuuno.cc:2053/api";
-endPoint = "https://evtscan.io/api";
+// endPoint = "https://evtscan.io/api";
 
 export const get = async (uri, params={}, headers={}) => Axios.get(endPoint + uri, { params, headers });
 

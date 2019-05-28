@@ -69,7 +69,7 @@ export const mutations = {
 
 export const actions = {
     async softRefresh({ commit, dispatch, state }, path) {
-        if (path === state.tid) return;
+        if (path === state.tid && state.data) return;
         commit('resetData', path);
         await dispatch('refreshData');
     },
