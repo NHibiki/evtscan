@@ -1,5 +1,5 @@
 import { getDetailWithPage } from '~/lib/api';
-import { tablizeNonFungible } from '~/lib/util';
+import { tablizeNonfungible } from '~/lib/util';
 
 export const state = () => ({
     id: "",
@@ -44,7 +44,7 @@ export const mutations = {
 export const actions = {
     async updateData({ commit, state }) {
         let recvData = (await getDetailWithPage("nonfungible", state.id, state.page, state.pagesize)).data.data;
-        let [data, detailedData, detailedActions, distributeData] = tablizeNonFungible(recvData);
+        let [data, detailedData, detailedActions, distributeData] = tablizeNonfungible(recvData);
         commit('updateDataMut', {data, detailedData, detailedActions, distributeData});
     },
     async more({ commit, dispatch, state }, adder) {

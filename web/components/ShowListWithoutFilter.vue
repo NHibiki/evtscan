@@ -36,7 +36,8 @@
                 },
             }
         },
-        created() { return this.softRefresh(this.$route.name.replace('lang-', '')); },
+        // created() { return this.softRefresh(this.$route.name.replace('lang-', '')); },
+        mounted() { return this.softRefresh(this.$route.name.replace('lang-', '')); },
         components: { Table, Switcher },
         computed: mapState(['tableHeader', 'name', 'endpoint', 'data', 'page', 'activeTab', 'dataLink']),
         methods: {

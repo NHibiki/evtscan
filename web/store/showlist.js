@@ -4,7 +4,7 @@ import Util from '~/lib/util';
 export const state = () => ({
     tableHeader: ['transactionid', 'blocknum', 'pending', 'timestamp'],
     name: "transactions",
-    tid: "trx",
+    tid: "NULL",
     endpoint: "/transaction",
     data: null,
     filter: null,
@@ -76,8 +76,9 @@ export const actions = {
     async refreshData({ commit, state }, { filter=null, page=null } = {}) {
         if (page !== null) commit('updatePageMut', page);
         if (filter !== state.filter) commit('updateFilterMut', filter);
-        let recvData = (await getRecent(state.endpoint, page || state.page, 20, null, filter)).data.data;
-        commit('refreshDataMut', Util[`tablize${state.name[0].toLocaleUpperCase()}${state.name.substr(1)}`](recvData));
+        const recvData = (await getRecent(state.endpoint, page || state.page, 20, null, filter)).data.data;
+        const tablizeName = `tablize${state.name[0].toLocaleUpperCase()}${state.name.substr(1)}`;
+        commit('refreshDataMut', Util[tablizeName](recvData));
     }, 
     async more({ commit, dispatch, state }, adder) {
         if (!adder) return;

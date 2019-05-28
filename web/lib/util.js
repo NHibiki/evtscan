@@ -137,7 +137,7 @@ export const tablizeFungible = function (data={}) {
 
 }
 
-export const tablizeNonFungible = function (data={}) {
+export const tablizeNonfungible = function (data={}) {
 
     let res = [];
     delete data._id;
@@ -324,7 +324,7 @@ export const tablizeFungibles = function (data=[]) {
 
 }
 
-export const tablizeNonFungibles = function (data=[]) {
+export const tablizeNonfungibles = function (data=[]) {
 
     let res = [];
     let resData = [];
@@ -377,7 +377,7 @@ export default {
     tablizeTrx,
     tablizeTrxAction,
     tablizeFungible,
-    tablizeNonFungible,
+    tablizeNonfungible,
     tablizeDomain,
     tablizeGroup,
     tablizeAddress,
@@ -386,7 +386,7 @@ export default {
     tablizeBlocks,
     tablizeTransactions,
     tablizeFungibles,
-    tablizeNonFungibles,
+    tablizeNonfungibles,
     tablizeDomains,
     tablizeGroups,
 }

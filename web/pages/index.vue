@@ -94,7 +94,7 @@
                 if (data.data && data.data.length) this.searchData = data.data;
                 else this.searchData = [];
             }, 100),
-            goAddress() { this.$router.push(`/address/` + this.search); },
+            goAddress() { this.$router.push(this.$i18n.path(`/address/` + this.search)); },
             searchClick(i) { this.search = this.searchData[i] || ""; this.searchData = []; }
         }
     }
