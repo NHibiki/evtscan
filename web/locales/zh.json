@@ -8,11 +8,11 @@
         "info": {
             "back": "返回",
             "tohome": "回到主页",
-            "copyright": "evtScan 版权于 ©️2019",
+            "copyright": "evtScan 版权所有 ©️2019",
             "rightsclaim": "保留所有权利。",
             "producedby": "由 @NHibiki 维护",
             "producedwith": "",
-            "distributedbyvue": "由 Vue.js 强力驱动"
+            "distributedbyvue": "基于 Vue.js 构建"
         }
     },
     "navigator": {
@@ -23,10 +23,10 @@
         "transactions": "交易",
         "block": "区块",
         "blocks": "区块",
-        "fungible": "可置换通证",
-        "fungibles": "可置换通证",
-        "nonfungible": "非置换通证",
-        "nonfungibles": "非置换通证",
+        "fungible": "同质化通证",
+        "fungibles": "同质化通证",
+        "nonfungible": "非同质通证",
+        "nonfungibles": "非同质通证",
         "domain": "域",
         "domains": "域",
         "group": "组",
@@ -38,7 +38,7 @@
         "everitoken": "everiToken",
         "evtscan": "evtScan",
         "everipay": "everiPay",
-        "myevtwallet": "myEVT 钱包",
+        "myevtwallet": "MyEVT 钱包",
         "whitepaper": "白皮书"
     },
     "index": {
@@ -58,7 +58,7 @@
         "transactions": "交易记录",
         "actions": "操作记录",
         "nodes": "记录节点",
-        "distributions": "分发记录",
+        "distributions": "发放记录",
         "publickeys": "签署此交易的公钥",
         "signatures": "签名",
         "filter": {
@@ -72,24 +72,24 @@
         "datatable": {
             "type": "类型",
             "domain": "域",
-            "key": "主键",
+            "key": "键",
             "transactionid": "交易 ID",
             "timestamp": "时间戳",
             "name": "名称",
-            "symbolid": "标识 ID",
+            "symbolid": "资产序号",
             "amount": "数量",
             "pending": "是否挂起",
             "threshold": "阈值",
-            "creator": "创建人",
+            "creator": "创建者",
             "count": "数量",
             "weight": "权重",
-            "to": "发送给",
+            "to": "发送到",
             "publickey": "公钥",
             "signature": "签名",
-            "blocknum": "区块编号",
+            "blocknum": "区块序号",
             "blockid": "区块 ID",
             "producer": "发行者",
-            "latestissued": "最近颁发",
+            "latestissued": "最近发行",
             "sequencenum": "序号"
         }
     },
