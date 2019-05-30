@@ -11,6 +11,7 @@ export const state = () => ({
     page: 0,
     activeTab: 'all',
     dataLink: [],
+    updating: false
 });
 
 export const mutations = {
@@ -65,20 +66,28 @@ export const mutations = {
         state.page = 0;
         state.dataLink = [];
     },
+    updating: (state, update) => {
+        state.updating = update;
+    }
 };
 
 export const actions = {
     async softRefresh({ commit, dispatch, state }, path) {
-        if (path === state.tid && state.data) return;
+        if (path === state.tid && state.data && !state.updating) return;
         commit('resetData', path);
         await dispatch('refreshData');
     },
     async refreshData({ commit, state }, { filter=null, page=null } = {}) {
-        if (page !== null) commit('updatePageMut', page);
-        if (filter !== state.filter) commit('updateFilterMut', filter);
-        const recvData = (await getRecent(state.endpoint, page || state.page, 20, null, filter)).data.data;
-        const tablizeName = `tablize${state.name[0].toLocaleUpperCase()}${state.name.substr(1)}`;
-        commit('refreshDataMut', Util[tablizeName](recvData));
+        if (state.updating) return;
+        commit('updating', true);
+        try {
+            if (page !== null) commit('updatePageMut', page);
+            if (filter !== state.filter) commit('updateFilterMut', filter);
+            const recvData = (await getRecent(state.endpoint, page || state.page, 20, null, filter)).data.data;
+            const tablizeName = `tablize${state.name[0].toLocaleUpperCase()}${state.name.substr(1)}`;
+            commit('refreshDataMut', Util[tablizeName](recvData));
+        } catch(err) {}
+        commit('updating', false);
     }, 
     async more({ commit, dispatch, state }, adder) {
         if (!adder) return;

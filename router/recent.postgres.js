@@ -69,7 +69,8 @@ const getActions = async (since, page, size, from, {trx_id, sym_id}) => {
         let queries = [new Date(since), new Date(from), size, size * page];
         if (trx_id) { addons = `AND a.trx_id=$5`; queries.push(trx_id); }
         else if (sym_id) { addons = `AND a.domain=$5 AND a.key=$6`; queries.push(".fungible"); queries.push(sym_id); }
-        return (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        // return (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        return (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE $1=$1 OR $2=$2 ${addons} ORDER BY t.created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];
 }
@@ -79,13 +80,14 @@ const getTrxByName = async (since, page, size, from, {trx_name="everipay"}) => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
         if (trx_name) { addons = `AND name=$5`; queries.push(trx_name); }
-        let actionsData = (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
-
+        // let actionsData = (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        let actionsData = (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE $1=$1 OR $2=$2 ${addons} ORDER BY t.created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        
         let trxMap = {};
         actionsData.forEach(a => {
             a.data.key = a.data.link && a.data.link.keys && a.data.link.keys[0] || "";
             delete a.data.link;
-            trxMap[a.trx_id] = a
+            trxMap[a.trx_id] = a;
         });
         let trxs = actionsData.map(a => a.trx_id);
         let params = trxs.map((_, i) => `$${i+1}`);
@@ -106,7 +108,8 @@ const getFungibles = async (since, page, size, from, {creator, filter}) => {
             queries.push(`%${filter.trim().toLocaleLowerCase()}%`);
             queries.push(parseInt(filter, 10) || -1);
         }
-        let schemaResult = (await db.query(`SELECT f.*, t.timestamp AS timestamp FROM fungibles f INNER JOIN transactions t ON f.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        // let schemaResult = (await db.query(`SELECT f.*, t.timestamp AS timestamp FROM fungibles f INNER JOIN transactions t ON f.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        let schemaResult = (await db.query(`SELECT f.*, t.timestamp AS timestamp FROM fungibles f INNER JOIN transactions t ON f.trx_id = t.trx_id WHERE $1=$1 OR $2=$2 ${addons} ORDER BY t.created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
         return await schemaResult.mapAsync(async d => {
             if (d && d.metas && d.metas.length) {
                 let params = d.metas.map((_, i) => `$${i+1}`);
@@ -124,7 +127,8 @@ const getDomains = async (since, page, size, from, {creator}) => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
         if (creator) { addons = `AND creator=$5`; queries.push(creator); }
-        return (await db.query(`SELECT d.*, t.timestamp AS timestamp FROM domains d INNER JOIN transactions t ON d.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        // return (await db.query(`SELECT d.*, t.timestamp AS timestamp FROM domains d INNER JOIN transactions t ON d.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        return (await db.query(`SELECT d.*, t.timestamp AS timestamp FROM domains d INNER JOIN transactions t ON d.trx_id = t.trx_id WHERE $1=$1 OR $2=$2 ${addons} ORDER BY t.created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];
 }
@@ -134,14 +138,16 @@ const getGroups = async (since, page, size, from, {key}) => {
         let addons = "";
         let queries = [new Date(since), new Date(from), size, size * page];
         if (key) { addons = `AND def=$5`; queries.push(key); }
-        return (await db.query(`SELECT g.*, t.timestamp AS timestamp FROM groups g INNER JOIN transactions t ON g.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        // return (await db.query(`SELECT g.*, t.timestamp AS timestamp FROM groups g INNER JOIN transactions t ON g.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 ${addons} ORDER BY t.timestamp DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
+        return (await db.query(`SELECT g.*, t.timestamp AS timestamp FROM groups g INNER JOIN transactions t ON g.trx_id = t.trx_id WHERE $1=$1 OR $2=$2 ${addons} ORDER BY t.created_at DESC LIMIT $3 OFFSET $4`, queries)).rows || [];
     });
     return res[1] || [];
 }
 
 const getNonfungibles = async (since, page, size, from) => {
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT tk.domain AS _id, COUNT(*) AS count, MAX(t.timestamp) AS updated_at FROM tokens tk INNER JOIN transactions t ON tk.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 GROUP BY _id ORDER BY updated_at DESC LIMIT $3 OFFSET $4`, [new Date(since), new Date(from), size, size * page])).rows || [];
+        // return (await db.query(`SELECT tk.domain AS _id, COUNT(*) AS count, MAX(t.timestamp) AS updated_at FROM tokens tk INNER JOIN transactions t ON tk.trx_id = t.trx_id WHERE t.timestamp<=$1 AND t.timestamp>=$2 GROUP BY _id ORDER BY updated_at DESC LIMIT $3 OFFSET $4`, [new Date(since), new Date(from), size, size * page])).rows || [];
+        return (await db.query(`SELECT tk.domain AS _id, COUNT(*) AS count, MAX(t.timestamp) AS updated_at FROM tokens tk INNER JOIN transactions t ON tk.trx_id = t.trx_id GROUP BY _id ORDER BY updated_at DESC LIMIT $3 OFFSET $4`, [new Date(since), new Date(from), size, size * page])).rows || [];
     });
     return res[1] || [];
 }
