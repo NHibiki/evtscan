@@ -44,7 +44,7 @@ const inject = function (app, config) {
                 // ## TODO ##
                 // ## TO GET QUERY FROM REDIS ##
                 if (!cacheHits) {
-                    // console.log(ctx.url);
+                    //console.log(ctx.url);
                     await next();
                     
                     // ## TODO ##
