@@ -37,6 +37,23 @@ const inject = function (app, config) {
     });
 
     app.use(async (ctx, next) => { ctx.state.config = config; await next(); })
+       .use(async (ctx, next) => {
+            if (ctx.path.startsWith("/api/")) {
+                let cacheHits = false;
+                
+                // ## TODO ##
+                // ## TO GET QUERY FROM REDIS ##
+                if (!cacheHits) {
+                    // console.log(ctx.url);
+                    await next();
+                    
+                    // ## TODO ##
+                    // ## TO SAVE RESULT TO CACHE ##
+                }
+            } else {
+                await next();
+            }
+        })
        .use(router.routes())
        .use(router.allowedMethods())
        .use(KoaStatic(path.join(__dirname, "../web/static")))
