@@ -94,7 +94,13 @@ const getDomain = async id => {
 
 const getGroup = async id => {
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT * FROM groups WHERE name=$1 LIMIT 1`, [id || ""])).rows[0] || null;
+        let group = (await db.query(`SELECT * FROM groups WHERE name=$1 LIMIT 1`, [id || ""])).rows[0] || null;
+        if (group && group.metas && group.metas.length) {
+            let params = group.metas.map((_, i) => `$${i+1}`);
+            let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, group.metas)).rows || [];
+            group.metas = metas;
+        }
+        return group;
     });
     return res[1] || [];
 }
