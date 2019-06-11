@@ -10,7 +10,7 @@
             <Table :head="tableHeader.map(i => $t(`evt.datatable.${i}`))" :data="data" :clickable="true" @click="click"/>
             <div class="pager">
                 <a class="btn" href="javascript:;" @click="more(-1)"><fa icon="angle-left"/></a>
-                <span> {{ $t('page.before') }} Page {{ page + 1 }} {{ $t('page.after') }} </span>
+                <span> {{ $t('page.before') }} {{ page + 1 }} {{ $t('page.after') }} </span>
                 <a class="btn" href="javascript:;" @click="more(1)"><fa icon="angle-right"/></a>
             </div>
         </div>
