@@ -65,6 +65,7 @@ const getFungible = async id => {
         }
         /* current supply */
         try {
+            const node = evtnet.getRandomNode('AP');
             const chainData = (await Axios.post(node.addr + `/v1/evt/get_fungible`, {id})).data;
             if (chainData.current_supply) {
                 fungible.current_supply = chainData.current_supply; 
@@ -73,7 +74,9 @@ const getFungible = async id => {
             if (chainData.metas && !fungible.metas) {
                 fungible.metas = chainData.metas;
             }
-        } catch(err) {}
+        } catch(err) {
+            // console.log(err);
+        }
         return fungible;
     });
     return res[1] || [];
@@ -142,7 +145,7 @@ const getAddress = async (id) => {
 }
 
 const getAssets = async (id) => {
-    let node = evtnet.getRandomNode('AP');    
+    let node = evtnet.getRandomNode('AP');
     let ans = [];
     try {
         ans = (await Axios.post(node.addr + `/v1/history/get_fungibles_balance`, {addr: id})).data;
