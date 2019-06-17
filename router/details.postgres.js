@@ -37,6 +37,11 @@ const getDetail = fn => async (ctx, next) => {
     };
 
     if (!result.data || !Object.keys(result.data).length) result = { state: 0, error: "resource not found" }
+    if (result.data && result.data.evtscan_raw) {
+        result = result.data.data || 'none';
+        ctx.type = 'text/plain';
+    }
+
     ctx.body = result;
     
 }
@@ -61,7 +66,10 @@ const getFungible = async (id, { action=null }) => {
         
         /* return by action */
         if ('total_supply' === action && fungible.total_supply) {
-            return fungible.total_supply.split(/\s*/)[0];
+            return {
+                data: fungible.total_supply.split(' ')[0],
+                evtscan_raw: true
+            };
         }
 
         if (fungible && fungible.metas && fungible.metas.length) {
