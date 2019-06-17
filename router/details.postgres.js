@@ -55,9 +55,15 @@ const getTransaction = async id => {
     return res[1] || [];
 }
 
-const getFungible = async id => {
+const getFungible = async (id, { action=null }) => {
     let res = await postgres.db(async db => {
         let fungible = (await db.query(`SELECT * FROM fungibles WHERE sym_id=$1 LIMIT 1`, [parseInt(id, 10) || 0])).rows[0] || null;
+        
+        /* return by action */
+        if ('total_supply' === action && fungible.total_supply) {
+            return fungible.total_supply.split(/\s*/)[0];
+        }
+
         if (fungible && fungible.metas && fungible.metas.length) {
             let params = fungible.metas.map((_, i) => `$${i+1}`);
             let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, fungible.metas)).rows || [];
