@@ -66,12 +66,17 @@ export const getChainInfo = async () => {
     return get(`/chainInfo`);
 }
 
+export const getSiteInfo = async () => {
+    return get(`/info`);
+}
+
 export default {
     LOCALDEV,
     endPoint,
     searchAddress,
     get,
     getChainInfo,
+    getSiteInfo,
     getRecent,
     getTrxByName,
     getDetail,
