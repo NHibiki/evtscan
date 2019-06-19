@@ -1,9 +1,9 @@
 <template>
     <div class='siteinfo-wrapper' v-if="show && siteInfo">
         <span>
-            <b style="margin-right: 8px; margin-left: 2px;">SITEINFO</b> {{ siteInfo }}
+            <b style="margin-right: 8px; margin-left: 2px;">INFO</b> {{ siteInfo }}
         </span>
-        <a @click="onclick">x</a>
+        <a @click="onclick">X</a>
     </div>
 </template>
 
@@ -15,8 +15,19 @@
         // props: [''],
         data () {
             return {
-                show: true,
+                show: false,
                 siteInfo: '',
+            }
+        },
+        async mounted() {
+            const info = ((await getSiteInfo()) || {}).data;
+            if (info && info.prompt && info.prompt.default) {
+                const {locale = 'default'} = this.$i18n;
+                const msg = info.prompt[locale] || info.prompt['default'] || "";
+                if (msg) {
+                    this.show = true;
+                    this.siteInfo = msg;
+                }
             }
         },
         created() {},
@@ -43,10 +54,11 @@
 
         position: absolute;
         font-size: 13px;
-        top: 76px;
-        left: calc(50% - 150px);
-        width: 300px;
+        top: 116px;
+        transform: translateX(-50%);
+        left: 50%;
         height: 30px;
+        padding: 0 20px;
 
         span {
             font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", Arial, "Microsoft YaHei", "Helvetica Neue", sans-serif;
@@ -60,11 +72,11 @@
             display: inline-block;
             font-weight: 900;
             color: #FFF;
-            transform: scale(1.5);
-            margin: 1px 4px 0 16px;
+            margin-left: 16px;
             text-decoration: none;
+            cursor: pointer;
         }
-        
+
     }
 
 </style>

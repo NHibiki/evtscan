@@ -1,5 +1,6 @@
 <template>
     <div id="evtscan">
+        <SiteInfo />
         <header class="header" v-if="notInApp">
             <div class="content">
                 <nuxt-link :to="$i18n.path('/')" class="logo">evtScan</nuxt-link>
@@ -63,6 +64,7 @@
 <script>
 
     import { mapState, mapMutations } from 'vuex';
+    import SiteInfo from '~/components/SiteInfo';
 
     import '~/node_modules/loaders.css/loaders.min.css';
     import '~/assets/global.scss';
@@ -81,7 +83,8 @@
                 let theme = this.$router.history.current.query.theme;
                 if (theme) this.setTheme(theme);
             } catch(err) {}
-        }
+        },
+        components: {SiteInfo}
     }
 
 </script>

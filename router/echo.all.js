@@ -1,8 +1,15 @@
 const PackageConfig = require('../package.json');
 
+const insertCtx = ctx => {
+    ctx.type = 'application/json';
+    ctx.set('Access-Control-Allow-Origin', '*');
+    ctx.set('Access-Control-Allow-Methods', 'GET');
+    return ctx;
+}
+
 // a simple test to see if the server is responding
 const sysInfo = async ctx => {
-    ctx.body = {
+    insertCtx(ctx).body = {
         name: "EvtScan Backend Server",
         version: PackageConfig.version,
         db: ctx.state.config.db,
@@ -12,7 +19,7 @@ const sysInfo = async ctx => {
 }
 
 const siteInfo = async ctx => {
-    ctx.body = {
+    insertCtx(ctx).body = {
         version: PackageConfig.version,
         startAt: new Date(ctx.state.config.startAt).toISOString(),
         prompt: ctx.state.config.siteInfo
