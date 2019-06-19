@@ -172,7 +172,7 @@ const getAssets = async (id) => {
     })).filter(a => a.sym_id && a.amount);
     
     return await assets.mapAsync(async a => ({
-        ...(await getFungible(a.sym_id)),
+        ...(await getFungible(a.sym_id, {})),
         ...a,
     }));
 }
