@@ -4,6 +4,7 @@ const Koa           = require('koa'),
       Postgres      = require('./lib/postgres'),
       Mongo         = require('./lib/mongo'),
       EvtNet        = require('./lib/evtnet'),
+      Utils         = require('./lib/utils'),
       ArgParser     = require('argparse').ArgumentParser,
       PackageConfig = require('./package.json');
 
@@ -22,6 +23,7 @@ argParse.addArgument(['-c', '--chain'   ], { help: "Specify Chaininfo, default e
 argParse.addArgument(['-g', '--postgres'], { help: "Postgres Server for connection, example localhost:5432", defaultValue: "" });
 argParse.addArgument(['-u', '--postuser'], { help: "Postgres Server username, default evtscan", defaultValue: "evtscan" });
 argParse.addArgument(['-s', '--postpass'], { help: "Postgres Server password, must be specified if using --postgres", defaultValue: "" });
+argParse.addArgument(['-i', '--siteinfo'], { help: "Additional information to be displayed on the main screen, empty to show nothing. (string, json, jsonfile)", defaultValue: "" });
 // argParse.addArgument(['-s', '--ssr' ], { help: "Whether to turn on Server Side Rendering (Experimental).", defaultValue: "no"});
 
 var args = argParse.parseArgs();
@@ -36,6 +38,7 @@ const postgresUser = args.postuser;
 const postgresPass = args.postpass;
 const ssr          = true; //args.ssr === "yes" ? true : false;
 const dev          = serverPort !== 80;
+const siteInfo     = args.siteinfo;
 
 if (ssr) {
     console.log('[Info] Running in SSR Mode.');
@@ -65,7 +68,7 @@ if (!postgresAddr) {
 
 // prepare for api routers
 const app = new Koa();
-Router.inject(app, {ssr, dev, db: usingDB});
+Router.inject(app, {ssr, dev, db: usingDB, siteInfo: Utils.parseSiteInfo(siteInfo)});
 
 // start server
 app.listen(serverPort, serverAddr).on('error', err => {

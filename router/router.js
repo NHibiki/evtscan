@@ -16,6 +16,9 @@ const inject = function (app, config) {
         // new Builder(nuxt).build();
     }
 
+    // insert more config
+    config.startAt = Date.now();
+
     // make sure {Koa Instance} was passed in
     if (typeof app.use !== 'function') {
         console.error('[Error] Initialization of Koa Failed!');
