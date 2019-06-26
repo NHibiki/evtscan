@@ -10,9 +10,10 @@ Array.prototype.mapAsync = async function (fn) {
 }
 
 // get most recent transactions from mongo
-const getRecent = fn => async (ctx, next) => {
+const getRecent = (fn, patched) => async (ctx, next) => {
 
     let {since, page, size, from, block_id, trx_id, trx_name, creator, key, name, sym_id, filter} = ctx.query;
+    const params = {...patched};
 
     // check params of input
     if (!(since = Date.parse(since))) since = Date.now();
@@ -21,14 +22,15 @@ const getRecent = fn => async (ctx, next) => {
     else if (page < 0) page = 0;
     if (!(size = parseInt(size, 10))) size = 10;
     else if (size < 10) size = 10;
-    if (!block_id) block_id = null;
-    if (!trx_id) trx_id = null;
-    if (!trx_name) trx_name = null;
-    if (!creator) creator = null;
-    if (!key) key = null;
-    if (!name) name = null;
-    if (isNaN(sym_id = parseInt(sym_id, 10))) sym_id = -1;
-    if (!filter) filter = null;
+    if (block_id) params.block_id = block_id;
+    if (trx_id) params.trx_id = trx_id;
+    if (trx_name) params.trx_name = trx_name;
+    if (creator) params.creator = creator;
+    if (key) params.key = key;
+    if (name) params.name = name;
+    if (!isNaN(sym_id = parseInt(sym_id, 10))) params.sym_id = sym_id;
+    else params.sym_id = -1;
+    if (filter) params.filter = filter;
 
     // set return content of query
     ctx.type = 'application/json';
@@ -38,7 +40,7 @@ const getRecent = fn => async (ctx, next) => {
     let result = {
         state: 1,
         since, page, size, from,
-        data: await fn(since, page, size, from, {block_id, trx_id, trx_name, creator, key, name, sym_id, filter})
+        data: await fn(since, page, size, from, params)
     };
 
     if (!result.data) result = { state: 0, error: "resource not found" }
@@ -175,4 +177,6 @@ module.exports = [
     ['get', '/domain', getRecent(getDomains)],
     ['get', '/group', getRecent(getGroups)],
     ['get', '/nonfungible', getRecent(getNonfungibles)],
+    ['get', '/everipay', getRecent(getTrxByName, {trx_name: "everipay"})],
+    ['get', '/everipass', getRecent(getTrxByName, {trx_name: "everipass"})],
 ];
