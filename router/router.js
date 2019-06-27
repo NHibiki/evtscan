@@ -41,6 +41,11 @@ const inject = function (app, config) {
 
     app.use(async (ctx, next) => { ctx.state.config = config; await next(); })
        .use(async (ctx, next) => {
+            ctx.set('Access-Control-Allow-Origin', '*');
+            ctx.set('Access-Control-Allow-Methods', 'GET, OPTION');
+            await next();
+       })
+       .use(async (ctx, next) => {
             if (ctx.path.startsWith("/api/")) {
                 let cacheHits = false;
                 
@@ -73,7 +78,7 @@ const inject = function (app, config) {
             if (ctx.status === 404 && ctx.path.startsWith("/api/")) {
                 ctx.type = 'application/json';
                 ctx.set('Access-Control-Allow-Origin', '*');
-                ctx.set('Access-Control-Allow-Methods', 'GET');
+                ctx.set('Access-Control-Allow-Methods', 'GET, OPTION');
                 ctx.body = { state: 0, error: 'Api Entry Not Found' };
             }
        });

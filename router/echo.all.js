@@ -3,7 +3,7 @@ const PackageConfig = require('../package.json');
 const insertCtx = ctx => {
     ctx.type = 'application/json';
     ctx.set('Access-Control-Allow-Origin', '*');
-    ctx.set('Access-Control-Allow-Methods', 'GET');
+    ctx.set('Access-Control-Allow-Methods', 'GET, OPTION');
     return ctx;
 }
 

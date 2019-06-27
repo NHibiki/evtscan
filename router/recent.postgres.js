@@ -35,7 +35,7 @@ const getRecent = (fn, patched) => async (ctx, next) => {
     // set return content of query
     ctx.type = 'application/json';
     ctx.set('Access-Control-Allow-Origin', '*');
-    ctx.set('Access-Control-Allow-Methods', 'GET');
+    ctx.set('Access-Control-Allow-Methods', 'GET, OPTION');
     
     let result = {
         state: 1,
