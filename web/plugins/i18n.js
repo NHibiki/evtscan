@@ -17,9 +17,20 @@ export default ({ app, store }) => {
         messages[key] = require(`~/locales/${key}.json`);
     });
 
+    // Get browser default language
+    let defaultLang = 'en';
+    if (typeof navigator !== 'undefined' && navigator.languages instanceof Array) {
+        const defaultLang = [...navigator.languages]
+            .map(l => l.split('-')[0])
+            .reduce((prev, curr) => prev ? prev : (curr in langs ? curr : ""), "") || 'en';
+        if (defaultLang !== 'en') {
+            store.commit('setDefaultLang', defaultLang);
+        }
+    }
+
     app.i18n = new VueI18n({
         locale: store.state.locale,
-        fallbackLocale: 'en',
+        fallbackLocale: store.state.defaultLocale,
         messages
     });
 
@@ -33,7 +44,7 @@ export default ({ app, store }) => {
 
     app.i18n.switch = (lang) => {
         let l = lang;
-        if (!(l in langs)) l = 'en';
+        if (!(l in langs)) l = defaultLang;
         let fullPath = app.router.history.current.fullPath;
         const firstSlot = fullPath.split('/')[1];
         if (firstSlot in langs) {

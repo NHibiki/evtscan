@@ -5,7 +5,8 @@ try { theme = window.location.search.substr(1).split("&").reduce((p, c) => {retu
 export const state = () => ({
     theme,
     locales: ['en', 'zh'],
-    locale: 'en'
+    locale: 'en',
+    defaultLocale: 'en'
 });
 
 export const mutations = {
@@ -16,6 +17,12 @@ export const mutations = {
     setLang: (state, locale) => {
         if (state.locales.indexOf(locale) !== -1) {
           state.locale = locale;
+        }
+    },
+    setDefaultLang: (state, locale) => {
+        if (state.locales.indexOf(locale) !== -1) {
+            state.locale = locale;
+            state.defaultLocale = locale;
         }
     }
 };
