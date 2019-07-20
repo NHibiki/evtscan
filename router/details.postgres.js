@@ -140,6 +140,20 @@ const getNonfungible = async (id, {page=0, size=15}) => {
     return res[1] || [];
 }
 
+const getNonfungibleDistribution = async id => {
+    let res = await postgres.db(async db => {
+        let distribution = (await db.query(`SELECT * FROM tokens WHERE id=$1`, [id || ""])).rows[0] || {};
+        // let distribution = (await db.query(`SELECT tk.*, t.timestamp AS timestamp FROM tokens tk INNER JOIN transactions t ON tk.trx_id = t.trx_id WHERE tk.id=$1`, [id || ""])).rows || {};
+        if (distribution && distribution.metas && distribution.metas.length) {
+            let params = distribution.metas.map((_, i) => `$${i+1}`);
+            let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, distribution.metas)).rows || [];
+            distribution.metas = metas;
+        }
+        return distribution;
+    });
+    return res[1] || [];
+}
+
 const getAddress = async (id) => {
     let schemas = {
         "send": "data->>'from'=$1", //transferft
@@ -206,7 +220,8 @@ module.exports = [
     ['get', '/domain/:id', getDetail(getDomain)],
     ['get', '/group/:id', getDetail(getGroup)],
     ['get', '/nonfungible/:id', getDetail(getNonfungible)],
+    ['get', '/nonfungible/token/:id', getDetail(getNonfungibleDistribution)],
     ['get', '/address/:id', getDetail(getAddress)],
     ['get', '/addressAssets/:id', getDetail(getAssets)],
-    ['get', '/addressHistory/:id', getDetail(getAddressHistory)],
+    ['get', '/addressHistory/:id', getDetail(getAddressHistory)]
 ];

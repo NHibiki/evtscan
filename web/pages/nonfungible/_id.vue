@@ -13,7 +13,7 @@
 
         <div class='grid'>
             <h2>{{ $t('evt.distributions') }}</h2>
-            <Table :data="distributeData ? distributeData.map(k => [k.name, k.owner && k.owner[0] ? k.owner[0] : 'None', k.timestamp]) : null" :head="distributeDataHeaders" :clickable="true" @click="openDistributeModal" />
+            <Table :data="distributeData ? distributeData.map(k => [k.name, k.owner && k.owner[0] ? k.owner[0] : 'None', k.timestamp]) : null" :head="distributeDataHeaders" :clickable="true" @click="goDistribution" />
             <div class="pager">
                 <a class="btn" href="javascript:;" @click="more(-1)"><fa icon="angle-left"/></a>
                 <span> {{ $t('page.before') }} {{ page + 1 }} {{ $t('page.after') }} </span>
@@ -53,8 +53,14 @@
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
         asyncData({store, route, isServer}) { store.commit('nonfungible/resetData', route.params.id); let promise = store.dispatch('nonfungible/updateData'); if (isServer) return promise; },
         methods: {
-            ...mapMutations(['resetData', 'closeModal', 'openDetailedModal', 'openDistributeModal']),
+            ...mapMutations(['resetData', 'closeModal', 'openDetailedModal']),
             ...mapActions(['updateData', 'more']),
+            goDistribution(i) {
+                const d = (this.distributeData || [])[i] || {};
+                if (d.id) {
+                    this.$router.push(this.$i18n.path(`/nonfungible/token/${d.id}`));
+                }
+            }
         }
     }
 </script>

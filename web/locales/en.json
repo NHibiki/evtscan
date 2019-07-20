@@ -27,6 +27,8 @@
         "fungibles": "Fungible Tokens",
         "nonfungible": "Non-Fungible Token",
         "nonfungibles": "Non-Fungible Tokens",
+        "token": "Token",
+        "tokens": "Tokens",
         "domain": "Domain",
         "domains": "Domains",
         "group": "Group",
@@ -70,6 +72,7 @@
             "everipass": "Pass"
         },
         "datatable": {
+            "id": "ID",
             "type": "Type",
             "domain": "Domain",
             "key": "Key",
@@ -90,7 +93,8 @@
             "blockid": "Block ID",
             "producer": "Producer",
             "latestissued": "Latest Issued",
-            "sequencenum": "Sequence"
+            "sequencenum": "Sequence",
+            "createdAt": "Created At"
         }
     },
     "page": {

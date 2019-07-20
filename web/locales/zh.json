@@ -27,6 +27,8 @@
         "fungibles": "同质化通证",
         "nonfungible": "非同质通证",
         "nonfungibles": "非同质通证",
+        "token": "通证",
+        "tokens": "通证",
         "domain": "域",
         "domains": "域",
         "group": "组",
@@ -70,6 +72,7 @@
             "everipass": "Pass"
         },
         "datatable": {
+            "id": "唯一标识",
             "type": "类型",
             "domain": "域",
             "key": "键",
@@ -90,7 +93,8 @@
             "blockid": "区块 ID",
             "producer": "发行者",
             "latestissued": "最近发行",
-            "sequencenum": "序号"
+            "sequencenum": "序号",
+            "createdAt": "创建时间"
         }
     },
     "page": {

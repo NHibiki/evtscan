@@ -26,10 +26,6 @@ export const mutations = {
         state.showData = state.detailedActions[i || 0] || {}
         state.showModal = true
     },
-    openDistributeModal(state, i) {
-        state.showData = state.distributeData[i] || {}
-        state.showModal = true
-    },
     updateDataMut: (state, thing={}) => {
         Object.keys(thing).forEach(k => {
             state[k] = thing[k];

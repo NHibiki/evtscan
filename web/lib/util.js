@@ -1,6 +1,20 @@
 export const showListNames = ['Transactions', 'Blocks', 'Fungibles', 'Nonfungibles', 'Domains', 'Groups'];
 export const showListIds = ['trx', 'block', 'fungible', 'nonfungible', 'domain', 'group'];
 
+export const parseKey = function (key = "") {
+    return key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" ");
+}
+
+export const makeLink = function (source, key, route) {
+    if (!source || !source[key]) return;
+    source[key] = {
+        hide: true,
+        content: source[key],
+        type: "innerLink",
+        data: `/${route}/${source[key]}`
+    };
+}
+
 export const msToTimeStr = function (time=0, fix=true) {
 
     let timeStr = 's';
@@ -35,7 +49,7 @@ export const tablizeBlock = function (data={}) {
     delete data.created_at;
 
     for (let key in data) {
-        res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
+        res.push([parseKey(key), data[key]]);
     }
 
     return  res;
@@ -78,7 +92,7 @@ export const tablizeTrx = function (data={}) {
     delete data.signatures;
 
     for (let key in data) {
-        res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
+        res.push([parseKey(key), data[key]]);
     }
 
     keys = (keys || []).map(k => [k]);
@@ -131,7 +145,7 @@ export const tablizeFungible = function (data={}) {
     if (data.total_supply) data.total_supply = (parseInt(data.total_supply, 10) || "N/A").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     if (data.current_supply) data.current_supply = (parseInt(data.current_supply, 10) || "N/A").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     for (let key in data) {
-        res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
+        res.push([parseKey(key), data[key]]);
     }
 
     return [res, detailedData, detailedActions, metaData];
@@ -171,10 +185,45 @@ export const tablizeNonfungible = function (data={}) {
     delete data.key;
 
     for (let key in data) {
-        res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
+        res.push([parseKey(key), data[key]]);
     }
 
     return [res, detailedData, detailedActions, distributeData];
+
+}
+
+export const tablizeNonfungibleToken = function (data={}) {
+
+    const res = [];
+
+    const metas = [];
+    const metaData = data.metas || [];
+    delete data.metas;
+    metaData.forEach(m => {
+        metas.push([m.id, m.key, m.creator, m.created_at]);
+    });
+
+    makeLink(data, 'trx_id', 'trx');
+    makeLink(data, 'domain', 'nonfungible');
+
+    for (let key in data) {
+        if (key === 'owner') {
+            let isFirst = true;
+            (data[key] || []).forEach(owner => {
+                res.push([isFirst ? parseKey(key) : '', {
+                    hide: true,
+                    content: owner,
+                    type: "innerLink",
+                    data: `/address/${owner}`
+                }]);
+                isFirst = false;
+            });
+        } else {
+            res.push([parseKey(key), data[key]]);
+        }
+    }
+
+    return [res, metas, metaData];
 
 }
 
@@ -203,7 +252,7 @@ export const tablizeDomain = function (data={}) {
     delete data.metas;
 
     for (let key in data) {
-        res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
+        res.push([parseKey(key), data[key]]);
     }
 
     return [res, detailedData, detailedActions, metaData];
@@ -238,7 +287,7 @@ export const tablizeGroup = function (data={}) {
     delete data.metas;
 
     for (let key in data) {
-        res.push([key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" "), data[key]]);
+        res.push([parseKey(key), data[key]]);
     }
 
     return [res, detailedData, detailedActions, metaData];
@@ -379,6 +428,7 @@ export default {
     tablizeTrxAction,
     tablizeFungible,
     tablizeNonfungible,
+    tablizeNonfungibleToken,
     tablizeDomain,
     tablizeGroup,
     tablizeAddress,
