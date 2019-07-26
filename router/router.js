@@ -66,8 +66,11 @@ const inject = function (app, config) {
        .use(router.allowedMethods())
        .use(KoaStatic(path.join(__dirname, "../web/static")))
        .use(KoaMount("/_nuxt", KoaStatic(path.join(__dirname, "../.nuxt/dist"))))
-       .use(async ctx => {
-            if (ctx.path.startsWith("/api/") || ctx.path.startsWith("/_nuxt/") || ctx.path.startsWith("/favicon.ico")) return;
+       .use(async (ctx, next) => {
+            if (ctx.path.startsWith("/api/") || ctx.path.startsWith("/_nuxt/") || ctx.path.startsWith("/favicon.ico")) {
+                await next();
+                return;
+            }
             ctx.status = 200;
             ctx.respond = false;
             ctx.req.ctx = ctx;
