@@ -1,5 +1,6 @@
 const postgres = require('../lib/postgres.js');
 const evtnet   = require('../lib/evtnet.js');
+const Utils = require('../lib/utils');
 const Axios = require('axios');
 
 Array.prototype.forEachAsync = async function (fn) {
@@ -26,21 +27,30 @@ const getDetail = fn => async (ctx, next) => {
         return;
     }
 
+
+    const startTime = Date.now();
+
     // set return content of query
     ctx.type = 'application/json';
     ctx.set('Access-Control-Allow-Origin', '*');
     ctx.set('Access-Control-Allow-Methods', 'GET, OPTION');
     
-    let result = {
-        state: 1,
-        data: await fn(id, ctx.query || {})
-    };
-
-    if (!result.data || !Object.keys(result.data).length) result = { state: 0, error: "resource not found" }
+    let result = { state: 0, error: 'Internal Server Error!' };
+    try {
+        result = {
+            state: 1,
+            data: await fn(id, ctx.query || {})
+        };
+    } catch(err) {
+        Utils.logWithType('Error', err);
+    }
+    
+    if (!result.error && !result.data || !Object.keys(result.data).length) result = { state: 0, error: "Resource Not Found!" }
     if (result.data && result.data.evtscan_raw) {
         result = result.data.data || 'none';
         ctx.type = 'text/plain';
     }
+    Utils.log(`D|TimeUsing: ${Date.now() - startTime}`, ctx.request.path, ctx.request.querystring);
 
     ctx.body = result;
     

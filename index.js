@@ -15,6 +15,7 @@ const argParse = new ArgParser({
     description: 'The Explorer for Evt.'
 });
 
+argParse.addArgument(['--debug'         ], { help: "Enable debug mode.", action: "count" });
 argParse.addArgument(['-p', '--port'    ], { help: "Port for listening, default 80.", defaultValue: "80" });
 argParse.addArgument(['-a', '--addr'    ], { help: "Address for listening, default localhost.", defaultValue: "localhost" });
 argParse.addArgument(['-m', '--mgdb'    ], { help: "Mongo Server for connecting, default mongodb://localhost:27017.", defaultValue: "mongodb://localhost:27017" });
@@ -28,6 +29,7 @@ argParse.addArgument(['-i', '--siteinfo'], { help: "Additional information to be
 
 var args = argParse.parseArgs();
 
+const debug        = args.debug;
 const serverAddr   = args.addr;
 const serverPort   = parseInt(args.port, 10);
 const mongoServer  = args.mgdb;
@@ -40,11 +42,16 @@ const ssr          = true; //args.ssr === "yes" ? true : false;
 const dev          = serverPort !== 80;
 const siteInfo     = args.siteinfo;
 
+if (debug) {
+    Utils.shared.debug = true;
+    Utils.logWithType('Info ', 'Debug Mode is On.');
+}
+
 if (ssr) {
-    console.log('[Info] Running in SSR Mode.');
+    Utils.logWithType('Info ', 'Running in SSR Mode.');
 }
 if (dev) {
-    console.log('[Info] Running in DEV Mode.');
+    Utils.logWithType('Info ', 'Running in DEV Mode.');
 }
 if (!serverPort || !serverAddr) {
     console.error(`[Error] Fail to listen on ${serverAddr}:${serverPort}`);
@@ -57,11 +64,11 @@ if (chainNet) {
 
 var usingDB = "mongo";
 if (!postgresAddr) {
-    console.log('[Info] Connecting Mongodb.');
+    Utils.logWithType('Info ', 'Connecting Mongodb.');
     usingDB = "mongo";
     Mongo.init(mongoServer, databaseDB);
 } else {
-    console.log('[Info] Connecting Postgres.');
+    Utils.logWithType('Info ', 'Connecting Postgres.');
     usingDB = "postgres";
     Postgres.init(postgresAddr, postgresUser, postgresPass, databaseDB);
 }
@@ -76,5 +83,5 @@ app.listen(serverPort, serverAddr).on('error', err => {
     console.error(err.message);
     process.exit(1);
 }).on('listening', () => {
-    console.info(`[Info] EvtScan starts on ${serverAddr}:${serverPort}`);
+    Utils.logWithType('Info ', `EvtScan starts on ${serverAddr}:${serverPort}`);
 });

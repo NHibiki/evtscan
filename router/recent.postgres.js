@@ -1,4 +1,5 @@
 const postgres = require('../lib/postgres.js');
+const Utils = require('../lib/utils');
 
 // lower priority of Test Fungibles
 // const lowerTest = true;
@@ -36,14 +37,23 @@ const getRecent = (fn, patched) => async (ctx, next) => {
     ctx.type = 'application/json';
     ctx.set('Access-Control-Allow-Origin', '*');
     ctx.set('Access-Control-Allow-Methods', 'GET, OPTION');
-    
-    let result = {
-        state: 1,
-        since, page, size, from,
-        data: await fn(since, page, size, from, params)
-    };
 
-    if (!result.data) result = { state: 0, error: "resource not found" }
+    const startTime = Date.now();
+    
+    let result = { state: 0, error: 'Internal Server Error!' };
+    try {
+        result = {
+            state: 1,
+            since, page, size, from,
+            data: await fn(since, page, size, from, params)
+        };
+    } catch(err) {
+        Utils.logWithType('Error', err);
+    }
+
+    if (!result.error && !result.data) result = { state: 0, error: "Resource Not Found!" }
+    Utils.log(`R|TimeUsing: ${Date.now() - startTime}`, ctx.request.path, ctx.request.querystring);
+
     ctx.body = result;
     
 }

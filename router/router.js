@@ -4,6 +4,7 @@ const fs                = require('fs'),
       KoaMount          = require('koa-mount'),
       // KoaSend        = require('koa-send'),
       KoaRouter         = require('koa-router'),
+      Utils             = require('../lib/utils'),
       { Nuxt, Builder } = require('nuxt');
 
 let   nuxt   = null;
@@ -35,7 +36,7 @@ const inject = function (app, config) {
                 if (['get', 'post', 'put', 'del', 'all'].includes(method)) router[method](`/api${uri}`, fn);
             
             });
-            console.log(`[Route] Load Route Module ${rt.replace(`.${config.db}.js`, ``).replace(`.all.js`, ``)}`);
+            Utils.logWithType('Route', `Load Route Module ${rt.replace(`.${config.db}.js`, ``).replace(`.all.js`, ``)}`);
         }
     });
 
