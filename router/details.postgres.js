@@ -82,13 +82,6 @@ const getFungible = async (id, { action=null }) => {
             };
         }
 
-        if ('current_supply' === action && fungible.current_supply) {
-            return {
-                data: fungible.current_supply.split(' ')[0],
-                evtscan_raw: true
-            };
-        }
-
         if (fungible && fungible.metas && fungible.metas.length) {
             let params = fungible.metas.map((_, i) => `$${i+1}`);
             let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, fungible.metas)).rows || [];
@@ -108,6 +101,14 @@ const getFungible = async (id, { action=null }) => {
         } catch(err) {
             // console.log(err);
         }
+
+        if ('current_supply' === action && fungible.current_supply) {
+            return {
+                data: fungible.current_supply.split(' ')[0],
+                evtscan_raw: true
+            };
+        }
+        
         return fungible;
     });
     return res[1] || [];
