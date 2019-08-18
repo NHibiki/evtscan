@@ -11,20 +11,19 @@ COPY . .
 RUN apk add python nodejs npm make g++ \
     && npm config set unsafe-perm true \
     && npm i -g yarn \
-    && yarn \
+    && yarn install \
     && yarn plugin-build \
-    && cd web && yarn && yarn build \
-    && cp ./static/favicon.ico ./.nuxt/dist/favicon.ico \
-    && rm -rf ./node_modules
+    && cd packages/frontend && yarn build \
+    && cp ./static/favicon.ico ./.nuxt/dist/favicon.ico
 
 FROM alpine:3.8
 
-WORKDIR /evtscan
+WORKDIR /evtscan/packages/server
 COPY --from=0 /evtscan /evtscan
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk add --no-cache nodejs \
 RUN apk add --no-cache nodejs \
-    && ln -s /evtscan/web/.nuxt /evtscan/.nuxt
+    && ln -s /evtscan/packages/frontend/.nuxt /evtscan/packages/server/.nuxt
 
 EXPOSE 80
 

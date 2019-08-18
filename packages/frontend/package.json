@@ -1,0 +1,18 @@
+{
+  "name": "@evtscan/frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "REMOTE_DEV=dev NUXT_START_ENV=dev nuxt --hostname 0.0.0.0 --port 3001",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint",
+    "postinstall": "mkdir -p node_modules && rm -rf ./node_modules/loaders.css && ln -s $(pwd)/../../node_modules/loaders.css ./node_modules/loaders.css"
+  },
+  "dependencies": {
+    "loaders.css": "^0.1.2",
+    "vue-loaders": "^3.0.2"
+  }
+}
