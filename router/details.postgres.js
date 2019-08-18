@@ -74,6 +74,8 @@ const getFungible = async (id, { action=null }) => {
     let res = await postgres.db(async db => {
         let fungible = (await db.query(`SELECT * FROM fungibles WHERE sym_id=$1 LIMIT 1`, [parseInt(id, 10) || 0])).rows[0] || null;
         
+        if (!fungible) return null;
+
         /* return by action */
         if ('total_supply' === action && fungible.total_supply) {
             return {
@@ -82,11 +84,6 @@ const getFungible = async (id, { action=null }) => {
             };
         }
 
-        if (fungible && fungible.metas && fungible.metas.length) {
-            let params = fungible.metas.map((_, i) => `$${i+1}`);
-            let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, fungible.metas)).rows || [];
-            fungible.metas = metas;
-        }
         /* current supply */
         try {
             const node = evtnet.getRandomNode('AP');
@@ -107,6 +104,13 @@ const getFungible = async (id, { action=null }) => {
                 data: fungible.current_supply.split(' ')[0],
                 evtscan_raw: true
             };
+        }
+
+        /* get meta */
+        if (fungible.metas && fungible.metas.length) {
+            let params = fungible.metas.map((_, i) => `$${i+1}`);
+            let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, fungible.metas)).rows || [];
+            fungible.metas = metas;
         }
         
         return fungible;

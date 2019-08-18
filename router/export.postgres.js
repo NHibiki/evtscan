@@ -14,7 +14,7 @@ const pick = (origin={}, target=[], defaultValue='', flat=true) => {
             ? defaultValue
             : origin[k];
         if (flat) {
-            if (typeof res[k] === 'array') {
+            if (typeof res[k] === 'array' || res[k].__ismerged) {
                 res[k] = res[k].join(',');
             } else if (res[k] instanceof Date) {
                 res[k] = res[k].toISOString();
@@ -107,6 +107,40 @@ const getActions = async (id, {from, to, actions}) => {
     return res[1] || [];
 }
 
+const getTrx = async (id, {from, to, actions, with: w=''}) => {
+    if (!actions) actions = 'everipay,transferft';
+    actions = actions.split(',');
+    w = w.split(',').filter(Boolean);
+    w.forEach(k => {
+        if (actions.indexOf(k === -1)) {
+            actions.push(k);
+        }
+    });
+    const target = (1 << w.length) - 1;
+    const act = await getActions(id, {from, to, actions: actions.join(',')});
+    const actMap = {};
+    const res = [];
+    
+    act.forEach(a => {
+        if (actMap[a.trx_id]) {
+            actMap[a.trx_id].trx = Utils.shallowMerge(actMap[a.trx_id].trx, a);
+        } else {
+            actMap[a.trx_id] = {
+                trx: a,
+                name: 0
+            }
+        }
+        actMap[a.trx_id].name |= Math.max(1 << w.indexOf(a.name), 0);
+        if (actMap[a.trx_id].name === target) {
+            res.push(actMap[a.trx_id]);
+            actMap[a.trx_id].name += 1;
+        }
+    });
+
+    return res.map(r => r.trx);
+}
+
 module.exports = [
-    ['get', '/export/actions/:type/:id', exportFile(getActions)]
+    ['get', '/export/actions/:type/:id', exportFile(getActions)],
+    ['get', '/export/trx/:type/:id', exportFile(getTrx)]
 ];
