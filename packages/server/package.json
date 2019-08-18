@@ -1,0 +1,10 @@
+{
+    "name": "@evtscan/server",
+    "version": "1.0.0",
+    "private": true,
+    "main": "index.js",
+    "scripts": {
+      "start": "NODE_ENV=production node index.js"
+    }
+  }
+  

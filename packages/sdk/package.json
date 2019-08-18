@@ -1,0 +1,20 @@
+{
+  "name": "@evtscan/sdk",
+  "main": "dist/node.js",
+  "version": "1.0.0",
+  "private": true,
+  "files": [
+    ".npmignore",
+    ".gitignore",
+    "dist"
+  ],
+  "scripts": {
+    "build:clean": "rm -rf dist/*",
+    "build:raw": "npx gulp",
+    "build:browser": "npx rollup -c ./config/rollup.config.browser.js",
+    "build:node": "npx rollup -c ./config/rollup.config.node.js",
+    "build": "npm run build:clean && npm run build:browser && npm run build:node && npm run build:raw",
+    "prepublish": "npm run build",
+    "postinstall": "npm run build"
+  }
+}

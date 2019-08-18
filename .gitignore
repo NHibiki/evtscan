@@ -1,5 +1,6 @@
 # Mac OS Useless
 .DS_Store
+yarn-error.log
 
 # Nodejs Dependencies
 node_modules
@@ -12,3 +13,5 @@ npm-debug.log
 
 # Nuxt generate
 dist
+
+.rpt2_cache
