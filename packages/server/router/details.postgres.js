@@ -230,7 +230,11 @@ const getAddressHistory = async (id, {page=0, size=15, filter="all", domain=null
     if (domain) { schema = `(${schema}) AND domain=$4`; queries.push(domain); }
 
     let res = await postgres.db(async db => {
-        return (await db.query(`SELECT a.*, t.timestamp AS timestamp FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE ${schema} ORDER BY t.timestamp DESC, name ASC LIMIT $2 OFFSET $3`, queries)).rows || [];
+        const actions = (await db.query(`SELECT * FROM actions WHERE ${schema} ORDER BY global_seq DESC LIMIT $2 OFFSET $3`, queries)).rows || [];
+        actions.forEach(a => {
+            if (!a.timestamp) a.timestamp = a.created_at;
+        });
+        return actions;
     });
     return res[1] || [];
 }
