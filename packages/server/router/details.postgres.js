@@ -177,19 +177,23 @@ const getNonfungibleDistribution = async id => {
 }
 
 const getAddress = async (id) => {
-    let schemas = {
-        "send": "data->>'from'=$1", //transferft
-        "receive": "data->>'to'=$1", //transferft
-        "domain": "data->>'creator'=$1", //newdomain
-        "issue-token": "data->>'owner'=$1", //issuetoken
-        "issue-fungible": "name='issuefungible' AND data->>'address'=$1", //issuefungible
-        "pay-charge": "data->>'payer'=$1", //pay-charge
-    };
+    const schemas = [
+        `SELECT
+            COUNT(*) FILTER(WHERE data->>'from'=$1) as send,
+            COUNT(*) FILTER(WHERE data->>'to'=$1) as receive,
+            COUNT(*) FILTER(WHERE data->>'payer'=$1) as paycharge
+        FROM actions
+        WHERE name = ANY ('{transferft,paycharge}')`,
+    ];
+
     let res = await postgres.db(async db => {
-        await Object.keys(schemas).forEachAsync(async key => {
-            schemas[key] = ((await db.query(`SELECT COUNT(*) AS c FROM actions WHERE ${schemas[key]}`, [id || ""])).rows[0] || {}).c || 0;
-        });
-        return schemas;
+        const assets = await Promise.all(schemas.map(async(schema) => {
+            return (await db.query(schema, [id || ""])).rows[0] || {};
+        }));
+        return assets.reduce((prev, curr) => ({
+            ...curr,
+            ...prev,
+        }), {});
     });
     return res[1] || [];
 }
