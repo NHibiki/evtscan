@@ -111,7 +111,7 @@
         "pending": "等待中",
         "type": "类型",
         "status": "状态",
-        "elapsed": "消耗",
+        "elapsed": "耗时",
         "charge": "手续费",
         "suspend_name": "挂起事务",
         "prev_block_id": "前序区块 ID",
