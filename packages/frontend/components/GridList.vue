@@ -7,7 +7,9 @@
             <div class='grid-inner' @scroll.self="onScroll" :style="{'max-height': $store.state.indexs.minHeight < 580 ? '' : $store.state.indexs.minHeight + 'px'}">
                 <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
                 <div class="noData" v-if="items[endpoint] && !items[endpoint][0]">No Data!</div>
-                <component :key="item._id" :item="item" :endpoint="endpoint" :is="SubView" v-if="items[endpoint]" v-for="item in items[endpoint] || []"/>
+                <template v-if="items[endpoint]">
+                    <component :key="item._id" :item="item" :endpoint="endpoint" :is="SubView" v-for="item in items[endpoint] || []"/>
+                </template>
                 <BallPulseLoader v-if="items[endpoint] && loading[endpoint]" color="#e6a938" size="12px" class="loader2"/>
             </div>
         </div>

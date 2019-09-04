@@ -4,7 +4,9 @@
             <TableRow :items="head" v-if="head"/>
         </thead>
         <tbody>
-            <TableRow :clickable="clickable" :items="col" :key="i" v-for="(col, i) in data" v-if="data && data.length" @click="click(i)"/>
+            <template v-if="data && data.length">
+                <TableRow :clickable="clickable" :items="col" :key="i" v-for="(col, i) in data" @click="click(i)"/>
+            </template>
             <tr v-if="!data"><th class="mid" :colspan="head && head.length || 1"><LineScalePulseOutRapidLoader color="#e6a938" size="40px" class="loader"/></th></tr>
             <tr v-if="data && !data.length && head && head.length"><th class="mid" :colspan="head.length">No Data</th></tr>
         </tbody>

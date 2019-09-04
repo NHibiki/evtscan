@@ -1,7 +1,12 @@
 export const showListNames = ['Transactions', 'Blocks', 'Fungibles', 'Nonfungibles', 'Domains', 'Groups'];
 export const showListIds = ['trx', 'block', 'fungible', 'nonfungible', 'domain', 'group'];
+export const shared = {};
 
 export const parseKey = function (key = "") {
+    if (shared.i18n) {
+        const i18nValue = shared.i18n.t(`entries.${key}`);
+        if (!i18nValue.startsWith("entries.")) return i18nValue;
+    }
     return key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" ");
 }
 
