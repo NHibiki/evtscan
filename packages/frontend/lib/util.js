@@ -110,6 +110,7 @@ export const tablizeTrx = function (data={}) {
     delete data.signatures;
 
     for (let key in data) {
+        if (key === 'elapsed') continue;
         res.push([parseKey(key), data[key]]);
     }
 

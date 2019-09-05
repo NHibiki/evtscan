@@ -33,7 +33,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: addons.appDesc || 'Explorer for everiToken, world’s first token-customized public chain for the token economy and for everyone.' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/static/favicon.ico' },
       ...additionalCss
     ],
     script: [ 
