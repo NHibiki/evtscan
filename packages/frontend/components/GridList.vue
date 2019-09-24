@@ -5,12 +5,12 @@
             <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /><a class="btn" @click="onRefresh"><fa icon="redo-alt"/></a></div>
             <div class="trans"></div>
             <div class='grid-inner' @scroll.self="onScroll" :style="{'max-height': $store.state.indexs.minHeight < 580 ? '' : $store.state.indexs.minHeight + 'px'}">
-                <LineScalePulseOutRapidLoader v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
+                <vue-loaders-line-scale-pulse-out-rapid v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
                 <div class="noData" v-if="items[endpoint] && !items[endpoint][0]">No Data!</div>
                 <template v-if="items[endpoint]">
                     <component :key="item._id" :item="item" :endpoint="endpoint" :is="SubView" v-for="item in items[endpoint] || []"/>
                 </template>
-                <BallPulseLoader v-if="items[endpoint] && loading[endpoint]" color="#e6a938" size="12px" class="loader2"/>
+                <vue-loaders-ball-pulse v-if="items[endpoint] && loading[endpoint]" color="#e6a938" size="12px" class="loader2"/>
             </div>
         </div>
     </div>
@@ -20,7 +20,6 @@
     import { createNamespacedHelpers } from 'vuex';
     const { mapState, mapActions } = createNamespacedHelpers('gridlist');
     
-    import { LineScalePulseOutRapidLoader, BallPulseLoader } from 'vue-loaders';
     import Switcher from '~/components/Switcher';
 
     export default {
@@ -54,7 +53,7 @@
                 await this.getDataList({endpoint:this.endpoint});
             }
         },
-        components: { LineScalePulseOutRapidLoader, BallPulseLoader, Switcher },
+        components: { Switcher },
         mounted() {
             // Update Sync Timer
             let updateInterval = 3000;

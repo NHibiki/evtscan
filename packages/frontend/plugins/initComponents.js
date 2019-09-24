@@ -5,6 +5,12 @@ import { faSearch, faTimes, faAngleLeft, faAngleRight, faBars, faHeart, faAngleD
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Button from 'vue-js-toggle-button/dist/ssr.index'
 
+import LineScalePulseOutRapidLoader from 'vue-loaders/dist/loaders/line-scale-pulse-out-rapid';
+import BallPulseLoader from 'vue-loaders/dist/loaders/ball-pulse';
+
+Vue.use(LineScalePulseOutRapidLoader);
+Vue.use(BallPulseLoader);
+
 library.add(faSearch);
 library.add(faTimes);
 library.add(faAngleLeft);
