@@ -10,21 +10,29 @@ const transactionsInfo = {
     updated: 0,
 };
 
+const libInfo = {
+    value: 0,
+    updated: 0,
+};
+
 const getInfoWrapper = fn => async (ctx, next) => {
 
     // set return content of query
     ctx.type = 'application/json';
     ctx.set('Access-Control-Allow-Origin', '*');
     ctx.set('Access-Control-Allow-Methods', 'GET, OPTION');
-    
+
     let result = {
         state: 1,
         data: await fn(ctx, next)
     };
 
-    if (!result.data) result = { state: 0, error: "resource not found" }
+    if (!result.data) result = {
+        state: 0,
+        error: "resource not found"
+    }
     ctx.body = result;
-    
+
 }
 
 // get current chainInfo
@@ -49,6 +57,15 @@ const getChainInfo = async () => {
         transactionsInfo.value = parseInt((res[1] || {}).count, 10) || 0;
     }
 
+    // freeze for 5 second
+    if (libInfo.updated + 5 * 1000 < now) {
+        const res = await postgres.db(async db => {
+            return (await db.query(`SELECT * FROM blocks WHERE block_id=(SELECT value as block_id FROM stats WHERE key='last_irreversible_block_id')`)).rows[0];
+        });
+        libInfo.updated = now;
+        libInfo.value = res[1] || {};
+    }
+
     return {
         tps: {
             fungibles: fungiblesInfo,
@@ -59,13 +76,16 @@ const getChainInfo = async () => {
             }
         },
         trx: transactionsInfo,
+        block: libInfo
     }
 
 }
 
 const searchAddress = async ctx => {
 
-    let {keyword} = (ctx.query || {});
+    let {
+        keyword
+    } = (ctx.query || {});
     if (!keyword) return [];
 
     const res = await postgres.db(async db => {
@@ -73,7 +93,9 @@ const searchAddress = async ctx => {
             .map(d => d.payer).sort((a, b) => {
                 try {
                     return regp.exec(a).index < regp.exec(b).index ? -1 : 1;
-                } catch(err) {return 0}
+                } catch (err) {
+                    return 0
+                }
             });
     });
 

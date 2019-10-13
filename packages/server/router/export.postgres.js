@@ -101,7 +101,7 @@ const getActions = async (id, {from, to, actions}) => {
 
     const addons = actions.map((_, i) => `$${4+i}`).join(',');
     let res = await postgres.db(async db => {
-        const res = (await db.query(`SELECT a.*, t.* FROM actions a INNER JOIN transactions t ON a.trx_id = t.trx_id WHERE t.timestamp>=$1 AND t.timestamp<=$2 AND key=$3 AND a.name IN (${addons})`, [new Date(from), new Date(to), id, ...actions])).rows || [];
+        const res = (await db.query(`SELECT a.*, t.* FROM actions a INNER JOIN transactions t ON a.trx_num = t.trx_num WHERE t.timestamp>=$1 AND t.timestamp<=$2 AND key=$3 AND a.name IN (${addons})`, [new Date(from), new Date(to), id, ...actions])).rows || [];
         return res.map(r => ({...r, ...r.data, data: undefined}));
     });
     return res[1] || [];
@@ -122,18 +122,18 @@ const getTrx = async (id, {from, to, actions, with: w=''}) => {
     const res = [];
     
     act.forEach(a => {
-        if (actMap[a.trx_id]) {
-            actMap[a.trx_id].trx = Utils.shallowMerge(actMap[a.trx_id].trx, a);
+        if (actMap[a.trx_num]) {
+            actMap[a.trx_num].trx = Utils.shallowMerge(actMap[a.trx_num].trx, a);
         } else {
-            actMap[a.trx_id] = {
+            actMap[a.trx_num] = {
                 trx: a,
                 name: 0
             }
         }
-        actMap[a.trx_id].name |= Math.max(1 << w.indexOf(a.name), 0);
-        if (actMap[a.trx_id].name === target) {
-            res.push(actMap[a.trx_id]);
-            actMap[a.trx_id].name += 1;
+        actMap[a.trx_num].name |= Math.max(1 << w.indexOf(a.name), 0);
+        if (actMap[a.trx_num].name === target) {
+            res.push(actMap[a.trx_num]);
+            actMap[a.trx_num].name += 1;
         }
     });
 

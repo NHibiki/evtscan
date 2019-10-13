@@ -2,6 +2,18 @@ export const showListNames = ['Transactions', 'Blocks', 'Fungibles', 'Nonfungibl
 export const showListIds = ['trx', 'block', 'fungible', 'nonfungible', 'domain', 'group'];
 export const shared = {};
 
+export const get = function (from, key, def = null) {
+  let target = from;
+  for (const i of key.split('.')) {
+    if (target[i]) {
+      target = target[i];
+    } else {
+      return def;
+    }
+  }
+  return target;
+}
+
 export const parseKey = function (key = "") {
   if (shared.i18n) {
     const i18nValue = shared.i18n.t(`entries.${key}`);
