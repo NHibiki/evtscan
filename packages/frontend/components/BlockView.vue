@@ -28,9 +28,8 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapState } = createNamespacedHelpers("indexs");
 
-import { get } from "~/lib/util";
+import { getLIB } from "~/lib/util";
 import Timer from "~/components/Timer";
 
 export default {
@@ -40,9 +39,8 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["chain"]),
     pending() {
-      return this.item.block_id > get(this.chain, "block.value.block_num", 0);
+      return this.item.block_num > getLIB();
     }
   },
   components: { Timer }

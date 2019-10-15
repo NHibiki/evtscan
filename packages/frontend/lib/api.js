@@ -1,4 +1,7 @@
 import Axios from 'axios';
+import {
+  shared
+} from './util';
 
 let LOCALDEV = false;
 let endPoint = "http://localhost/api";
@@ -13,10 +16,16 @@ try {
 // endPoint = "https://w.yuuno.cc:3000/api";
 // endPoint = "https://evtscan.io/api";
 
-export const get = async (uri, params = {}, headers = {}) => Axios.get(endPoint + uri, {
-  params,
-  headers
-});
+export const get = async (uri, params = {}, headers = {}) => {
+  const res = await Axios.get(endPoint + uri, {
+    params,
+    headers
+  });
+  if (res.data && res.data.context) {
+    shared.context = res.data.context;
+  }
+  return res;
+}
 
 export const getRecent = async (thing, page = 0, size = 15, since = null, filter = null, from = null) => {
   if (['everipay', 'everipass'].includes(thing)) return getTrxByName(thing, page, size, since, from);
@@ -60,9 +69,9 @@ export const getTrxOnBlock = async (id, page = 0, size = 15, since = null) => {
   });
 }
 
-export const getActionOnTrx = async (id, page = 0, size = 15, since = null) => {
+export const getActionOnTrx = async (num, page = 0, size = 15, since = null) => {
   return get(`/action`, {
-    trx_id: id,
+    trx_num: num,
     page,
     size,
     since

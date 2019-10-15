@@ -1,4 +1,5 @@
-const postgres = require('../lib/postgres.js');
+const postgres = require('../lib/postgres.js'),
+    utils = require('../lib/utils');
 
 const fungiblesInfo = {
     value: 0,
@@ -6,11 +7,6 @@ const fungiblesInfo = {
 };
 
 const transactionsInfo = {
-    value: 0,
-    updated: 0,
-};
-
-const libInfo = {
     value: 0,
     updated: 0,
 };
@@ -57,15 +53,6 @@ const getChainInfo = async () => {
         transactionsInfo.value = parseInt((res[1] || {}).count, 10) || 0;
     }
 
-    // freeze for 5 second
-    if (libInfo.updated + 5 * 1000 < now) {
-        const res = await postgres.db(async db => {
-            return (await db.query(`SELECT * FROM blocks WHERE block_id=(SELECT value as block_id FROM stats WHERE key='last_irreversible_block_id')`)).rows[0];
-        });
-        libInfo.updated = now;
-        libInfo.value = res[1] || {};
-    }
-
     return {
         tps: {
             fungibles: fungiblesInfo,
@@ -76,7 +63,7 @@ const getChainInfo = async () => {
             }
         },
         trx: transactionsInfo,
-        block: libInfo
+        block: utils.shared.context.libInfo
     }
 
 }

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const colors = require('colors/safe');
 
-const parseSiteInfo = (siteInfo='') => {
+const parseSiteInfo = (siteInfo = '') => {
     if (!siteInfo) return {};
     let d = null;
     let isFile = false;
@@ -26,18 +26,20 @@ const parseSiteInfo = (siteInfo='') => {
             if (d.en) d.default = d.en;
             else if (d.zh) d.default = d.zh;
             else d.default = d[locales[0]];
-        } 
+        }
         return d;
     } catch (err) {
         if (isFile) {
             return {};
         } else {
-            return { default: siteInfo };
+            return {
+                default: siteInfo
+            };
         }
     }
 }
 
-const fillDigits = (n, k=2) => {
+const fillDigits = (n, k = 2) => {
     const s = `${n}`;
     if (s.length < k) return '0'.repeat(k - s.length) + s;
     return s;
@@ -64,27 +66,27 @@ const getCurrentTime = () => {
 
 const logWithType = (type, ...args) => {
     console.info(
-        colors.yellow(`[${type} `)
-        + colors.green(`${getCurrentTime()}`)
-        + colors.yellow(`]`),
+        colors.yellow(`[${type} `) +
+        colors.green(`${getCurrentTime()}`) +
+        colors.yellow(`]`),
         ...args);
 }
 
 const log = (...args) => {
     if (shared.debug) {
         console.info(
-            colors.blue(`[Debug `)
-            + colors.green(`${getCurrentTime()}`)
-            + colors.blue(`]`),
+            colors.blue(`[Debug `) +
+            colors.green(`${getCurrentTime()}`) +
+            colors.blue(`]`),
             ...args);
     }
 };
 
-const check = (data, type='string') => {
+const check = (data, type = 'string') => {
     return typeof data === type;
 }
 
-const shallowMerge = (a, b, keepDuplicated=false) => {
+const shallowMerge = (a, b, keepDuplicated = false) => {
     const c = Object.assign({}, a);
     Object.keys(b).forEach(k => {
         if (k in c) {
@@ -104,7 +106,8 @@ const shallowMerge = (a, b, keepDuplicated=false) => {
 }
 
 const shared = {
-    debug: false
+    debug: false,
+    context: {}
 };
 
 module.exports = {

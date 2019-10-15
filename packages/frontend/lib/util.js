@@ -1,6 +1,8 @@
 export const showListNames = ['Transactions', 'Blocks', 'Fungibles', 'Nonfungibles', 'Domains', 'Groups'];
 export const showListIds = ['trx', 'block', 'fungible', 'nonfungible', 'domain', 'group'];
-export const shared = {};
+export const shared = {
+  context: {}
+};
 
 export const get = function (from, key, def = null) {
   let target = from;
@@ -13,6 +15,8 @@ export const get = function (from, key, def = null) {
   }
   return target;
 }
+
+export const getLIB = () => get(shared.context, 'libInfo.value.block_num', 0);
 
 export const parseKey = function (key = "") {
   if (shared.i18n) {
@@ -91,7 +95,7 @@ export const tablizeBlockTrx = function (data = []) {
   let res = [];
 
   data.forEach(d => {
-    res.push([d.trx_id, d.pending, d.timestamp]);
+    res.push([d.trx_id, d.block_num > getLIB(), d.timestamp]);
   });
 
   return res;
@@ -124,7 +128,7 @@ export const tablizeTrx = function (data = {}) {
   delete data.keys;
   delete data.signatures;
 
-  if (data.pending) {
+  if (data.block_num > getLIB()) {
     data.pending = "Yes";
   } else {
     data.pending = "No";
@@ -382,9 +386,10 @@ export const tablizeTransactions = function (data = []) {
   let resData = [];
 
   data.forEach(d => {
+    const pending = d.block_num > getLIB();
     res.push([d.trx_id, d.block_num, {
-      content: `${d.pending}`,
-      color: d.pending ? "green" : "red"
+      content: `${pending ? "Yes" : "No"}`,
+      color: pending ? "green" : "red"
     }, d.timestamp]);
     resData.push('/trx/' + d.trx_id);
   });
