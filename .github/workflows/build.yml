@@ -4,15 +4,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
-    - name: Setup Docker
-      uses: actions/docker/cli@8cdf801b322af5f369e00d85e9cf3a7122f49108
-    - name: Build Container
-      run: docker build -t nhibiki/evtscan:latest .
-    - name: Login Docker Registry
-      run: docker login --username ${{ secrets.DUSER }} --password ${{ secrets.DPASS }}
-    - name: Push Container
-      run: docker push nhibiki/evtscan:latest
-    - name: Clean Up
-      run: docker logout
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Build Container
+        run: docker build -t nhibiki/evtscan:latest .
+      - name: Login Docker Registry
+        run: docker login --username ${{ secrets.DUSER }} --password ${{ secrets.DPASS }}
+      - name: Push Container
+        run: docker push nhibiki/evtscan:latest
+      - name: Clean Up
+        run: docker logout
