@@ -156,7 +156,7 @@ const getTrxByName = async (since, page, size, from, {
         });
         let trxs = actionsData.map(a => a.trx_num);
         let params = trxs.map((_, i) => `$${i+1}`);
-        let ans = (await db.query(`SELECT * FROM transactions WHERE trx_num IN (${params.join(",")}) ORDER BY timestamp DESC`, trxs)).rows || [];
+        let ans = (await db.query(`SELECT t.*, b.block_id FROM transactions t LEFT JOIN blocks b ON b.block_num=t.block_num WHERE t.trx_num IN (${params.join(",")}) ORDER BY t.timestamp DESC`, trxs)).rows || [];
         return ans.map(a => ({
             ...a,
             data: trxMap[a.trx_num].data || {},

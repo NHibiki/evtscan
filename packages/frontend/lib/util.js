@@ -18,12 +18,21 @@ export const get = function (from, key, def = null) {
 
 export const getLIB = () => get(shared.context, 'libInfo.value.block_num', 0);
 
-export const parseKey = function (key = "") {
+export const parseI18nKey = function (key = "", from = "entries") {
   if (shared.i18n) {
-    const i18nValue = shared.i18n.t(`entries.${key}`);
-    if (!i18nValue.startsWith("entries.")) return i18nValue;
+    if (typeof window !== 'undefined') window.shared = shared;
+    const i18nValue = shared.i18n.t(`${from}.${key}`);
+    if (!i18nValue.startsWith(`${from}.`)) return i18nValue;
   }
   return key.split("_").map(it => it[0].toLocaleUpperCase() + it.substr(1)).join(" ");
+}
+
+export const parseKey = function (key = "") {
+  return parseI18nKey(key, "entries");
+}
+
+export const parseFeKey = function (key = "") {
+  return parseI18nKey(key, "fe");
 }
 
 export const debounce = (fn, gap = 1000) => {
@@ -385,11 +394,12 @@ export const tablizeTransactions = function (data = []) {
   let res = [];
   let resData = [];
 
+  // 3rd data is "NOTpending"
   data.forEach(d => {
     const pending = d.block_num > getLIB();
     res.push([d.trx_id, d.block_num, {
-      content: `${pending ? "Yes" : "No"}`,
-      color: pending ? "green" : "red"
+      content: `${!pending ? "Yes" : "No"}`,
+      color: !pending ? "green" : "red"
     }, d.timestamp]);
     resData.push('/trx/' + d.trx_id);
   });

@@ -2,34 +2,33 @@
   <div class="item">
     <div class="blockspec">
       <span>
-        <i>TX#:</i>
+        <i>{{ parseFeKey('trx_id') }}:</i>
         <nuxt-link
           :to="$i18n.path('/trx/' + item.trx_id)"
         >{{ "0x" + item.trx_id.toLocaleUpperCase() }}</nuxt-link>
       </span>
       <span>
-        <i>Payer:</i>
+        <i>{{ parseFeKey('payer') }}:</i>
         <span class="shortspan">
           <span :title="item.payer.toLocaleUpperCase()">{{ item.payer.toLocaleUpperCase() }}</span>
         </span>
-        &nbsp;&nbsp;on&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;{{ parseFeKey('pay_on') }}&nbsp;&nbsp;&nbsp;
         <nuxt-link :to="$i18n.path('/block/' + item.block_id)">
           <span class="shortspan">
-            <span
-              :title="'0x' + item.block_id.toLocaleUpperCase()"
-            >{{ "0x" + item.block_id.toLocaleUpperCase() }}</span>
+            <span :title="'0x' + item.block_id">{{ "0x" + item.block_id }}</span>
           </span>
         </nuxt-link>
       </span>
       <span v-if="endpoint === 'transaction'">
-        <i>Trace:</i>
-        <b>{{ (item.trace || item).charge / 100000.0 }} EVT</b> charged
+        <i>{{ parseFeKey('trace') }}:</i>
+        <b>{{ (item.trace || item).charge / 100000.0 }} EVT</b>
+        {{ parseFeKey('charged') }}
         <!-- &nbsp;<b>{{ (item.trace || item).elapsed }} us</b> elapsed -->
       </span>
       <span v-if="endpoint === 'everipay'">
-        <i>Pay:</i>
+        <i>{{ parseFeKey('pay') }}:</i>
         <b>{{ item.data.number }}</b> &nbsp;
-        <i>To</i>
+        <i>{{ parseFeKey('pay_to') }}</i>
         <span class="shortspan">
           <span
             :title="item.data.payee.toLocaleUpperCase()"
@@ -37,13 +36,13 @@
         </span>
       </span>
       <span v-if="endpoint === 'everipass'">
-        <i>Domain:</i>
+        <i>{{ parseFeKey('domain') }}:</i>
         <span class="shortspan">
           <span>
             <b>{{ item.domain }}</b>
           </span>
         </span> &nbsp;
-        <i>with Key</i>
+        <i>{{ parseFeKey('with_key') }}</i>
         <span class="shortspan">
           <span
             :title="(item.data.key || 'NONE').toLocaleUpperCase()"
@@ -57,12 +56,16 @@
 
 <script>
 import Timer from "~/components/Timer";
+import { parseFeKey } from "~/lib/util";
 
 export default {
   name: "TrxView",
   props: ["item", "endpoint"],
   data() {
     return {};
+  },
+  methods: {
+    parseFeKey
   },
   components: { Timer }
 };

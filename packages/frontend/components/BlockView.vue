@@ -1,25 +1,28 @@
 <template>
   <div class="item">
     <nuxt-link class="blocknum" :to="$i18n.path('/block/' + item.block_id)">
-      <span>Block</span>
+      <span>{{ parseFeKey('block') }}</span>
       <span>#{{ item.block_num }}</span>
     </nuxt-link>
     <div class="blockspec">
       <span>
-        <i>Produced By:</i>
+        <i>{{ parseFeKey('produced_by') }}:</i>
         <b>#{{ item.producer }}</b>
       </span>
       <span>
-        <i>Block ID:</i>
+        <i>{{ parseFeKey('block_id') }}:</i>
         <nuxt-link
           :title="item.block_id"
           :to="$i18n.path('/block/' + item.block_id)"
         >{{ item.block_id }}</nuxt-link>
       </span>
       <span>
-        <i>Trxes:</i>
-        <b>{{ item.trx_count }}</b> &nbsp;&nbsp; Pending:
-        <b :style="`color:${pending ? 'green' : 'red'}`">{{ pending }}</b>
+        <i>{{ parseFeKey('trxes') }}:</i>
+        <b>{{ item.trx_count }}</b>
+        &nbsp;&nbsp; {{ parseFeKey('pending') }}:
+        <b
+          :style="`color:${pending ? 'green' : 'red'}`"
+        >{{ pending }}</b>
       </span>
     </div>
     <Timer :timestamp="new Date(item.timestamp).getTime()" />
@@ -29,7 +32,7 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 
-import { getLIB } from "~/lib/util";
+import { getLIB, parseFeKey } from "~/lib/util";
 import Timer from "~/components/Timer";
 
 export default {
@@ -42,6 +45,9 @@ export default {
     pending() {
       return this.item.block_num > getLIB();
     }
+  },
+  methods: {
+    parseFeKey
   },
   components: { Timer }
 };

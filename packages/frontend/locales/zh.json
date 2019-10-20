@@ -82,6 +82,7 @@
       "symbolid": "资产序号",
       "amount": "数量",
       "pending": "是否挂起",
+      "notpending": "确认状态",
       "threshold": "阈值",
       "creator": "创建者",
       "count": "数量",
@@ -133,5 +134,24 @@
     "key": "键",
     "nodes": "节点数",
     "threshold": "阈值"
+  },
+  "fe": {
+    "trx_id": "交易ID",
+    "payer": "支付者",
+    "pay_on": "于区块",
+    "trace": "追踪",
+    "charged": "手续费",
+    "block": "区块",
+    "produced_by": "创建者",
+    "block_id": "区块ID",
+    "trxes": "交易数",
+    "pending": "待确定",
+    "pay": "付款",
+    "pay_to": "给",
+    "domain": "域",
+    "with_key": "使用键",
+    "m": "分",
+    "s": "秒",
+    "secs": "秒"
   }
 }
