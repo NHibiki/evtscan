@@ -35,19 +35,6 @@ export const parseFeKey = function (key = "") {
   return parseI18nKey(key, "fe");
 }
 
-export const debounce = (fn, gap = 1000) => {
-  let timer = null;
-  return (...args) => {
-    if (timer !== null) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(() => {
-      fn(...args);
-      timer = null;
-    }, gap);
-  };
-};
-
 export const makeLink = function (source, key, route) {
   if (!source || !source[key]) return;
   source[key] = {

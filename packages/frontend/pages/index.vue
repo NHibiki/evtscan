@@ -42,7 +42,7 @@
     import BlockView from '~/components/BlockView';
 
     import { searchAddress as searchAddressAPI } from '~/lib/api';
-    import { debounce } from '~/lib/util';
+    import { debounce } from 'lodash';
 
     export default {
         name: 'Index',

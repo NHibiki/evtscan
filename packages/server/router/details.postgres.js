@@ -254,21 +254,21 @@ const getAddressHistory = async (id, {
 
     let queries = [id || "", size, size * page];
     let schema = "";
-    if (filter === "send") schema = "data->>'from'=$1";
-    else if (filter === "receive") schema = "data->>'to'=$1";
-    else if (filter === "domain") schema = "data->>'creator'=$1";
-    else if (filter === "issue-token") schema = "data->>'owner'=$1";
-    else if (filter === "issue-fungible") schema = "name='issuefungible' AND data->>'address'=$1";
-    else if (filter === "issue") schema = "data->>'owner'=$1 OR (name='issuefungible' AND data->>'address'=$1)";
-    else if (filter === "pay-charge") schema = "data->>'payer'=$1";
-    else schema = "data->>'from'=$1 OR data->>'to'=$1 OR data->>'creator'=$1 OR data->>'owner'=$1 OR (name='issuefungible' AND data->>'address'=$1) OR data->>'payer'=$1";
+    if (filter === "send") schema = "a.data->>'from'=$1";
+    else if (filter === "receive") schema = "a.data->>'to'=$1";
+    else if (filter === "domain") schema = "a.data->>'creator'=$1";
+    else if (filter === "issue-token") schema = "a.data->>'owner'=$1";
+    else if (filter === "issue-fungible") schema = "a.name='issuefungible' AND a.data->>'address'=$1";
+    else if (filter === "issue") schema = "a.data->>'owner'=$1 OR (a.name='issuefungible' AND a.data->>'address'=$1)";
+    else if (filter === "pay-charge") schema = "a.data->>'payer'=$1";
+    else schema = "a.data->>'from'=$1 OR a.data->>'to'=$1 OR a.data->>'creator'=$1 OR a.data->>'owner'=$1 OR (a.name='issuefungible' AND a.data->>'address'=$1) OR a.data->>'payer'=$1";
     if (domain) {
-        schema = `(${schema}) AND domain=$4`;
+        schema = `(${schema}) AND a.domain=$4`;
         queries.push(domain);
     }
 
     let res = await postgres.db(async db => {
-        const actions = (await db.query(`SELECT * FROM actions WHERE ${schema} ORDER BY global_seq DESC LIMIT $2 OFFSET $3`, queries)).rows || [];
+        const actions = (await db.query(`SELECT a.*, t.* FROM actions a LEFT JOIN transactions t ON a.trx_num = t.trx_num WHERE ${schema} ORDER BY a.global_seq DESC LIMIT $2 OFFSET $3`, queries)).rows || [];
         actions.forEach(a => {
             if (!a.timestamp) a.timestamp = a.created_at;
         });
