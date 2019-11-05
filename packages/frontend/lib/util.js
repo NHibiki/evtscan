@@ -72,6 +72,56 @@ export const msToTimeStr = function (time = 0, fix = true) {
 
 }
 
+// type: 'value', 'time', ['category']
+export const makeLineConfig = function (type, data = [], fn=null) {
+  
+  const isCategory = typeof type !== 'string';
+
+  return {
+    tooltip: {
+      show: true,
+      trigger: 'item'
+    },
+    xAxis: {
+        type: isCategory ? 'category' : type,
+        ...(isCategory ? {
+          data: type
+        } : {}),
+        axisLine: false,
+        splitLine: false
+    },
+    yAxis: {
+        type: 'value',
+        scale: true,
+        axisLine: false,
+        splitLine: false
+    },
+    series: [{
+        data: fn ? data.map(fn) : data,
+        type: 'line',
+        smooth: true,
+        lineStyle: {
+          color: '#E6A938',
+          shadowColor: 'rgba(0, 0, 0, 0.6)',
+          shadowBlur: 2,
+          shadowOffsetX: 2,
+          shadowOffsetY: 2
+        },
+        symbolSize: 3, //'none',
+        itemStyle: {
+          color: '#E6A938',
+          borderColor: '#E6A938'
+        },
+        tooltip: {
+          formatter (point) {
+            const [t, v] = point.data;
+            return `<b>NetValue:</b><br /><b>Time:</b> ${t}<br /><b>Value:</b> ${v}`;
+          }
+        }
+    }]
+  };
+}
+
 export const tablizeBlock = function (data = {}) {
 
   let res = [];
@@ -465,10 +515,35 @@ export const tablizeGroups = function (data = []) {
 
 }
 
+export const tablizeValidator = function (data = {}) {
+
+  const res = [];
+  for (let key in data.validator) {
+    res.push([parseKey(key), data.validator[key]]);
+  }
+
+  return [res, data.netvalues];
+
+}
+
+export const tablizeValidators = function (data = []) {
+
+  let res = [];
+  let resData = [];
+  data.forEach(d => {
+    res.push([d.id, d.name, d.created_at]);
+    resData.push('/validator/' + d.id);
+  });
+
+  return [res, resData];
+
+}
+
 export default {
   showListNames,
   showListIds,
   msToTimeStr,
+  makeLineConfig,
 
   tablizeBlock,
   tablizeBlockTrx,
@@ -488,4 +563,6 @@ export default {
   tablizeNonfungibles,
   tablizeDomains,
   tablizeGroups,
+  tablizeValidator,
+  tablizeValidators
 }

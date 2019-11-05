@@ -6,12 +6,10 @@ export const state = () => ({
     page: 0,
     pagesize: 15,
     data: null,
-    trxData: null,
-    // ssr: false,
+    trxData: null
 });
 
 export const mutations = {
-    // isSSR: (state, isOrNot=true) => { state.ssr = isOrNot },
     resetData: (state, id) => {
         state.id = id;
         state.data = null;

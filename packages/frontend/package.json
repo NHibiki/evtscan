@@ -12,7 +12,10 @@
     "postinstall": "mkdir -p node_modules && rm -rf ./node_modules/loaders.css && ln -s $(pwd)/../../node_modules/loaders.css ./node_modules/loaders.css"
   },
   "dependencies": {
+    "echarts": "^4.4.0",
     "loaders.css": "^0.1.2",
+    "nuxt": "^2.8.1",
+    "vue-echarts": "^4.0.4",
     "vue-loaders": "^3.0.2"
   }
 }

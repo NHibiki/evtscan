@@ -56,9 +56,12 @@ export const mutations = {
     } else if (path === 'group') {
       tableHeader = ['name', 'key', 'threshold'];
       name = "groups";
-    } else if (path == 'nonfungible') {
+    } else if (path === 'nonfungible') {
       tableHeader = ['domain', 'count', 'latestissued'];
       name = "nonfungibles";
+    } else if (path === 'validator') {
+      tableHeader = ['id', 'name', 'created_at'];
+      name = "validators";
     } else {
       id = "trx";
     }

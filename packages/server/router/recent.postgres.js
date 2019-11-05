@@ -252,6 +252,14 @@ const getNonfungibles = async (since, page, size, from) => {
     return res[1] || [];
 }
 
+const getValidator = async (since, page, size, from) => {
+    let res = await postgres.db(async db => {
+        // return (await db.query(`SELECT tk.domain AS _id, COUNT(*) AS count, MAX(t.timestamp) AS updated_at FROM tokens tk INNER JOIN transactions t ON tk.trx_num = t.trx_num WHERE t.timestamp<=$1 AND t.timestamp>=$2 GROUP BY _id ORDER BY updated_at DESC LIMIT $3 OFFSET $4`, [new Date(since), new Date(from), size, size * page])).rows || [];
+        return (await db.query(`SELECT * FROM validators ORDER BY created_at DESC LIMIT $1 OFFSET $2`, [size, size * page])).rows || [];
+    });
+    return res[1] || [];
+}
+
 module.exports = [
     ['get', '/block', getRecent(getBlocks)],
     ['get', '/transaction', getRecent(getTransactions)],
@@ -267,4 +275,5 @@ module.exports = [
     ['get', '/everipass', getRecent(getTrxByName, {
         trx_name: "everipass"
     })],
+    ['get', '/validator', getRecent(getValidator)]
 ];

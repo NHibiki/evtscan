@@ -3,7 +3,7 @@ import VueJsonPretty from '~/components/JsonPretty';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSearch, faTimes, faAngleLeft, faAngleRight, faBars, faHeart, faAngleDown, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import Button from 'vue-js-toggle-button/dist/ssr.index'
+import Button from 'vue-js-toggle-button/dist/ssr.index';
 
 import LineScalePulseOutRapidLoader from 'vue-loaders/dist/loaders/line-scale-pulse-out-rapid';
 import BallPulseLoader from 'vue-loaders/dist/loaders/ball-pulse';

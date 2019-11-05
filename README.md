@@ -1,4 +1,4 @@
-# EvtScan
+# EvtScan NG
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNHibiki%2Fevtscan.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FNHibiki%2Fevtscan?ref=badge_shield)
 
 
@@ -21,6 +21,8 @@ docker pull nhibiki/evtscan
 #### Run The Server
 
 ```sh
+docker run --rm -it nhibiki/evtscan -a 0.0.0.0 -p 3000 -u {POSTGRES_USER} -b {POSTGRES_DB} -s {POSTGRES_PASSWD} -g {POSTGRES_ADDR} --debug
+# OR With Deprecated MongoDB
 docker run --rm -it nhibiki/evtscan -a 0.0.0.0 -m mongodb://{YOUR_MONGO_SERVER_IP}:{YOUR_MONGO_SERVER_PORT}
 ```
 
@@ -28,24 +30,23 @@ Now, you can get access to `http://172.17.0.x` if you run docker on `linux` or `
 
 Also, you can definitely proxy the port out to host machine. :)
 
-### API Entry Points
+### For Debugging
 
-#### Get Recent Blocks
+#### Frontend
 
 ```sh
-curl http://{SERVER_ADDRESS}/api/block?since={SOMETIME}&page={PAGEOFFSET}&size={PAGESIZE}
+cd packages/frontend
+vi lib/api.js
+# Change the api endpoint to your own or local
+yarn dev
 ```
 
-#### Get Recent Transactions
+#### Backend
 
 ```sh
-curl http://{SERVER_ADDRESS}/api/transaction?since={SOMETIME}&page={PAGEOFFSET}&size={PAGESIZE}
-```
-
-#### Get Details
-
-```sh
-curl http://{SERVER_ADDRESS}/api/{ZONE}
+cd pasckage/backend
+node index.js -a 0.0.0.0 -p 3000 -u postgres -b evt -s POSTGRES_PASSWD -g localhost --debug
+# Params are the same with docker params
 ```
 
 ## License

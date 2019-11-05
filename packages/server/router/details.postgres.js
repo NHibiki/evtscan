@@ -277,6 +277,18 @@ const getAddressHistory = async (id, {
     return res[1] || [];
 }
 
+const getValidator = async id => {
+    let res = await postgres.db(async db => {
+        const validator = (await db.query(`SELECT * FROM validators WHERE id=$1 LIMIT 1`, [id || ""])).rows[0] || null;
+        const netvalues = (await db.query(`SELECT * FROM netvalues WHERE validator_id=$1`, [id || ""])).rows || [];
+        return {
+            validator,
+            netvalues
+        }
+    });
+    return res[1] || [];
+}
+
 module.exports = [
     ['get', '/block/:id', getDetail(getBlock)],
     ['get', '/transaction/:id', getDetail(getTransaction)],
@@ -287,5 +299,6 @@ module.exports = [
     ['get', '/nonfungible/token/:id', getDetail(getNonfungibleDistribution)],
     ['get', '/address/:id', getDetail(getAddress)],
     ['get', '/addressAssets/:id', getDetail(getAssets)],
-    ['get', '/addressHistory/:id', getDetail(getAddressHistory)]
+    ['get', '/addressHistory/:id', getDetail(getAddressHistory)],
+    ['get', '/validator/:id', getDetail(getValidator)]
 ];

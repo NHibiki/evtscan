@@ -41,7 +41,9 @@
     "evtscan": "evtScan",
     "everipay": "everiPay",
     "myevtwallet": "MyEVT 钱包",
-    "whitepaper": "白皮书"
+    "whitepaper": "白皮书",
+    "validator": "验证者",
+    "validators": "验证者"
   },
   "index": {
     "dailytransaction": "日交易量",
@@ -95,7 +97,8 @@
       "producer": "发行者",
       "latestissued": "最近发行",
       "sequencenum": "序号",
-      "createdAt": "创建时间"
+      "createdAt": "创建时间",
+      "created_at": "创建时间"
     }
   },
   "page": {
@@ -133,7 +136,9 @@
     "created_by_trx": "创建交易",
     "key": "键",
     "nodes": "节点数",
-    "threshold": "阈值"
+    "threshold": "阈值",
+    "created_at": "创建时间",
+    "id": "唯一标识"
   },
   "fe": {
     "trx_id": "交易ID",

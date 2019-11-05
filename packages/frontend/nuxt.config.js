@@ -50,24 +50,29 @@ module.exports = {
   /*
   ** Plugins
   */
-  plugins: ['~/plugins/initComponents', '~/plugins/i18n.js'],
+  plugins: [
+    '~/plugins/initComponents',
+    '~/plugins/i18n.js',
+    { src: '~/plugins/charts.js', mode: 'client' }
+  ],
   /*
   ** Build configuration
   */
   build: {
+    transpile: ['vue-echarts', 'resize-detector'],
     /*
     ** Run ESLint on save
     */
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
+    // extend (config, { isDev, isClient }) {
+    //   if (isDev && isClient) {
+    //     config.module.rules.push({
+    //       enforce: 'pre',
+    //       test: /\.(js|vue)$/,
+    //       loader: 'eslint-loader',
+    //       exclude: /(node_modules)/
+    //     })
+    //   }
+    // }
   }
 }
 

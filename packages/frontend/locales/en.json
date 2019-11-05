@@ -41,7 +41,9 @@
     "evtscan": "evtScan",
     "everipay": "everiPay",
     "myevtwallet": "myEVT Wallet",
-    "whitepaper": "White Paper"
+    "whitepaper": "White Paper",
+    "validator": "Validator",
+    "validators": "Validators"
   },
   "index": {
     "dailytransaction": "DAILY TRX",
@@ -95,7 +97,8 @@
       "producer": "Producer",
       "latestissued": "Latest Issued",
       "sequencenum": "Sequence",
-      "createdAt": "Created At"
+      "createdAt": "Created At",
+      "created_at": "Created At"
     }
   },
   "page": {
@@ -133,7 +136,9 @@
     "created_by_trx": "Created By Transaction",
     "key": "Key",
     "nodes": "Nodes",
-    "threshold": "Threshold"
+    "threshold": "Threshold",
+    "created_at": "Created Time",
+    "id": "ID"
   },
   "fe": {
     "trx_id": "TRX#",

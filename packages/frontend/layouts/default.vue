@@ -15,6 +15,7 @@
                             <li><nuxt-link :to="$i18n.path('/nonfungible')">{{ $t('navigator.nonfungibles') }}</nuxt-link></li>
                             <li><nuxt-link :to="$i18n.path('/domain')">{{ $t('navigator.domains') }}</nuxt-link></li>
                             <li><nuxt-link :to="$i18n.path('/group')">{{ $t('navigator.groups') }}</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/validator')">{{ $t('navigator.validator') }}</nuxt-link></li>
                         </ul></div>
                     </li>
                     <li>
