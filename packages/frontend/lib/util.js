@@ -73,52 +73,95 @@ export const msToTimeStr = function (time = 0, fix = true) {
 }
 
 // type: 'value', 'time', ['category']
-export const makeLineConfig = function (type, data = [], fn=null) {
-  
+export const makeLineConfig = function (type, data = [], fn = null) {
+
+  const fontColor = '#555';
+  const lineColor = '#aaa';
+  const makeShadow = () => ({
+    shadowColor: 'rgba(230, 169, 56, 0.8)',
+    shadowBlur: 3,
+    shadowOffsetX: 0,
+    shadowOffsetY: 1
+  })
   const isCategory = typeof type !== 'string';
 
   return {
     tooltip: {
-      show: true,
-      trigger: 'item'
+      trigger: 'axis'
     },
     xAxis: {
-        type: isCategory ? 'category' : type,
-        ...(isCategory ? {
-          data: type
-        } : {}),
-        axisLine: false,
-        splitLine: false
+      type: isCategory ? 'category' : type,
+      ...(isCategory ? {
+        data: type
+      } : {}),
+      // axisLine: true,
+      splitLine: false,
+      // splitNumber: 10,
+      axisLine: {
+        lineStyle: {
+          color: lineColor
+        }
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        color: fontColor,
+        margin: 18,
+        formatter: data => {
+          const d = new Date(data);
+          return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+        },
+        fontFamily: 'Quicksand',
+        fontSize: 10
+      }
     },
     yAxis: {
-        type: 'value',
-        scale: true,
-        axisLine: false,
-        splitLine: false
+      type: 'value',
+      scale: true,
+      splitLine: {
+        show: false
+      },
+      // minInterval: 0.1,
+      splitNumber: 3,
+      axisLine: {
+        lineStyle: {
+          color: lineColor
+        }
+      },
+      axisLabel: {
+        color: fontColor,
+        fontFamily: 'Quicksand',
+        fontSize: 10
+      }
     },
     series: [{
-        data: fn ? data.map(fn) : data,
-        type: 'line',
-        smooth: true,
-        lineStyle: {
-          color: '#E6A938',
-          shadowColor: 'rgba(0, 0, 0, 0.6)',
-          shadowBlur: 2,
-          shadowOffsetX: 2,
-          shadowOffsetY: 2
-        },
-        symbolSize: 3, //'none',
-        itemStyle: {
-          color: '#E6A938',
-          borderColor: '#E6A938'
-        },
-        tooltip: {
-          formatter (point) {
-            const [t, v] = point.data;
-            return `<b>NetValue:</b><br /><b>Time:</b> ${t}<br /><b>Value:</b> ${v}`;
-          }
+      data: fn ? data.map(fn) : data,
+      type: 'line',
+      smooth: true,
+      lineStyle: {
+        color: '#E6A938',
+        ...makeShadow()
+      },
+      showAllSymbol: false,
+      symbolSize: 0,
+      itemStyle: {
+        borderColor: '#E6A938',
+        borderWidth: 1
+      },
+      tooltip: {
+        formatter(point) {
+          const [t, v] = point.data;
+          return `<b>NetValue:</b><br /><b>Time:</b> ${t}<br /><b>Value:</b> ${v}`;
         }
-    }]
+      }
+    }],
+    grid: {
+      top: 20,
+      left: 50,
+      right: 30,
+      bottom: 40
+    }
   };
 }
 

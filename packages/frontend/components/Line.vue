@@ -24,12 +24,14 @@
 <style lang='scss'>
     .echarts {
         position: relative;
-        width: calc(100% - 48px);
+        width: calc(100% - 88px);
         margin: 0 auto;
-        height: 100px;
+        height: 150px;
         background: #eee;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+        // background: #00163e;
+        box-shadow: 0 5px 13px rgba(0, 0, 0, 0.15);
         border-radius: 8px;
+        padding: 20px;
     }
     .client-only-placeholder {
         font-weight: 400;
