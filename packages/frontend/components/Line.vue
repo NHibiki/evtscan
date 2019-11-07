@@ -22,7 +22,7 @@
 </script>
 
 <style lang='scss'>
-    .echarts {
+    #evtscan .echarts {
         position: relative;
         width: calc(100% - 88px);
         margin: 0 auto;
