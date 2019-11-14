@@ -13,5 +13,7 @@ npm-debug.log
 
 # Nuxt generate
 dist
-
 .rpt2_cache
+
+packages/frontend/addon.config.js
+packages/frontend/assets/plugin.scss

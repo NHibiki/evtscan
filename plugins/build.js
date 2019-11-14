@@ -10,5 +10,5 @@ fs.copyFileSync(
 // copy frontend style file
 fs.copyFileSync(
     join(__dirname, './style.scss'),
-    join(__dirname, '../packages/frontend/plugin.scss')
+    join(__dirname, '../packages/frontend/assets/plugin.scss')
 );
