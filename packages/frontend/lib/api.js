@@ -3,6 +3,8 @@ import {
   shared
 } from './util';
 
+export const VASTCHAIN_API = 'https://v1.api.tc.vastchain.ltd';
+
 let LOCALDEV = false;
 let endPoint = "http://localhost/api";
 try {
@@ -13,9 +15,8 @@ try {
   endPoint = (window.location.protocol || "https:") + "//" + (window.location.host || "evtscan.io") + "/api";
 } catch (error) {}
 
-// endPoint = "http://localhost:3000/api";
-// endPoint = "https://testnet1-scan.everitoken.io/api";
-// endPoint = "https://evtscan.io/api";
+// endPoint = "http://server:3000/api";
+// endPoint = "https://explorer.vastchain.cn/api";
 
 export const get = async (uri, params = {}, headers = {}) => {
   const res = await Axios.get(endPoint + uri, {
@@ -97,7 +98,7 @@ export const getHistoryOnAddress = async (id, page = 0, size = 15, filter = "") 
 }
 
 export const searchAddress = async (keyword = null) => {
-  return get(`/searchAddress`, {
+  return get(`/searchAggregate`, {
     keyword
   });
 }
@@ -122,7 +123,19 @@ export const getSiteInfo = async () => {
   return get(`/info`);
 }
 
+export const getDonationUrl = async onChainId => {
+  const [domain, token] = onChainId.split(':');
+  try {
+    const res = await Axios.get(`${VASTCHAIN_API}/common-chain-upload/blockchain-explorer/fromChainData?domain=${domain}&token=${token}`);
+    return res.data.path || '';
+  } catch (err) {
+    console.error(err);
+    return '';
+  }
+}
+
 export default {
+  VASTCHAIN_API,
   LOCALDEV,
   endPoint,
   searchAddress,
@@ -137,4 +150,5 @@ export default {
   getTrxOnBlock,
   getActionOnTrx,
   getHistoryOnAddress,
+  getDonationUrl,
 }

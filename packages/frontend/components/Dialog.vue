@@ -84,7 +84,7 @@
         outline: none;
         position: absolute;
         right: 34px;
-        color: #e6a938;
+        color: #002cd9;
         font-size: 20px;
 
         &:hover {

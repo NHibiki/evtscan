@@ -66,6 +66,19 @@ const inject = function (app, config) {
                     //console.log(ctx.url);
                     await next();
 
+                    if (typeof ctx.body === 'object') {
+                        ctx.body = JSON.parse(
+                            JSON.stringify(ctx.body)
+                                .replace(/"EVT"/g, '"VCCPoint"')
+                                .replace(/"PEVT"/g, '"PVCCPoint"')
+                                .replace(/"EVT/g, '"VCC')
+                                .replace(/"evt/g, '"vcc')
+                                .replace(/ EVT/g, ' VCC')
+                                .replace(/-evt/g, '-vcc')
+                                .replace(/evt-/g, 'vcc-')
+                        );
+                    }
+
                     // ## TODO ##
                     // ## TO SAVE RESULT TO CACHE ##
                 }

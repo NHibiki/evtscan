@@ -1,7 +1,7 @@
 <template>
     <div :class="$store.state.theme === 'light' ? 'grid-light' : 'grid-normal'">
         <div class='grid'>
-            <h2 style="margin-right: 120px;">{{ $t('navigator.address') }} <nuxt-link :to="$i18n.path('/address/' + id)" style="margin-left: 4px;">#{{ id }}</nuxt-link></h2>
+            <h2 style="margin-right: 120px;">{{ $t('navigator.address') }} <nuxt-link :to="$i18n.path('/address/' + showId)" style="margin-left: 4px;">#{{ showId }}</nuxt-link></h2>
             <a class="sidebtn" href="javascript:history.back()">{{ $t('system.info.back') }}</a>
             <Table :data="data"/>
         </div>
@@ -44,7 +44,12 @@
                 assetsHead: [this.$t('evt.datatable.name'), this.$t('evt.datatable.symbolid'), this.$t('evt.datatable.amount')],
             }
         },
-        computed: mapState(['id', 'data', 'assets', 'historyData', 'historyDataDetail', 'page', 'activeTab']),
+        computed: {
+            ...mapState(['id', 'data', 'assets', 'historyData', 'historyDataDetail', 'page', 'activeTab']),
+            showId() {
+                return this.id;
+            }
+        },
         components: { Table, Switcher },
         // created() { this.resetData(this.$route.params.id); return this.updateData(); },
         asyncData({store, route, res}) { store.commit('address/resetData', route.params.id); let promise = store.dispatch('address/updateData'); if (res) return promise; },

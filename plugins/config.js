@@ -1,10 +1,10 @@
 module.exports = {
 
-    appName: 'everiToken (EVT) Blockchain Explorer',
+    appName: 'VastChain Blockchain Explorer',
 
-    appDesc: 'Explorer for everiToken, world’s first token-customized public chain for the token economy and for everyone.',
+    appDesc: 'Explorer for VastChain, world’s first token-customized public chain for the token economy and for everyone.',
 
-    appLoading: '#e6a938',
+    appLoading: '#002cd9',
 
     additionalCss: [],
     

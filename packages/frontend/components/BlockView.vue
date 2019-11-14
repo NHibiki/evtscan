@@ -99,12 +99,13 @@ export default {
 
       a {
         transition: 0.1s linear;
-        text-decoration: none;
+        text-decoration: #27a4ff underline;
         outline: none;
-        color: #26e;
+        color: #27a4ff;
+        font-weight: 700;
 
         &:hover {
-          color: $themeColor;
+          color: #127cef;
         }
       }
     }

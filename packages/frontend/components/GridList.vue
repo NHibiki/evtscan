@@ -3,14 +3,14 @@
         <div class='grid-wrapper'>
             <h2>{{ title }}</h2>
             <div class="switch"><Switcher v-if="hasTab" :tabs="tabs" :active="activeTab" /><a class="btn" @click="onRefresh"><fa icon="redo-alt"/></a></div>
-            <div class="trans"></div>
+            <!-- <div class="trans"></div> -->
             <div class='grid-inner' @scroll.self="onScroll" :style="{'max-height': $store.state.indexs.minHeight < 580 ? '' : $store.state.indexs.minHeight + 'px'}">
-                <vue-loaders-line-scale-pulse-out-rapid v-if="!items[endpoint]" color="#e6a938" size="40px" class="loader"/>
+                <vue-loaders-line-scale-pulse-out-rapid v-if="!items[endpoint]" color="#002cd9" size="40px" class="loader"/>
                 <div class="noData" v-if="items[endpoint] && !items[endpoint][0]">No Data!</div>
                 <template v-if="items[endpoint]">
                     <component :key="item._id" :item="item" :endpoint="endpoint" :is="SubView" v-for="item in items[endpoint] || []"/>
                 </template>
-                <vue-loaders-ball-pulse v-if="items[endpoint] && loading[endpoint]" color="#e6a938" size="12px" class="loader2"/>
+                <vue-loaders-ball-pulse v-if="items[endpoint] && loading[endpoint]" color="#002cd9" size="12px" class="loader2"/>
             </div>
         </div>
     </div>
@@ -131,7 +131,7 @@
             transition: .3s linear;
 
             &:hover {
-                background-color: #e6a938;
+                background-color: #002cd9;
                 color: #FFF;
             }
 

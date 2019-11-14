@@ -74,6 +74,7 @@ const searchAddress = async ctx => {
     let {
         keyword
     } = (ctx.query || {});
+    keyword = (keyword || '').trim().replace(/VCC/ig, 'EVT');
     if (!keyword) return [];
 
     const res = await postgres.db(async db => {
@@ -101,8 +102,8 @@ const searchAll = async ctx => {
 
     const res = await postgres.db(async db => {
         let addrs = [];
-        if (keyword.startsWith('E')) {
-            addrs = (await db.query(`SELECT DISTINCT payer FROM transactions WHERE payer LIKE $1 LIMIT 6`, [`${keyword}%`])).rows
+        if (keyword.startsWith('VCC')) {
+            addrs = (await db.query(`SELECT DISTINCT payer FROM transactions WHERE payer LIKE $1 LIMIT 6`, [`${keyword.replace(/^VCC/, 'EVT')}%`])).rows
             .map(d => d.payer).sort((a, b) => {
                 try {
                     return regp.exec(a).index < regp.exec(b).index ? -1 : 1;
@@ -112,7 +113,7 @@ const searchAll = async ctx => {
             })
             .map(d => ({
                type: 'Address',
-               id: d
+               id: d.replace(/^EVT/, 'VCC')
             }));
             if (EVT.EvtKey.isValidPublicKey(keyword)) {
                 addrs = [{
@@ -140,8 +141,20 @@ const searchAll = async ctx => {
                 id: d.trx_id,
                 num: d.trx_num
             }));
+        const tokens = (await db.query(`SELECT id FROM tokens WHERE LOWER(id) LIKE $1 LIMIT 20`, [`%${keyword.toLocaleLowerCase()}%`])).rows
+            .map(d => d.id).sort().sort((a, b) => {
+                try {
+                    return regp.exec(a).index < regp.exec(b).index ? -1 : 1;
+                } catch (err) {
+                    return 0
+                }
+            })
+            .map(d => ({
+                type: 'Token',
+                id: d
+            }));
         return [
-            ...addrs, ...blocks, ...trxs
+            ...tokens, ...addrs, ...blocks, ...trxs
         ];
     });
 
@@ -158,7 +171,7 @@ const searchOne = async ctx => {
     if (!keyword) return {};
 
     const res = await postgres.db(async db => {
-        if (EVT.EvtKey.isValidPublicKey(keyword)) {
+        if (EVT.EvtKey.isValidPublicKey(keyword.replace(/^VCC/, 'EVT'))) {
             return {
                 type: 'Address',
                 id: keyword

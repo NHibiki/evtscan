@@ -205,6 +205,7 @@ const getNonfungibleDistribution = async (id, {
 }
 
 const getAddress = async (id) => {
+    id = (id || '').replace(/VCC/, 'EVT');
     const schemas = [
         `SELECT
             COUNT(*) FILTER(WHERE data->>'from'=$1) as send,
@@ -227,6 +228,7 @@ const getAddress = async (id) => {
 }
 
 const getAssets = async (id) => {
+    id = (id || '').replace(/VCC/, 'EVT');
     let node = evtnet.getRandomNode('AP');
     let ans = [];
     try {
@@ -255,6 +257,7 @@ const getAddressHistory = async (id, {
     filter = "all",
     domain = null
 }) => {
+    id = (id || '').replace(/VCC/, 'EVT');
     page = parseInt(page, 10);
     if (!page || page < 0) page = 0;
     size = parseInt(size, 10);

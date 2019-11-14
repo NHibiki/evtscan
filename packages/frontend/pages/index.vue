@@ -1,27 +1,24 @@
 <template>
     <section class="main-section">
-        <Grid :style="{'border-radius': '16px'}">
+        <!-- <Grid :style="{'border-radius': '16px'}">
             <div id="trxCount" class="container">
-                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>{{ $t('index.dailytransaction') }} <b :style="{'color': '#d80000'}">{{trx && trx.value || "0"}}</b></b>
+                <b :style="{'margin-right': '12px', 'background': '#2652FF'}" class='pill'>{{ $t('index.dailytransaction') }} <b :style="{'color': '#00ffae'}">{{trx && trx.value || "0"}}</b></b>
             </div>
             <div id="tpsPanel" class="container" :style="{'margin-top': '-12px'}">
-                <b :style="{'margin-right': '12px', 'background': '#e5a637'}" class='pill'>{{ $t('index.peaktps') }} <b :style="{'color': '#d80000'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
+                <b :style="{'margin-right': '12px', 'background': '#2652FF'}" class='pill'>{{ $t('index.peaktps') }} <b :style="{'color': '#00ffae'}">{{tps && tps.top && tps.top.value || "---"}}</b></b>
                 <nuxt-link :style="{'float': 'right'}" :to="$i18n.path(`/block/${tps && tps.top && tps.top.id || ''}`)" class="pill-btn"><b class='hidden'>{{ $t('navigator.block') }}</b>#{{tps && tps.top && tps.top.num || "None"}}</nuxt-link>
             </div>
             <div id="timeSync" class="container" :style="{'margin-top': '-12px'}">
-                <b :style="{'margin-right': '12px', 'background': timeSync ? '#e5a637' : null}" class='pill'>{{ $t('index.autosync') }}</b>
-                <!--<b class='hidden'>Now:&nbsp;</b>
-                <span class="show-time">{{new Date($store.state.app.time).toLocaleTimeString()}}</span>
-                <u :style="{'margin-left': '8px'}">{{new Date($store.state.app.time).toDateString()}}</u>-->
-                <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#e5a637" :labels="{checked: $t('index.syncon'), unchecked: $t('index.syncoff')}" />
+                <b :style="{'margin-right': '12px', 'background': timeSync ? '#2652FF' : null}" class='pill'>{{ $t('index.autosync') }}</b>
+                <toggle-button :style="{'float': 'right', 'font-size': '9px'}" v-model="timeSync" :width="70" color="#2652FF" :labels="{checked: $t('index.syncon'), unchecked: $t('index.syncoff')}" />
             </div>
-        </Grid>
-        <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
+        </Grid> -->
+        <Grid :style="{'border-radius': '16px'}">
             <div class="container">
                 <input v-model="search" @input="searchAll" @keyup.enter="go" :placeholder="$t('index.search')" />
                 <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="go" class="pill-btn">{{$t('index.searchsumbit')}}</a>
                 <div :class='{"search-result": true, "show": loading || (searchData && searchData.length)}' :style="{'height': (loading ? 120 : searchHeight) + 'px'}">
-                    <vue-loaders-line-scale-pulse-out-rapid v-if="loading" color="#e6a938" size="40px" class="loader"/>
+                    <vue-loaders-line-scale-pulse-out-rapid v-if="loading" color="#002cd9" size="40px" class="loader"/>
                     <a class="small-btn result-item-btn" @click="searchClick(i)" :key="i" v-for="(d, i) in searchData">
                       <p><b>{{ $t('index.searchtype') }}:</b>  {{ $t('index.t'+d.type) }}</p>
                       <p><b>{{ $t('index.searchvalue') }}:</b>  {{d.id}}</p>
@@ -46,7 +43,7 @@
     import BlockView from '~/components/BlockView';
 
     import { get } from '~/lib/util';
-    import { searchOne, searchAll as searchAllAPI } from '~/lib/api';
+    import { searchOne, searchAll as searchAllAPI, getDonationUrl, VASTCHAIN_API } from '~/lib/api';
     import { debounce } from 'lodash';
 
     export default {
@@ -103,18 +100,22 @@
                 this.loading -= 1;
                 if (data.data && data.data.length) {
                     this.searchData = data.data;
-                } else {
-                    this.searchData = [];
                 }
-            }, 200),
+            }, 400),
             goAddress() {
-                this.$router.push(this.$i18n.path(
-                    (this.acceptData.type === 'Transaction'
-                    ? `/trx/`
-                    : this.acceptData.type === 'Block'
-                        ? `/block/`
-                        : `/address/`)
-                    + this.search));
+                if (this.acceptData.type === 'Token') {
+                    getDonationUrl(this.search).then(data => {
+                        if (data) window.open(VASTCHAIN_API+data, 'donation');
+                    });
+                } else {
+                    this.$router.push(this.$i18n.path(
+                        (this.acceptData.type === 'Transaction'
+                        ? `/trx/`
+                        : this.acceptData.type === 'Block'
+                            ? `/block/`
+                            : `/address/`)
+                        + this.search));
+                }
             },
             async go() {
                 const data = get(await searchOne(this.search), 'data.data');

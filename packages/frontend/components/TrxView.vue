@@ -21,7 +21,7 @@
       </span>
       <span v-if="endpoint === 'transaction'">
         <i>{{ parseFeKey('trace') }}:</i>
-        <b>{{ (item.trace || item).charge / 100000.0 }} EVT</b>
+        <b>{{ (item.trace || item).charge / 100000.0 }}</b>
         {{ parseFeKey('charged') }}
         <!-- &nbsp;<b>{{ (item.trace || item).elapsed }} us</b> elapsed -->
       </span>
@@ -114,12 +114,13 @@ export default {
 
       a {
         transition: 0.1s linear;
-        text-decoration: none;
+        text-decoration: #27a4ff underline;
         outline: none;
-        color: #26e;
+        color: #27a4ff;
+        font-weight: 700;
 
         &:hover {
-          color: #e6a938;
+          color: #127cef;
         }
       }
 
@@ -130,7 +131,7 @@ export default {
     }
 
     span > b {
-      color: #e6a938;
+      color: #002cd9;
     }
 
     i {

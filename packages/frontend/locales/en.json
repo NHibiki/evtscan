@@ -8,9 +8,9 @@
     "info": {
       "back": "Back",
       "tohome": "Back to Homepage",
-      "copyright": "evtScan Copyright ©️2019",
+      "copyright": "VastChain Copyright ©️2019",
       "rightsclaim": "All Rights Reserved.",
-      "producedby": "By @NHibiki",
+      "producedby": "By @VastChain",
       "producedwith": "With",
       "distributedbyvue": "Distributed By Vue.js"
     }
@@ -43,7 +43,11 @@
     "myevtwallet": "myEVT Wallet",
     "whitepaper": "White Paper",
     "validator": "Validator",
-    "validators": "Validators"
+    "validators": "Validators",
+    "vastchain": "VastChain",
+    "vastchaindoc": "VastChain Docs",
+    "vastchaintos": "Terms of Service",
+    "vastchaingithub": "VastChain OpenSource"
   },
   "index": {
     "dailytransaction": "DAILY TRX",
@@ -51,13 +55,14 @@
     "autosync": "AUTO SYNC",
     "syncon": "Sync On",
     "syncoff": "Sync Off",
-    "search": "Search EVTAddress/TRX ID/Block NUM/Block ID",
+    "search": "Search VCCAddress/onChainId/TRX ID/Block NUM/Block ID",
     "searchsumbit": "GO",
     "searchtype": "Type",
     "searchvalue": "Value",
     "tBlock": "Block",
     "tTransaction": "Transaction",
-    "tAddress": "Address"
+    "tAddress": "Address",
+    "tToken": "Token"
   },
   "evt": {
     "assets": "Assets",

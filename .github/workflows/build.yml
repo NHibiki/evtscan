@@ -7,10 +7,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Build Container
-        run: docker build -t nhibiki/evtscan:latest .
+        run: docker build -t nhibiki/evtscan:vastchain .
       - name: Login Docker Registry
         run: docker login --username ${{ secrets.DUSER }} --password ${{ secrets.DPASS }}
       - name: Push Container
-        run: docker push nhibiki/evtscan:latest
+        run: docker push nhibiki/evtscan:vastchain
       - name: Clean Up
         run: docker logout

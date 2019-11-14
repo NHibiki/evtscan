@@ -9,8 +9,8 @@ export default ({ app, store }) => {
     // Set i18n instance on app
     // This way we can use it in middleware and pages asyncData/fetch
     const langs = {
-        'en': 'English',
         'zh': '中文',
+        'en': 'English',
     };
 
     const messages = {};

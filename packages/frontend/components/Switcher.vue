@@ -66,7 +66,7 @@
                 transition: .3s ease;
 
                 &.active {
-                    background: #e6a938;
+                    background: #002cd9;
                     color: #EEE;
                     transform: scale(1.05);
                     box-shadow: 2px 5px 10px rgba(0, 0, 0, .1);
@@ -77,7 +77,7 @@
                 
                     &.active {
                         box-shadow: 2px 5px 5px rgba(0, 0, 0, .15);
-                        background: #f6b948;
+                        background: #355dff;
                         /* transform: scale(1.02); */
                     }
                 

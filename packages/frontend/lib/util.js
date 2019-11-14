@@ -78,7 +78,7 @@ export const makeLineConfig = function (type, data = [], fn = null) {
   const fontColor = '#555';
   const lineColor = '#aaa';
   const makeShadow = () => ({
-    shadowColor: 'rgba(230, 169, 56, 0.8)',
+    shadowColor: 'rgba(54, 95, 255, 0.8)',
     shadowBlur: 3,
     shadowOffsetX: 0,
     shadowOffsetY: 1
@@ -140,13 +140,13 @@ export const makeLineConfig = function (type, data = [], fn = null) {
       type: 'line',
       smooth: true,
       lineStyle: {
-        color: '#E6A938',
+        color: '#002cd9',
         ...makeShadow()
       },
       showAllSymbol: false,
       symbolSize: 0,
       itemStyle: {
-        borderColor: '#E6A938',
+        borderColor: '#002cd9',
         borderWidth: 1
       },
       tooltip: {
@@ -505,7 +505,6 @@ export const tablizeFungibles = function (data = []) {
           };
         }
       })
-
     }
     res.push([firstEle, d.sym_id, d.creator, d.timestamp]);
     resData.push('/fungible/' + d.sym_id);

@@ -100,13 +100,13 @@
             position: absolute;
             right: 20px;
             top: 22px;
-            color: #e6a938;
+            color: #2652FF;
             /* border: 1px solid #e6a938; */
             box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
             border-radius: 40px;
 
             &:hover {
-                background: #e6a938;
+                background: #2954FF;
                 color: #FFF;
                 box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
             }
@@ -125,14 +125,14 @@
             color: #999;
 
             &:hover {
-                color: #e6a938;
+                color: #2954FF;
             }
 
             &.btn {
                 padding: 8px 20px;
                 display: inline-block;
                 color: #FFF;
-                background: #e6a938;
+                background: #2652FF;
                 border-radius: 36px;
                 box-shadow: 0 5px 15px rgba(0, 0, 0, .25);
 
@@ -191,7 +191,7 @@
         .pill-btn {
             font-weight: 700;
             padding: 3px 10px;
-            color: #e5a637;
+            color: #2652FF;
             background: #FFF;
             border-radius: 24px;
             cursor: default;

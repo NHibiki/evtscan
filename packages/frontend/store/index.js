@@ -4,9 +4,9 @@ try { theme = window.location.search.substr(1).split("&").reduce((p, c) => {retu
 
 export const state = () => ({
     theme,
-    locales: ['en', 'zh'],
-    locale: 'en',
-    defaultLocale: 'en'
+    locales: ['zh', 'en'],
+    locale: 'zh',
+    defaultLocale: 'zh'
 });
 
 export const mutations = {

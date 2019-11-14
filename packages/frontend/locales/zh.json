@@ -1,5 +1,5 @@
 {
-  "sitename": "everiToken (EVT) 区块链浏览器",
+  "sitename": "宇链云区块链浏览器",
   "system": {
     "error": {
       "notfound": "页面不存在",
@@ -8,9 +8,9 @@
     "info": {
       "back": "返回",
       "tohome": "回到主页",
-      "copyright": "evtScan 版权所有 ©️2019",
+      "copyright": "杭州宇链科技版权所有 ©️2019",
       "rightsclaim": "保留所有权利。",
-      "producedby": "由 @NHibiki 维护",
+      "producedby": "由 宇链科技 维护",
       "producedwith": "",
       "distributedbyvue": "基于 Vue.js 构建"
     }
@@ -23,8 +23,8 @@
     "transactions": "交易",
     "block": "区块",
     "blocks": "区块",
-    "fungible": "同质化通证",
-    "fungibles": "同质化通证",
+    "fungible": "可信积分",
+    "fungibles": "可信积分",
     "nonfungible": "非同质通证",
     "nonfungibles": "非同质通证",
     "token": "通证",
@@ -39,11 +39,15 @@
     "opensource": "开源链接",
     "everitoken": "everiToken",
     "evtscan": "evtScan",
-    "everipay": "everiPay",
+    "everipay": "积分",
     "myevtwallet": "MyEVT 钱包",
     "whitepaper": "白皮书",
     "validator": "验证者",
-    "validators": "验证者"
+    "validators": "验证者",
+    "vastchain": "宇链云官网",
+    "vastchaindoc": "宇链云文档",
+    "vastchaintos": "使用条款",
+    "vastchaingithub": "宇链开源"
   },
   "index": {
     "dailytransaction": "日交易量",
@@ -51,13 +55,14 @@
     "autosync": "自动同步",
     "syncon": "开",
     "syncoff": "关",
-    "search": "在此查询EVT地址/交易ID/区块ID/区块编号",
+    "search": "在此查询VCC地址/上链ID/交易ID/区块ID/区块编号",
     "searchsumbit": "查询",
     "searchtype": "类型",
     "searchvalue": "ID",
     "tBlock": "区块",
     "tTransaction": "交易",
-    "tAddress": "地址"
+    "tAddress": "地址",
+    "tToken": "通证"
   },
   "evt": {
     "assets": "资产",
@@ -75,8 +80,8 @@
       "send": "发送",
       "receive": "接收",
       "issue": "发行",
-      "everipay": "Pay",
-      "everipass": "Pass"
+      "everipay": "积分",
+      "everipass": "门锁"
     },
     "datatable": {
       "id": "唯一标识",
@@ -116,13 +121,13 @@
     "block_id": "区块 ID",
     "block_num": "区块序号",
     "timestamp": "时间戳",
-    "max_charge": "最大手续费",
-    "payer": "支付者",
+    "max_charge": "最大链积分消耗",
+    "payer": "发起者",
     "pending": "待确定",
     "type": "类型",
     "status": "状态",
     "elapsed": "耗时",
-    "charge": "手续费",
+    "charge": "链积分",
     "suspend_name": "挂起事务",
     "prev_block_id": "前序区块 ID",
     "trx_merkle_root": "Merkle 根",
@@ -152,16 +157,16 @@
   },
   "fe": {
     "trx_id": "交易ID",
-    "payer": "支付者",
+    "payer": "发起者",
     "pay_on": "于区块",
     "trace": "追踪",
-    "charged": "手续费",
+    "charged": "链积分消耗",
     "block": "区块",
     "produced_by": "创建者",
     "block_id": "区块ID",
     "trxes": "交易数",
     "pending": "待确定",
-    "pay": "付款",
+    "pay": "转移",
     "pay_to": "给",
     "domain": "域",
     "with_key": "使用键",

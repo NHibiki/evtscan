@@ -26,14 +26,14 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: addons.appName || 'everiToken (EVT) Blockchain Explorer',
+    title: addons.appName || 'VastChain Blockchain Explorer',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width,initial-scale=1.0' },
       { hid: 'description', name: 'description', content: addons.appDesc || 'Explorer for everiToken, world’s first token-customized public chain for the token economy and for everyone.' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/static/favicon.ico' },
+      { rel: 'icon', type: 'image/png', href: '/static/favicon.png' },
       ...additionalCss
     ],
     script: [ 
@@ -43,7 +43,7 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
-  loading: { color: addons.appLoading || '#e6a938' },
+  loading: { color: addons.appLoading || '#002cd9' },
   router: {
     middleware: 'i18n'
   },

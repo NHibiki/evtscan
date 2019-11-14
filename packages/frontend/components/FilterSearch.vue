@@ -44,7 +44,7 @@
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
 
-        color: #e6a938;
+        color: #002cd9;
         background: #FFF;
         box-shadow: 0 3px 6px rgba(0, 0, 0, .1);
         height: 32px;
@@ -68,7 +68,7 @@
             text-decoration: none;
             display: inline-block;
             border: none;
-            color: #e6a938;
+            color: #002cd9;
             background: none;
             font-size: 16px;
             cursor: pointer;

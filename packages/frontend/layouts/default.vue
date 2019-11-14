@@ -11,8 +11,8 @@
                     <li>
                         <a class="submenubtn" href="javascript:;">{{ $t('navigator.more') }}<fa style="margin-left:8px;" icon="angle-down"/></a>
                         <div class="submenu"><ul>
-                            <li><nuxt-link :to="$i18n.path('/fungible')">{{ $t('navigator.fungibles') }}</nuxt-link></li>
                             <li><nuxt-link :to="$i18n.path('/nonfungible')">{{ $t('navigator.nonfungibles') }}</nuxt-link></li>
+                            <li><nuxt-link :to="$i18n.path('/fungible')">{{ $t('navigator.fungibles') }}</nuxt-link></li>
                             <li><nuxt-link :to="$i18n.path('/domain')">{{ $t('navigator.domains') }}</nuxt-link></li>
                             <li><nuxt-link :to="$i18n.path('/group')">{{ $t('navigator.groups') }}</nuxt-link></li>
                             <li><nuxt-link :to="$i18n.path('/validator')">{{ $t('navigator.validator') }}</nuxt-link></li>
@@ -38,24 +38,24 @@
                 <div class="column">
                     <li><span>
                         {{ $t('system.info.copyright') }} <br /><br />
-                        <a href="https://github.com/NHibiki">{{ $t('system.info.producedby') }}</a> {{ $t('system.info.producedwith') }} <a class="heart"><fa icon="heart"/></a>. <br />
+                        <a href="https://www.vastchain.cn">{{ $t('system.info.producedby') }}</a> {{ $t('system.info.producedwith') }} <a class="heart"><fa icon="heart"/></a>. <br />
                         {{ $t('system.info.distributedbyvue') }} <br />
                         {{ $t('system.info.rightsclaim') }}
                     </span></li>
                 </div>
                 <div class="column">
                     <li><b>{{ $t('navigator.link') }}</b></li>
-                    <li><a href="https://everitoken.io">{{ $t('navigator.everitoken') }}</a></li>
-                    <li><a href="https://everitoken.io/everipay">{{ $t('navigator.everipay') }}</a></li>
-                    <li><a href="http://myevt.io">{{ $t('navigator.myevtwallet') }}</a></li>
+                    <li><a href="https://www.vastchain.cn">{{ $t('navigator.vastchain') }}</a></li>
+                    <li><a href="https://www.vastchain.cn/docs">{{ $t('navigator.vastchaindoc') }}</a></li>
+                    <li><a href="https://www.vastchain.cn/pages/20191019-tos">{{ $t('navigator.vastchaintos') }}</a></li>
                     <!--<li class="divider"></li>-->
                     <!--<li><a href="https://everitoken.io/docs/whitepaper.pdf">{{ $t('navigator.whitepaper') }}</a></li>-->
                 </div>
                 <div class="column">
                     <li><b>{{ $t('navigator.opensource') }}</b></li>
-                    <li><a href="https://github.com/NHibiki/evtscan">{{ $t('navigator.evtscan') }}</a></li>
-                    <!--<li class="divider"></li>-->
-                    <li><a href="https://github.com/everitoken">{{ $t('navigator.everitoken') }}</a></li>
+                    <li><a href="https://github.com/vastchain/">{{ $t('navigator.vastchaingithub') }}</a></li>
+                    <!-- <li><a href="https://github.com/NHibiki/evtscan">{{ $t('navigator.evtscan') }}</a></li>
+                    <li><a href="https://github.com/everitoken">{{ $t('navigator.everitoken') }}</a></li> -->
                 </div>
             </div>
         </footer>
@@ -132,20 +132,20 @@
 
             .logo {
                 display: block;
-                width: 221px;
-                height: 41px;
+                width: 180px;
+                height: 28px;
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: contain;
                 font-size: 0px;
-                background-image: url('/static/images/logo@2x.png');
+                background-image: url('https://vc-cdn.yuliankeji.cn/static/img/news-logo.png');
                 cursor: pointer;
             }
 
             .menuSwitch {
                 cursor: pointer;
                 font-size: 22px;
-                color: #e5a637;
+                color: #2652FF;
                 transition: .3s linear;
 
                 &:hover {
@@ -351,7 +351,8 @@
             right: 0;
             bottom: 0;
             left: 0;
-            background-image: url('/static/images/footer.jpg');
+            background: #002dde;
+            // background-image: url('/static/images/footer.jpg');
             /* opacity: 0.03; */
             z-index: -1;
         }
@@ -403,7 +404,7 @@
             flex: 1;
             padding: 20px;
             line-height: 24px;
-            color: #333;
+            color: #fff;
             @include withQuick(300);
 
             li {
@@ -431,11 +432,11 @@
             a {
                 text-decoration: none;
                 font-weight: 400;
-                color: #26E;
+                color: #00ffae;
                 transition: .3s linear;
 
                 &:hover {
-                    color: darken($themeColor, 20);
+                    color: lighten($themeColor, 20);
                 }
 
             }

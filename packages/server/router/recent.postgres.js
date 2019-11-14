@@ -171,14 +171,14 @@ const getFungibles = async (before, page, size, from, {
     filter
 }) => {
     let res = await postgres.db(async db => {
-        let addons = "";
-        // let queries = [new Date(before), new Date(from), size, size * page];
+        let addons = "WHERE UPPER(f.name) NOT LIKE '%COIN%' ";
+        // let queries = [new Date(since), new Date(from), size, size * page];
         let queries = [size, size * page];
         // let startIndex = 5;
         let startIndex = 3;
         // if (creator) { addons = `AND creator=$5`; queries.push(creator); startIndex += 1; }
         if (creator) {
-            addons = `WHERE creator=$3`;
+            addons = `AND creator=$3`;
             queries.push(creator);
             startIndex += 1;
         }
