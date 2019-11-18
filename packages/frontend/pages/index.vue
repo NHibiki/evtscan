@@ -18,8 +18,8 @@
         </Grid>
         <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
             <div class="container">
-                <input v-model="search" @input="searchAddress" @keyup.enter="goAddress" :placeholder="$t('index.search')" />
-                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="goAddress" class="pill-btn">{{$t('index.searchsumbit')}}</a>
+                <input v-model="search" @input="searchAddress" @keyup.enter="searchAddress" :placeholder="$t('index.search')" />
+                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="searchAddress" class="pill-btn">{{$t('index.searchsumbit')}}</a>
                 <div :class='{"search-result": true, "show": searchData && searchData.length}' :style="{'height': searchHeight + 'px'}">
                     <a class="small-btn" @click="searchClick(i)" :key="d" v-for="(d, i) in searchData">{{d}}</a>
                 </div>
@@ -91,11 +91,14 @@
             ...mapMutations(['changeEndpoint', 'changeMinHeight']),
             searchAddress: debounce(async function () {
                 let data = (await searchAddressAPI(this.search)).data;
-                if (data.data && data.data.length) this.searchData = data.data;
-                else this.searchData = [];
+                if (data.data && data.data.length) {
+                    this.searchData = data.data;
+                } else {
+                    this.searchData = [];
+                }
             }, 200),
             goAddress() { this.$router.push(this.$i18n.path(`/address/` + this.search)); },
-            searchClick(i) { this.search = this.searchData[i] || ""; this.searchData = []; }
+            searchClick(i) { this.search = this.searchData[i] || ""; this.searchData = []; this.goAddress(); }
         }
     }
 </script>
