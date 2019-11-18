@@ -13,7 +13,7 @@ try {
   endPoint = (window.location.protocol || "https:") + "//" + (window.location.host || "evtscan.io") + "/api";
 } catch (error) {}
 
-// endPoint = "https://w.yuuno.cc:3000/api";
+// endPoint = "http://server:3000/api";
 // endPoint = "https://evtscan.io/api";
 
 export const get = async (uri, params = {}, headers = {}) => {

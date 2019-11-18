@@ -138,7 +138,12 @@
     "nodes": "Nodes",
     "threshold": "Threshold",
     "created_at": "Created Time",
-    "id": "ID"
+    "id": "ID",
+    "commission": "Commission",
+    "initial_net_value": "Initial NetValue",
+    "current_net_value": "Current NetValue",
+    "total_units": "Total Units",
+    "profit": "Profit"
   },
   "fe": {
     "trx_id": "TRX#",

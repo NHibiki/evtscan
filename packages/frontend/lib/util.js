@@ -561,6 +561,15 @@ export const tablizeGroups = function (data = []) {
 export const tablizeValidator = function (data = {}) {
 
   const res = [];
+
+  delete data.validator.created_at;
+  delete data.validator.creator;
+  delete data.validator.create_time;
+  delete data.validator.last_updated_time;
+  delete data.validator.signer;
+  delete data.validator.withdraw;
+  delete data.validator.manage;
+
   for (let key in data.validator) {
     res.push([parseKey(key), data.validator[key]]);
   }

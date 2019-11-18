@@ -138,7 +138,12 @@
     "nodes": "节点数",
     "threshold": "阈值",
     "created_at": "创建时间",
-    "id": "唯一标识"
+    "id": "唯一标识",
+    "commission": "佣金",
+    "initial_net_value": "初始净值",
+    "current_net_value": "当前净值",
+    "total_units": "总量",
+    "profit": "收益"
   },
   "fe": {
     "trx_id": "交易ID",

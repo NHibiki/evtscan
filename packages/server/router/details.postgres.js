@@ -280,9 +280,22 @@ const getAddressHistory = async (id, {
 const getValidator = async id => {
     let res = await postgres.db(async db => {
         const validator = (await db.query(`SELECT * FROM validators WHERE id=$1 LIMIT 1`, [id || ""])).rows[0] || null;
+        if (!validator) return null;
         const netvalues = (await db.query(`SELECT * FROM netvalues WHERE validator_id=$1`, [id || ""])).rows || [];
+        const node = evtnet.getRandomNode('AP');
+        let chainData = {};
+        try {
+            chainData = (await Axios.post(node.addr + `/v1/evt/get_validator`, {
+                name: validator.name || ''
+            })).data;
+        } catch(err) {
+            console.error('Query Error: Cannot get validator', validator.name);
+        }
         return {
-            validator,
+            validator: {
+                ...validator,
+                ...chainData
+            },
             netvalues
         }
     });
