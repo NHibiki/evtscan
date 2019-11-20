@@ -13,8 +13,8 @@ try {
   endPoint = (window.location.protocol || "https:") + "//" + (window.location.host || "evtscan.io") + "/api";
 } catch (error) {}
 
-// endPoint = "http://server:3000/api";
-endPoint = "https://evtscan.io/api";
+// endPoint = "http://localhost:3000/api";
+// endPoint = "https://evtscan.io/api";
 
 export const get = async (uri, params = {}, headers = {}) => {
   const res = await Axios.get(endPoint + uri, {
@@ -27,23 +27,23 @@ export const get = async (uri, params = {}, headers = {}) => {
   return res;
 }
 
-export const getRecent = async (thing, page = 0, size = 15, since = null, filter = null, from = null) => {
-  if (['everipay', 'everipass'].includes(thing)) return getTrxByName(thing, page, size, since, from);
+export const getRecent = async (thing, page = 0, size = 15, before = null, filter = null, from = null) => {
+  if (['everipay', 'everipass'].includes(thing)) return getTrxByName(thing, page, size, before, from);
   return get(thing.startsWith('/') ? thing : "/" + thing, {
     page,
     size,
-    since,
+    before,
     from,
     filter
   }, {});
 }
 
-export const getTrxByName = async (name, page = 0, size = 15, since = null, from = null) => {
+export const getTrxByName = async (name, page = 0, size = 15, before = null, from = null) => {
   return get(`/trxByName`, {
     trx_name: name,
     page,
     size,
-    since,
+    before,
     from
   });
 }
@@ -60,30 +60,30 @@ export const getDetailWithPage = async (thing, id, page = 0, size = 15, addons =
   });
 }
 
-export const getTrxOnBlock = async (id, page = 0, size = 15, since = null) => {
+export const getTrxOnBlock = async (id, page = 0, size = 15, before = null) => {
   return get(`/transaction`, {
     block_id: id,
     page,
     size,
-    since
+    before
   });
 }
 
-export const getActionOnTrx = async (num, page = 0, size = 15, since = null) => {
+export const getActionOnTrx = async (num, page = 0, size = 15, before = null) => {
   return get(`/action`, {
     trx_num: num,
     page,
     size,
-    since
+    before
   });
 }
 
-export const getActionOnFungible = async (id, page = 0, size = 15, since = null) => {
+export const getActionOnFungible = async (id, page = 0, size = 15, before = null) => {
   return get(`/action`, {
     sym_id: id,
     page,
     size,
-    since
+    before
   });
 }
 

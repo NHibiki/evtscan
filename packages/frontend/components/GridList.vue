@@ -56,7 +56,7 @@
         components: { Switcher },
         mounted() {
             // Update Sync Timer
-            let updateInterval = 3000;
+            let updateInterval = 8000;
             this.updatingTimer = setInterval(async () => {
                 if (this.isUpdating || !this.needSync) return;
                 this.isUpdating = true;

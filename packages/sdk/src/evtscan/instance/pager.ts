@@ -1,7 +1,7 @@
 import ApiCaller from './apicaller';
 
 export interface PagerConfig {
-    since?: string;
+    before?: string;
     from?: string;
     page?: number;
     size?: number;

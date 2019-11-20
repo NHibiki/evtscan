@@ -28,12 +28,12 @@ export const actions = {
     async getDataList({ commit, state }, {endpoint, more}) {
         if (!more) commit('flushDataMut', endpoint);
         commit('setLoadingState', {endpoint, isOrNot:true});
-        let since = null;
+        let before = null;
         if (more && state.items[endpoint] && state.items[endpoint].length) {
-            since = state.items[endpoint][state.items[endpoint].length-1].timestamp || null;
-            if (since) since = new Date(new Date(since).getTime() - 1).toISOString();
+            before = state.items[endpoint][state.items[endpoint].length-1].timestamp || null;
+            if (before) before = new Date(new Date(before).getTime() - 1).toISOString();
         }
-        let items = (await getRecent(endpoint, 0, 15, since)).data.data;
+        let items = (await getRecent(endpoint, 0, 15, before)).data.data;
         let noMore = items ? (items.length < 15) : true;
         commit('getDataListMut', {endpoint, items});
         commit('setLoadingState', {endpoint, isOrNot:false, noMore});

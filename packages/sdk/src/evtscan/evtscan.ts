@@ -12,7 +12,7 @@ export interface EvtScanConfig {
 }
 
 export interface EvtScanParams {
-    since?: string;
+    before?: string;
     from?: string;
     page?: number;
     size?: number;
