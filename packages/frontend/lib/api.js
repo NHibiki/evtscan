@@ -14,7 +14,7 @@ try {
 } catch (error) {}
 
 // endPoint = "http://server:3000/api";
-// endPoint = "https://evtscan.io/api";
+endPoint = "https://evtscan.io/api";
 
 export const get = async (uri, params = {}, headers = {}) => {
   const res = await Axios.get(endPoint + uri, {

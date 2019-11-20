@@ -108,6 +108,13 @@
             &.loader2 {margin: 60px auto;}
         }
 
+        a.btn {
+            box-shadow: none;
+            &:hover {
+                box-shadow: none;
+            }
+        }
+
         .btn {
             font-size: 12px;
             line-height: 24px;
