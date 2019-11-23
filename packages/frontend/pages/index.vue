@@ -18,8 +18,8 @@
         </Grid>
         <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
             <div class="container">
-                <input v-model="search" @input="searchAddress" @keyup.enter="searchAddress" :placeholder="$t('index.search')" />
-                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="searchAddress" class="pill-btn">{{$t('index.searchsumbit')}}</a>
+                <input v-model="search" @input="searchAddress" @keyup.enter="goAddress" :placeholder="$t('index.search')" />
+                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="goAddress" class="pill-btn">{{$t('index.searchsumbit')}}</a>
                 <div :class='{"search-result": true, "show": searchData && searchData.length}' :style="{'height': searchHeight + 'px'}">
                     <a class="small-btn" @click="searchClick(i)" :key="d" v-for="(d, i) in searchData">{{d}}</a>
                 </div>
