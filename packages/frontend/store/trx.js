@@ -48,8 +48,9 @@ export const actions = {
     state
   }) => {
     const trx = await getDetail("transaction", state.id);
-    const recvData = await getActionOnTrx(trx.data.data.trx_num);
-    const [data, keys, sigs] = tablizeTrx(trx.data.data);
+    const trxData = trx.data.data || {};
+    const recvData = await getActionOnTrx(trxData.trx_num);
+    const [data, keys, sigs] = tablizeTrx(trxData);
     const [actions, actionsData] = tablizeTrxAction(recvData.data.data);
     commit('updateDataMut', {
       data,
