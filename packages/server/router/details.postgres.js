@@ -182,11 +182,19 @@ const getNonfungible = async (id, {
     return res[1] || [];
 }
 
-const getNonfungibleDistribution = async id => {
+const getNonfungibleDistribution = async (id, {
+    page = 0,
+    size = 15
+}) => {
+    page = parseInt(page, 10);
+    if (!page || page < 0) page = 0;
+    size = parseInt(size, 10);
+    if (!size || size < 5) size = 5;
     let res = await postgres.db(async db => {
         let distribution = (await db.query(`SELECT * FROM tokens WHERE id=$1`, [id || ""])).rows[0] || {};
         // let distribution = (await db.query(`SELECT tk.*, t.timestamp AS timestamp FROM tokens tk INNER JOIN transactions t ON tk.trx_num = t.trx_num WHERE tk.id=$1`, [id || ""])).rows || {};
         if (distribution && distribution.metas && distribution.metas.length) {
+            distribution.metas = distribution.metas.slice(page * size, (page+1) * size);
             let params = distribution.metas.map((_, i) => `$${i+1}`);
             let metas = (await db.query(`SELECT * FROM metas WHERE id IN (${params.join(",")})`, distribution.metas)).rows || [];
             distribution.metas = metas;

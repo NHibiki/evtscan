@@ -14,6 +14,7 @@ try {
 } catch (error) {}
 
 // endPoint = "http://localhost:3000/api";
+// endPoint = "https://testnet1-scan.everitoken.io/api";
 // endPoint = "https://evtscan.io/api";
 
 export const get = async (uri, params = {}, headers = {}) => {
