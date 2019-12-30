@@ -5,7 +5,7 @@ export const shared = {
 };
 
 export const get = function (from, key, def = null) {
-  let target = from;
+  let target = from || {};
   for (const i of key.split('.')) {
     if (target[i]) {
       target = target[i];

@@ -18,8 +18,8 @@
         </Grid>
         <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
             <div class="container">
-                <input v-model="search" @input="searchAll" @keyup.enter="goAddress" :placeholder="$t('index.search')" />
-                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="goAddress" class="pill-btn">{{$t('index.searchsumbit')}}</a>
+                <input v-model="search" @input="searchAll" @keyup.enter="go" :placeholder="$t('index.search')" />
+                <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="go" class="pill-btn">{{$t('index.searchsumbit')}}</a>
                 <div :class='{"search-result": true, "show": loading || (searchData && searchData.length)}' :style="{'height': (loading ? 120 : searchHeight) + 'px'}">
                     <vue-loaders-line-scale-pulse-out-rapid v-if="loading" color="#e6a938" size="40px" class="loader"/>
                     <a class="small-btn result-item-btn" @click="searchClick(i)" :key="i" v-for="(d, i) in searchData">
@@ -45,7 +45,8 @@
     import TrxView from '~/components/TrxView';
     import BlockView from '~/components/BlockView';
 
-    import { searchAll as searchAllAPI } from '~/lib/api';
+    import { get } from '~/lib/util';
+    import { searchOne, searchAll as searchAllAPI } from '~/lib/api';
     import { debounce } from 'lodash';
 
     export default {
@@ -114,6 +115,16 @@
                         ? `/block/`
                         : `/address/`)
                     + this.search));
+            },
+            async go() {
+                const data = get(await searchOne(this.search), 'data.data');
+                if (data.type && data.id) {
+                    this.acceptData = data;
+                    this.search = this.acceptData.id;
+                    this.goAddress();
+                } else {
+                    this.$router.push(this.$i18n.path('/404'));
+                }
             },
             searchClick(i) {
                 this.acceptData = this.searchData[i] || {};

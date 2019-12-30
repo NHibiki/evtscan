@@ -5,12 +5,12 @@
         <i>{{ parseFeKey('trx_id') }}:</i>
         <nuxt-link
           :to="$i18n.path('/trx/' + item.trx_id)"
-        >{{ "0x" + item.trx_id.toLocaleUpperCase() }}</nuxt-link>
+        >{{ "0x" + item.trx_id }}</nuxt-link>
       </span>
       <span>
         <i>{{ parseFeKey('payer') }}:</i>
         <span class="shortspan">
-          <span :title="item.payer.toLocaleUpperCase()">{{ item.payer.toLocaleUpperCase() }}</span>
+          <span :title="item.payer">{{ item.payer }}</span>
         </span>
         &nbsp;&nbsp;{{ parseFeKey('pay_on') }}&nbsp;&nbsp;&nbsp;
         <nuxt-link :to="$i18n.path('/block/' + item.block_id)">
@@ -31,8 +31,8 @@
         <i>{{ parseFeKey('pay_to') }}</i>
         <span class="shortspan">
           <span
-            :title="item.data.payee.toLocaleUpperCase()"
-          >{{ item.data.payee.toLocaleUpperCase() }}</span>
+            :title="item.data.payee"
+          >{{ item.data.payee }}</span>
         </span>
       </span>
       <span v-if="endpoint === 'everipass'">
@@ -45,8 +45,8 @@
         <i>{{ parseFeKey('with_key') }}</i>
         <span class="shortspan">
           <span
-            :title="(item.data.key || 'NONE').toLocaleUpperCase()"
-          >{{ (item.data.key || 'NONE').toLocaleUpperCase() }}</span>
+            :title="(item.data.key || 'NONE')"
+          >{{ (item.data.key || 'NONE') }}</span>
         </span>
       </span>
     </div>

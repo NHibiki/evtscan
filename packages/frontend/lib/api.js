@@ -108,6 +108,12 @@ export const searchAll = async (keyword = null) => {
   });
 }
 
+export const searchOne = async (keyword = null) => {
+  return get(`/searchOne`, {
+    keyword
+  });
+}
+
 export const getChainInfo = async () => {
   return get(`/chainInfo`);
 }

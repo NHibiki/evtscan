@@ -1,5 +1,6 @@
 const postgres = require('../lib/postgres.js'),
-    utils = require('../lib/utils');
+    utils = require('../lib/utils'),
+    EVT = require('evtjs');
 
 const fungiblesInfo = {
     value: 0,
@@ -95,6 +96,7 @@ const searchAll = async ctx => {
     let {
         keyword
     } = (ctx.query || {});
+    keyword = (keyword || '').trim();
     if (!keyword) return [];
 
     const res = await postgres.db(async db => {
@@ -112,9 +114,15 @@ const searchAll = async ctx => {
                type: 'Address',
                id: d
             }));
+            if (EVT.EvtKey.isValidPublicKey(keyword)) {
+                addrs = [{
+                    type: 'Address',
+                    id: keyword
+                }].concat(addrs);
+            }
         }
         let blocks = [];
-        if (!Number.isNaN(Number(keyword))) {
+        if (Number(keyword) === parseInt(keyword, 10)) {
             blocks = (await db.query(`SELECT DISTINCT block_id, block_num FROM blocks WHERE block_num=$1 LIMIT 6`, [`${keyword}`])).rows
         }
         blocks = blocks.concat((await db.query(`SELECT DISTINCT block_id, block_num FROM blocks WHERE block_id=$1 LIMIT 6`, [`${keyword.toLocaleLowerCase()}`])).rows);
@@ -123,6 +131,9 @@ const searchAll = async ctx => {
             id: d.block_id,
             num: d.block_num
         }));
+        if (keyword.startsWith('0x')) {
+            keyword = keyword.substr(2);
+        }
         const trxs = (await db.query(`SELECT DISTINCT trx_id, trx_num FROM transactions WHERE trx_id=$1 LIMIT 6`, [`${keyword.toLocaleLowerCase()}`])).rows
             .map(d => ({
                 type: 'Transaction',
@@ -138,8 +149,56 @@ const searchAll = async ctx => {
 
 }
 
+const searchOne = async ctx => {
+
+    let {
+        keyword
+    } = (ctx.query || {});
+    keyword = (keyword || '').trim();
+    if (!keyword) return {};
+
+    const res = await postgres.db(async db => {
+        if (EVT.EvtKey.isValidPublicKey(keyword)) {
+            return {
+                type: 'Address',
+                id: keyword
+            }
+        }
+        let blocks = [];
+        if (Number(keyword) === parseInt(keyword, 10)) {
+            blocks = (await db.query(`SELECT DISTINCT block_id, block_num FROM blocks WHERE block_num=$1 LIMIT 6`, [`${keyword}`])).rows;
+        }
+        if (!blocks.length) {
+            blocks = (await db.query(`SELECT DISTINCT block_id, block_num FROM blocks WHERE block_id=$1 LIMIT 6`, [`${keyword.toLocaleLowerCase()}`])).rows;
+        }
+        if (blocks.length) {
+            return {
+              type: 'Block',
+              id: blocks[0].block_id,
+              num: blocks[0].block_num,
+          }
+        }
+        if (keyword.startsWith('0x')) {
+            keyword = keyword.substr(2);
+        }
+        const trxs = (await db.query(`SELECT DISTINCT trx_id, trx_num FROM transactions WHERE trx_id=$1 LIMIT 6`, [`${keyword.toLocaleLowerCase()}`])).rows;
+        if (trxs.length) {
+            return {
+                type: 'Transaction',
+                id: trxs[0].trx_id,
+                num: trxs[0].trx_num
+            };
+        }
+        return {};
+    });
+
+    return res[1] || [];
+
+}
+
 module.exports = [
     ['get', '/chainInfo', getInfoWrapper(getChainInfo)],
     ['get', '/searchAddress', getInfoWrapper(searchAddress)],
-    ['get', '/searchAll', getInfoWrapper(searchAll)]
+    ['get', '/searchAll', getInfoWrapper(searchAll)],
+    ['get', '/searchOne', getInfoWrapper(searchOne)]
 ];

@@ -51,7 +51,7 @@
     "autosync": "AUTO SYNC",
     "syncon": "Sync On",
     "syncoff": "Sync Off",
-    "search": "Search Address Here",
+    "search": "Search EVTAddress/TRX ID/Block NUM/Block ID",
     "searchsumbit": "GO",
     "searchtype": "Type",
     "searchvalue": "Value",

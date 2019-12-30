@@ -51,7 +51,7 @@
     "autosync": "自动同步",
     "syncon": "开",
     "syncoff": "关",
-    "search": "在此输入地址查询",
+    "search": "在此查询EVT地址/交易ID/区块ID/区块编号",
     "searchsumbit": "查询",
     "searchtype": "类型",
     "searchvalue": "ID",
