@@ -102,6 +102,12 @@ export const searchAddress = async (keyword = null) => {
   });
 }
 
+export const searchAll = async (keyword = null) => {
+  return get(`/searchAll`, {
+    keyword
+  });
+}
+
 export const getChainInfo = async () => {
   return get(`/chainInfo`);
 }
@@ -114,6 +120,7 @@ export default {
   LOCALDEV,
   endPoint,
   searchAddress,
+  searchAll,
   get,
   getChainInfo,
   getSiteInfo,

@@ -18,10 +18,14 @@
         </Grid>
         <Grid :style="{'border-radius': '16px', 'margin-top': '-12px'}">
             <div class="container">
-                <input v-model="search" @input="searchAddress" @keyup.enter="goAddress" :placeholder="$t('index.search')" />
+                <input v-model="search" @input="searchAll" @keyup.enter="goAddress" :placeholder="$t('index.search')" />
                 <a :style="{'top': '15px', 'right': '20px', 'position': 'absolute'}" @click="goAddress" class="pill-btn">{{$t('index.searchsumbit')}}</a>
-                <div :class='{"search-result": true, "show": searchData && searchData.length}' :style="{'height': searchHeight + 'px'}">
-                    <a class="small-btn" @click="searchClick(i)" :key="d" v-for="(d, i) in searchData">{{d}}</a>
+                <div :class='{"search-result": true, "show": loading || (searchData && searchData.length)}' :style="{'height': (loading ? 120 : searchHeight) + 'px'}">
+                    <vue-loaders-line-scale-pulse-out-rapid v-if="loading" color="#e6a938" size="40px" class="loader"/>
+                    <a class="small-btn result-item-btn" @click="searchClick(i)" :key="i" v-for="(d, i) in searchData">
+                      <p><b>{{ $t('index.searchtype') }}:</b>  {{ $t('index.t'+d.type) }}</p>
+                      <p><b>{{ $t('index.searchvalue') }}:</b>  {{d.id}}</p>
+                    </a>
                 </div>
             </div>
         </Grid>
@@ -41,7 +45,7 @@
     import TrxView from '~/components/TrxView';
     import BlockView from '~/components/BlockView';
 
-    import { searchAddress as searchAddressAPI } from '~/lib/api';
+    import { searchAll as searchAllAPI } from '~/lib/api';
     import { debounce } from 'lodash';
 
     export default {
@@ -51,6 +55,8 @@
             let timeSync = false;
             return {
                 search: "",
+                loading: 0,
+                acceptData: {},
                 searchData: [],
                 trxTabs: {
                     all: { name: this.$t('evt.filter.all'), endpoint: "transaction", callback: cb },
@@ -64,7 +70,7 @@
             ...mapState(['minHeight', 'trxEndpoint', 'activeTab', 'chain']),
             tps() { return this.chain && this.chain.tps || null; },
             trx() { return this.chain && this.chain.trx || null; },
-            searchHeight() { return Math.min(this.searchData.length * 28, 140 + 14); }
+            searchHeight() { return Math.min(this.searchData.length * (52 + 4), 4 * 52); }
         },
         components: { GridList, Grid },
         mounted () {
@@ -89,16 +95,32 @@
         // },
         methods: {
             ...mapMutations(['changeEndpoint', 'changeMinHeight']),
-            searchAddress: debounce(async function () {
-                let data = (await searchAddressAPI(this.search)).data;
+            searchAll: debounce(async function () {
+                this.loading += 1;
+                this.searchData = [];
+                let data = (await searchAllAPI(this.search)).data;
+                this.loading -= 1;
                 if (data.data && data.data.length) {
                     this.searchData = data.data;
                 } else {
                     this.searchData = [];
                 }
             }, 200),
-            goAddress() { this.$router.push(this.$i18n.path(`/address/` + this.search)); },
-            searchClick(i) { this.search = this.searchData[i] || ""; this.searchData = []; this.goAddress(); }
+            goAddress() {
+                this.$router.push(this.$i18n.path(
+                    (this.acceptData.type === 'Transaction'
+                    ? `/trx/`
+                    : this.acceptData.type === 'Block'
+                        ? `/block/`
+                        : `/address/`)
+                    + this.search));
+            },
+            searchClick(i) {
+                this.acceptData = this.searchData[i] || {};
+                this.search = this.acceptData.id || '';
+                this.searchData = [];
+                this.goAddress();
+            }
         }
     }
 </script>
@@ -106,7 +128,7 @@
 <style lang='scss' scoped>
 
     .container {
-        
+
         input +a {
             box-shadow: none;
         }
@@ -134,8 +156,32 @@
                 margin-top: 4px;
             }
 
+            a.result-item-btn {
+                height: 32px;
+                border-radius: 8px;
+                text-align: left;
+                padding: 10px 18px;
+                p {
+                    margin: 0;
+                    overflow-x: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    font-weight: 400;
+                }
+                &:hover {
+                  b {
+                    color: white;
+                  }
+                }
+            }
+
         }
 
+    }
+
+    .loader {
+        margin-top: 38px;
+        text-align: center;
     }
 
     #tpsPanel.container {
@@ -172,7 +218,7 @@
         margin: 0 auto;
 
         @media only screen and (max-width: 960px) {
-            
+
             flex-direction: column;
             & > div {
                 margin: 20px auto;
@@ -181,7 +227,7 @@
         }
 
         @media only screen and (max-width: 440px) {
-            
+
             padding: 0;
 
         }

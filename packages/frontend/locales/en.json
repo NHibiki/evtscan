@@ -52,7 +52,12 @@
     "syncon": "Sync On",
     "syncoff": "Sync Off",
     "search": "Search Address Here",
-    "searchsumbit": "GO"
+    "searchsumbit": "GO",
+    "searchtype": "Type",
+    "searchvalue": "Value",
+    "tBlock": "Block",
+    "tTransaction": "Transaction",
+    "tAddress": "Address"
   },
   "evt": {
     "assets": "Assets",

@@ -52,7 +52,12 @@
     "syncon": "开",
     "syncoff": "关",
     "search": "在此输入地址查询",
-    "searchsumbit": "查询"
+    "searchsumbit": "查询",
+    "searchtype": "类型",
+    "searchvalue": "ID",
+    "tBlock": "区块",
+    "tTransaction": "交易",
+    "tAddress": "地址"
   },
   "evt": {
     "assets": "资产",

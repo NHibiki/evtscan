@@ -90,7 +90,56 @@ const searchAddress = async ctx => {
 
 }
 
+const searchAll = async ctx => {
+
+    let {
+        keyword
+    } = (ctx.query || {});
+    if (!keyword) return [];
+
+    const res = await postgres.db(async db => {
+        let addrs = [];
+        if (keyword.startsWith('E')) {
+            addrs = (await db.query(`SELECT DISTINCT payer FROM transactions WHERE payer LIKE $1 LIMIT 6`, [`${keyword}%`])).rows
+            .map(d => d.payer).sort((a, b) => {
+                try {
+                    return regp.exec(a).index < regp.exec(b).index ? -1 : 1;
+                } catch (err) {
+                    return 0
+                }
+            })
+            .map(d => ({
+               type: 'Address',
+               id: d
+            }));
+        }
+        let blocks = [];
+        if (!Number.isNaN(Number(keyword))) {
+            blocks = (await db.query(`SELECT DISTINCT block_id, block_num FROM blocks WHERE block_num=$1 LIMIT 6`, [`${keyword}`])).rows
+        }
+        blocks = blocks.concat((await db.query(`SELECT DISTINCT block_id, block_num FROM blocks WHERE block_id=$1 LIMIT 6`, [`${keyword.toLocaleLowerCase()}`])).rows);
+        blocks = blocks.map(d => ({
+            type: 'Block',
+            id: d.block_id,
+            num: d.block_num
+        }));
+        const trxs = (await db.query(`SELECT DISTINCT trx_id, trx_num FROM transactions WHERE trx_id=$1 LIMIT 6`, [`${keyword.toLocaleLowerCase()}`])).rows
+            .map(d => ({
+                type: 'Transaction',
+                id: d.trx_id,
+                num: d.trx_num
+            }));
+        return [
+            ...addrs, ...blocks, ...trxs
+        ];
+    });
+
+    return res[1] || [];
+
+}
+
 module.exports = [
     ['get', '/chainInfo', getInfoWrapper(getChainInfo)],
-    ['get', '/searchAddress', getInfoWrapper(searchAddress)]
+    ['get', '/searchAddress', getInfoWrapper(searchAddress)],
+    ['get', '/searchAll', getInfoWrapper(searchAll)]
 ];
