@@ -114,7 +114,7 @@ const searchAll = async ctx => {
                type: 'Address',
                id: d
             }));
-            if (EVT.EvtKey.isValidPublicKey(keyword)) {
+            if (EVT.EvtKey.isValidPublicKey(keyword) && !addrs.length) {
                 addrs = [{
                     type: 'Address',
                     id: keyword
